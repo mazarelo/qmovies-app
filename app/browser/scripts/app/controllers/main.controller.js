@@ -1,5 +1,5 @@
 
-myApp.controller("MainController" , function($scope, folder, webTorrent ) {
+myApp.controller("MainController" , function($scope, folder, webTorrent , $rootScope ) {
   this.pageName = "Dope";
   this.node = process.versions.node;
   this.chrome =process.versions.chrome;
@@ -19,6 +19,7 @@ myApp.controller("MainController" , function($scope, folder, webTorrent ) {
   };
 
   this.playTorrent = function(magnet){
+    $rootScope.MovieTitle.inputModel = "waiting";
     webTorrent.play(magnet);
   };
 

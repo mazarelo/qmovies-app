@@ -19,7 +19,7 @@ myApp.service('folder', function(){
 });
 
 
-myApp.service('webTorrent', function(folder , callback) {
+myApp.service('webTorrent', function(folder) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
 
@@ -27,7 +27,6 @@ myApp.service('webTorrent', function(folder , callback) {
      client.add( magnet , {path: __dirname+"/downloads"} , function(torrent) {
         torrent.files[1].appendTo('body');
         let torrentName = torrent.name;
-        callback.log(torrentName);
         return torrentName;
       });
     };
