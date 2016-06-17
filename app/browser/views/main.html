@@ -1,0 +1,15 @@
+<div >
+
+  <p>You're running Electron version
+      <span ng-bind="intro.pageName"></span>
+  </p>
+  <span ng-bind="intro.node"></span>
+  <span ng-bind="intro.electron"></span>
+  <span ng-bind="intro.chrome"></span>
+
+  <button ng-click="intro.createFolder('downloads')">Create Folder</button>
+  <button ng-click="intro.read('downloads')">Read Folder</button>
+  <h1 ng-bind="MovieTitle.inputModel"></h1>
+  <button ng-click="intro.deleteFolder(CurrentFilm)">Delete Folder</button>
+  <button ng-click="intro.playTorrent('magnet:?xt=urn:btih:F6AE395ACC047CA46D3796B564335FDF4F8DB19A&dn=10+Cloverfield+Lane+%282016%29+%5B1080p%5D+%5BYTS.AG%5D&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fp4p.arenabg.ch%3A1337&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337&dt=')">Play</button>
+</div>
