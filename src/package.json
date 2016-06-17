@@ -1,0 +1,23 @@
+{
+  "name": "qmovies",
+  "version": "1.0.0",
+  "description": "Media center",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron-packager": "^7.0.4",
+    "electron-prebuilt": "^1.2.3"
+  },
+  "dependencies": {
+    "angular": "^1.5.7",
+    "angular-route": "^1.5.7",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
+    "kickass-torrent": "0.0.3"
+  }
+}
