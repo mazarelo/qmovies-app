@@ -1,0 +1,16 @@
+<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+  <window-controlles></window-controlles>
+</div>
+<section id="content-trigger" class="main-content contentFull" ng-init="tv.getTvData()">
+  <h1 >{{tvInformation.name}} ({{tvInformation.last_air_date}})</h1>
+  <p>{{tvInformation.overview}}</p>
+  <span>Rating:{{tvInformation.vote_average}}/10</span>
+  <h2>Genre</h2>
+  <button  ng-repeat="genre in tvInformation.genres track by $index">{{genre.name}}</button>
+  <select ng-model="tv.download">
+    <option value="" selected="selected">Quality</option>
+    <option ng-repeat="torrent in torrents" value="{{torrent.hash}}">{{torrent.quality}} ({{torrent.size}})</option>
+  </select>
+  <button ng-click="tv.playTorrent(tv.download)">Play</button>
+  <div id="player"></div>
+</section>

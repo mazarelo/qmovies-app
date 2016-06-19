@@ -1,0 +1,27 @@
+<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+  <div window-controlles></div>
+  <back-btn></back-btn>
+  <forward-btn></forward-btn>
+  <search-bar ng-show="isSearchable"></search-bar>
+</div>
+<section id="content-trigger" class="main-content contentFull">
+  <!-- BIG MOVIE -->
+  <div class="template-home-feed span_6_of_12"
+    style="  background: url(http://image.tmdb.org/t/p/w1920) no-repeat center center ;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+    <div class="intro-titles">
+      <a href="#/movies"><h1 class="fsizeTitle">MOVIES</h1></a></div>
+  </div>
+  <!-- BIG TV -->
+  <div class="template-home-feed span_6_of_12"
+    style="background: url(http://image.tmdb.org/t/p/w1920) no-repeat center center ;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+    <div class="intro-titles "><a href="#/tv"><h1 class="fsizeTitle">TV SERIES</h1></a></div>
+  </div>
+</section>

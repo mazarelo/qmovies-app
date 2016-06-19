@@ -1,0 +1,22 @@
+{
+  "name": "qmovies",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "electron-prebuilt": "^1.2.3",
+    "gulp": "^3.9.1",
+    "webtorrent": "^0.95.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://mazarelo@bitbucket.org/mazarelo/qmoviesapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/mazarelo/qmoviesapp#readme"
+}

@@ -1,0 +1,39 @@
+<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+  <window-controlles></window-controlles>
+  <back-btn></back-btn>
+  <forward-btn></forward-btn>
+  <div search-bar></div>
+</div>
+
+<section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed('popular' ,feed.page)">
+    <div id="feed-ajax" class="feed-module" >
+      <!-- FEED -->
+          <div class="feed-template index-template-feed " ng-repeat="serie in dataResults track by $index">
+             <figure class="favorite " data-id="" title="Add to favorite">
+               <div ng-click="tvFeed.addToFavorite(serie.id)" favorite-icon></div>
+            </figure>
+            <div class="ft-cover">
+              <figure class="ft-rating">
+                <img src="assets/img/dark-template/icons/svg/rating-star.svg">
+                <span>{{serie.vote_average}}/10</span>
+                <span>&nbsp;({{serie.vote_count}})</span>
+              </figure>
+              <ul>
+                <li ng-click="tvFeed.newWindow(serie.id)">
+                  <img src="http://image.tmdb.org/t/p/w300{{serie.poster_path}}" class="image-cover-black">
+                </li>
+              </ul>
+            </div>
+            <figure class="last-episode" title="Go to Last Episode" align="center">
+              <play-button></play-button>
+            </figure>
+            <header class="ft-title">
+              <h4>
+                <span title="">{{serie.name}}</span>
+                <date>{{serie.first_air_date}}</date>
+              </h4>
+            </header>
+          </div>
+      </div>
+    <infinit-loader></infinit-loader>
+</section>
