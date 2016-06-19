@@ -33,7 +33,7 @@ myApp.service('kat', function( $q,$routeParams ){
           final[0].size = formatBytes(final[0].size);
           final[1].size = formatBytes(final[1].size);
           final[2].size = formatBytes(final[2].size);
-
+          console.log(final);
           deferred.resolve(final);
       })
       return deferred.promise;

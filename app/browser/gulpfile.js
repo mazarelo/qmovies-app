@@ -12,6 +12,7 @@ gulp.task('watch',function(){
     gulp.watch("scripts/app/controllers/*.js" , ['controllers']);
     gulp.watch("scripts/app/services/*.js" , ['services']);
     gulp.watch("scripts/app/directives/*.js" , ['directives']);
+    gulp.watch("scripts/app/filters/*.js" , ['filters']);
     /* WATCH FOR CHANGES ON SASS */
     gulp.watch("**/*.scss" , ['compile']);
 });
@@ -27,6 +28,12 @@ gulp.task('compile', function() {
 gulp.task('controllers', function() {
    return gulp.src(['scripts/app/controllers/*.js'])
         .pipe(concat('controllers.js'))
+        .pipe(gulp.dest('./scripts/app/'));
+});
+
+gulp.task('filters', function() {
+   return gulp.src(['scripts/app/filters/*.js'])
+        .pipe(concat('filters.js'))
         .pipe(gulp.dest('./scripts/app/'));
 });
 

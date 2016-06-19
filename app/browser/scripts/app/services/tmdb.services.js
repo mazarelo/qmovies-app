@@ -5,6 +5,9 @@ myApp.service('tmdb', function($http ,  $routeParams){
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
+
+
+
   this.fetchTmdb = function(platform = "tv", type , query , page){
     console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
     return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
@@ -29,5 +32,20 @@ myApp.service('tmdb', function($http ,  $routeParams){
     console.log(`${url}/tv/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${apiKey}`);
     return $http.get(`${url}/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${apiKey}`);
   }
+
+  this.tvDiscover = function (...terms){
+    //airDateMin="1980-01-01" ,airDateMax="2016-06-20" , firstReleaseMin="1980-01-01" , firstReleaseMax="2016-06-20" , year=2016 , page=1 , sortBy="popularity.desc" ,voteMin=0 ,voteMax=10 , genre
+      var termArray = [];
+        terms.forEach(function (item) {
+          termArray.push(item);
+        });
+        console.log(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+    return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+  }
+
+  this.tvSearch = function(query , page ){
+    return $http.get(`${url}/search/tv?query=${query}&page=${page}&${apiKey}`);
+  }
+
 
 });

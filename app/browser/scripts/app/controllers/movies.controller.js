@@ -1,7 +1,8 @@
-myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams ) {
-  this.download;
-
-  this.sortBy = {
+myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window ) {
+  const self = this;
+  self.download;
+  self.loading = true;
+  self.sortBy = {
     value: "year",
     options: [
       {value: 'title', name: 'Title'},
@@ -15,8 +16,8 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     ]
    };
 
-   this.query = "";
-   this.genre = {
+   self.query = "";
+   self.genre = {
         value: "Sci-fi",
         options: [
            {name: 'Action', value: 'action'},
@@ -41,45 +42,48 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
           ]
         };
 
-  this.addToFavorite = function(){
+  self.addToFavorite = function(){
     alert(added);
   }
 
-   this.moviesData = function(){
-     yify.listMovies(this.sortBy.value , this.genre.value , this.query).then(function(response){
+   self.moviesData = function(){
+     self.loading = true;
+     yify.listMovies(self.sortBy.value , self.genre.value , self.query).then(function(response){
        console.log(response.data.data.movies);
-       $scope.dataResults = response.data.data.movies;
-       return response.data.data.movies;
+       self.dataResults = response.data.data.movies;
+       self.loading = false;
      });
    };
 
-   this.newWindow = function(id){
-     console.log("clicked");
-     window.open("movies",id);
+   self.newWindow = function(id){
+     window.open("movies" , id);
    }
 
-  this.feedDetails = function(){
-    yify.listMovies(this.sortBy.value , this.genre.value, this.query).then(function(response){
+  self.feedDetails = function(){
+    self.loading = true;
+    yify.listMovies(self.sortBy.value , self.genre.value, self.query).then(function(response){
       console.log(response.data.data.movies);
-      $scope.dataResults = response.data.data.movies;
-      return response.data.data.movies;
+      self.dataResults = response.data.data.movies;
+      self.loading = false;
     });
   }
 
-  this.playTorrent = function(magnet){
+  self.playTorrent = function(magnet){
     $scope.MovieTitle = "waiting";
     // Yes it is
     webTorrent.play(magnet).then(function(response){
       console.log(response);
       $scope.MovieTitle = response;
+      self.loading = false;
     });
   };
 
-  this.movieDetails = function(){
+  self.movieDetails = function(){
+    self.loading = true;
     yify.movieDetails($routeParams.movieId).then(function(response){
       console.log(response.data.data);
-      $scope.movieInformation = response.data.data;
-      return response.data.data;
+      self.info = response.data.data;
+      self.loading = false;
     });
   };
 

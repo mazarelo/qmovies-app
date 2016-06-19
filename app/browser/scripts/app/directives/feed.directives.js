@@ -36,35 +36,35 @@ myApp.directive("infinitLoader", function() {
         `
     };
 });
-
-myApp.directive("filtersFeed", function() {
+myApp.directive("filtersTvFeed", function() {
     return {
         template : `
-          <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="feed.query" ng-change="feed.moviesData()" />
-          <select ng-model="feed.sortBy.value" ng-change="feed.moviesData()">
-            <option ng-repeat="option in feed.sortBy.options" value="{{option.value}}">{{option.name}}</option>
+          <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="tvFeed.query" ng-change="tvFeed.search()" />
+          <select ng-model="tvFeed.sortBy.value" ng-change="tvFeed.discover()">
+            <option ng-repeat="sort in tvFeed.sortBy.options" value="{{sort.value}}">{{sort.name}}</option>
           </select>
-          <select ng-model="feed.genre.value" ng-change="feed.moviesData()">
-            <option ng-repeat="genre in feed.genre.options" value="{{genre.value}}">{{genre.name}}</option>
+          <select ng-model="tvFeed.genre.value" ng-change="tvFeed.discover()">
+            <option value="" ng-selected="selected">any genre</option>
+            <option ng-repeat="genre in tvFeed.genre.options" value="{{genre.value}}">{{genre.name}}</option>
           </select>
+          <select ng-model="tvFeed.years.value" ng-change="tvFeed.discover()">
+            <option value="" ng-selected="selected">all years</option>
+            <option ng-repeat="year in tvFeed.years.options() | reverse" value="{{year}}">{{year}}</option>
+          </select>
+          <input type="number" ng-model="tvFeed.page" ng-change="tvFeed.discover()">
         `
     };
 });
-
-myApp.directive('scrolly', function () {
+myApp.directive("filtersMovieFeed", function() {
     return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var raw = element[0];
-            console.log('loading directive');
-            element.bind('scroll', function () {
-                console.log('in scroll');
-                console.log(raw.scrollTop + raw.offsetHeight);
-                console.log(raw.scrollHeight);
-                if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
-                    scope.$apply(attrs.scrolly);
-                }
-            });
-        }
+        template : `
+          <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="movieFeed.query" ng-change="movieFeed.moviesData()" />
+          <select ng-model="movieFeed.sortBy.value" ng-change="movieFeed.moviesData()">
+            <option ng-repeat="option in movieFeed.sortBy.options" value="{{option.value}}">{{option.name}}</option>
+          </select>
+          <select ng-model="movieFeed.genre.value" ng-change="movieFeed.moviesData()">
+            <option ng-repeat="genre in movieFeed.genre.options" value="{{genre.value}}">{{genre.name}}</option>
+          </select>
+        `
     };
 });

@@ -18,57 +18,6 @@ myApp.service('folder', function(){
      };
 });
 
-myApp.service('infinitLoader', function(){
-
-return function(scope, element, attrs) {
-
-  console.log("function started");
-  var pageNumber = 1;
-  const content = document.getElementById("feed-ajax");
-  var windowHeight = window.innerHeight;
-  const platform = "movies";
-  var requestRunning = false;
-  var currentUrl = window.location.href;
-  var url;
-  const checkView = document.getElementById("checkView");
-  const loadMore = document.getElementById("load-more");
-
-   angular.element("body").bind("scroll", function() {
-     console.log("element scrool started");
-
-    topPos = checkView.offsetTop;
-    if(elementExists){
-      if(topPos <= windowHeight){
-        if(requestRunning) return;
-        requestRunning = true;
-        loadMore.style.visibility = "visible";
-        url = currentUrl+pageNumber;
-        $http.get(url).then(function(response){
-          console.log("ajax");
-          if(response.data.data.movies == ""){
-            console.log("nothing to load");
-            data = "<h1 class='infinitLoader-end'>You reached the End...</h1>";
-            content.innerHTML += data;
-            loadMore.style.visibility = "hidden";
-            requestRunning = true;
-          }else{
-            for( var index in response.data.data.movies){
-                scope.moviesData += response.data.data.movies[index];
-            }
-            loadMore.style.visibility = "hidden";
-            requestRunning = false;
-          }
-        });
-      }
-    }
-    scope.$apply();
-  });
-}
-
-
-
-});
-
 myApp.service('kat', function( $q,$routeParams ){
   const kickass = require('kickass-torrent');
 
@@ -104,7 +53,7 @@ myApp.service('kat', function( $q,$routeParams ){
           final[0].size = formatBytes(final[0].size);
           final[1].size = formatBytes(final[1].size);
           final[2].size = formatBytes(final[2].size);
-
+          console.log(final);
           deferred.resolve(final);
       })
       return deferred.promise;
@@ -119,6 +68,9 @@ myApp.service('tmdb', function($http ,  $routeParams){
   const  url = "https://api.themoviedb.org/3";
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
+
+
+
 
   this.fetchTmdb = function(platform = "tv", type , query , page){
     console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
@@ -145,41 +97,98 @@ myApp.service('tmdb', function($http ,  $routeParams){
     return $http.get(`${url}/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${apiKey}`);
   }
 
+  this.tvDiscover = function (...terms){
+    //airDateMin="1980-01-01" ,airDateMax="2016-06-20" , firstReleaseMin="1980-01-01" , firstReleaseMax="2016-06-20" , year=2016 , page=1 , sortBy="popularity.desc" ,voteMin=0 ,voteMax=10 , genre
+      var termArray = [];
+        terms.forEach(function (item) {
+          termArray.push(item);
+        });
+        console.log(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+    return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+  }
+
+  this.tvSearch = function(query , page ){
+    return $http.get(`${url}/search/tv?query=${query}&page=${page}&${apiKey}`);
+  }
+
+
 });
 
 myApp.service('webTorrent', function(folder , $q) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
-  const player = document.getElementById("player");
+  const player = document.querySelector("#video-placeholder");
+  const loader = document.querySelector(".loading");
+  const playBtn = document.querySelector(".quality");
+
   this.play = function(magnet){
-      var magnetURI = magnet;
-      var deferred = $q.defer();
-      client.add( magnet , {path: __dirname+"/downloads/temp"} , function(torrent) {
-        player.innerHTML = "";
-        var final = [];
-        for(var i=0;i < torrent.files.length; i++){
-          var tor = torrent.files[i].name;
-          tor = tor.split(".");
-          if(tor[tor.length-1] == "jpg"){
-            //delete file;
-          }else{
-            final.push(torrent.files[i]);
-          }
+
+    playBtn.classList.toggle('ng-hide');
+    loader.classList.toggle('ng-hide');
+
+    var magnetURI = magnet;
+    var deferred = $q.defer();
+    client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
+      player.innerHTML = "";
+      var final = [];
+      for(var i=0;i < torrent.files.length; i++){
+        var currentTorrent = torrent.files[i];
+
+        if(currentTorrent['length'] <= 100000000){
+          //delete file;
+        }else{
+          final.push(torrent.files[i]);
         }
-         final[0].appendTo(player);
-         let torrentName = torrent.name;
-         deferred.resolve(torrentName);
-       });
-      return deferred.promise;
+      }
+       final[0].appendTo(player);
+       player.className = "";
+       player.removeAttribute("style");
+       loader.classList.toggle('ng-hide');
+
+       let torrentName = torrent.name;
+       deferred.resolve(torrentName);
+     });
+    return deferred.promise;
    };
 });
 
 myApp.service('window', function() {
   const remote = require('electron').remote;
+  const {BrowserWindow} = require('electron').remote
+  this.open = function( platform , url ){
+    var popup = new BrowserWindow({
+                  width: 1280,
+                 height: 724,
+                 frame:false,
+                  show: false
+                 //type: "textured"
+               });
+    // and load the index.html of the app.
+    popup.loadURL(`file://${__dirname}/index.html#/${platform}/${url}`);
+    // Open the DevTools.
+    popup.webContents.openDevTools();
+    popup.webContents.on('did-finish-load', function() {
+      setTimeout(function(){
+        popup.show();
+      }, 40);
+    })
+    var trayImage;
+    var imageFolder = __dirname + '/app/browser/assets/img/global/iMac-icon.png';
 
-  this.open = function( platform,url ){
-    console.log(`#/${platform}/${url}`);
-    window.open(`#/${platform}/${url}`, `${platform}` ,"resizable,scrollbars,status,width=1280,height=720");
+    // Determine appropriate icon for platform
+    if (platform == 'darwin') {
+        trayImage = imageFolder ;
+    }
+    else if (platform == 'win32') {
+        trayImage = imageFolder;
+    }
+    appIcon = new Tray(trayImage);
+
+    if (platform == "darwin") {
+      appIcon.setPressedImage(imageFolder);
+    }
+
+    //window.open(`#/${platform}/${url}`, `${platform}` ,"resizable,scrollbars,status,width=1280,height=720");
   }
 
    this.minimize = function() {
@@ -195,7 +204,7 @@ myApp.service('window', function() {
         window.unmaximize();
       }
    }
-   
+
    this.close = function() {
      const window = remote.getCurrentWindow();
      window.close();

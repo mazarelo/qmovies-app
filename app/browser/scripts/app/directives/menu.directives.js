@@ -90,17 +90,6 @@ myApp.directive("logoIcon", function() {
       }
 });
 
-myApp.directive("searchBar", function() {
-      return {
-        replace: "true",
-        template : `
-        <div class="search-box-menu-top">
-          <filters-feed></filters-feed>
-        </div>
-        `
-      }
-});
-
 myApp.directive("loginPanel", function() {
       return {
         replace: "true",

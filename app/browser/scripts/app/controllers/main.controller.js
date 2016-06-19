@@ -1,6 +1,6 @@
 myApp.controller("MainController" , function( $scope, folder, webTorrent ) {
-
-  this.pageName = "Dope";
-  this.MovieTitle = "Loading Title";
+  const self = this;
+  self.pageName = "Dope";
+  self.MovieTitle = "Loading Title";
 
 });

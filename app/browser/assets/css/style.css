@@ -519,11 +519,78 @@ a {
 @import "vendor/mCustomScrollbar";
 @import "common-html/typeahead";
 */
+.video-header {
+  -webkit-app-region: drag; }
+  .video-header h4 {
+    -webkit-app-region: drag; }
+
+.quality {
+  position: relative;
+  z-index: 99; }
+
+.loading {
+  height: 50px; }
+
 #player {
+  position: relative;
   width: 100%;
-  height: auto; }
-  #player video {
-    width: 100%; }
+  height: 100%; }
+  #player .play-btn {
+    width: 100px;
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    text-align: center;
+    z-index: 90; }
+    #player .play-btn select {
+      background: transparent;
+      display: block;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: transparent;
+      font-size: 143%;
+      margin-bottom: 1%;
+      padding: 10px;
+      margin: 1% auto; }
+    #player .play-btn button {
+      display: block;
+      font-size: 200%;
+      background: rgba(255, 255, 255, 0.89);
+      font-size: 200%;
+      border-radius: 10px;
+      padding: 4px 25px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      color: #333;
+      display: block;
+      margin: 0 auto; }
+  #player #video-controls {
+    position: absolute;
+    height: 40px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6); }
+    #player #video-controls figure {
+      float: left;
+      margin-right: 10px; }
+      #player #video-controls figure img {
+        width: 20px; }
+  #player #video-placeholder {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #000;
+    top: 0;
+    left: 0;
+    z-index: 0; }
+    #player #video-placeholder video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      height: 100%;
+      width: 100%; }
 
 /* ==========================================================================
    Author's custom styles
@@ -1018,8 +1085,32 @@ a {
 /*
   Set the color of the icon
 */
+.spinner {
+  background: url(../img/global/loading.svg) center center;
+  background-size: 50px 50px;
+  background-repeat: no-repeat; }
+
+.ng-hide-animate {
+  transition: opacity 0.3s ease-out;
+  opacity: 1; }
+
+.ng-hide-animate.ng-hide {
+  opacity: 0; }
+
 .favorite-active {
   fill: #f44336; }
+
+.blur {
+  -webkit-filter: blur(10px);
+  /* Prefixed CSS3 blur filters */
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: url(../img/blur.svg#blur);
+  /* Firefox needs SVG */
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='5');
+  filter: blur(10px);
+  /* Someday, sigh ... */ }
 
 .fullHeight {
   height: 100%; }

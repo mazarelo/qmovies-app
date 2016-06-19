@@ -3,15 +3,67 @@
 <head>
     <title>QMOVIES</title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <script src="scripts/lib/angular.min.js"></script>
-    <script src="scripts/lib/angular.route.min.js"></script>
-    <script src="scripts/app/app.js"></script>
-    <script src="scripts/app/routes.js"></script>
-    <script src="scripts/app/services.js"></script>
-    <script src="scripts/app/directives.js"></script>
-    <script src="scripts/app/controllers.js"></script>
 </head>
-    <body scrolly="showMore()">
-      <div class="fullHeight" ng-view></div>
+    <body>
+      <div class="fullHeight"  ng-if='!isRouteLoading' ng-view></div>
+      <!-- RIGHT CLICK MENU -->
+      <script src="scripts/lib/angular.min.js"></script>
+      <script src="scripts/lib/angular.route.min.js"></script>
+      <script src="scripts/app/app.js"></script>
+      <script src="scripts/app/routes.js"></script>
+      <script src="scripts/app/services.js"></script>
+      <script src="scripts/app/directives.js"></script>
+      <script src="scripts/app/controllers.js"></script>
+      <script src="scripts/app/filters.js"></script>
+      <script>
+        const {remote} = require('electron');
+        const {Menu, MenuItem} = remote;
+        const menu = new Menu();
+        const template =
+              {
+                label: 'add',
+                submenu:[
+                  {
+                    label: 'favorites',
+                    click() {
+                      console.log('item 2 clicked');
+                    }
+                  },
+                  {
+                    label: 'watchlist',
+                    click() {
+                      console.log('item 2 clicked');
+                    }
+                  }
+                ]
+              };
+        menu.append(new MenuItem({label:'play',click(){console.log('clicked play')}}));
+        menu.append(new MenuItem(template));
+        menu.append(new MenuItem({label:'delete',click(){console.log('Delete from favorites')}}));
+      /* menu.append(new MenuItem(
+         {
+         label: 'Add to Favorites',
+          click() {
+            console.log('item 2 clicked');
+          }
+        })
+      );
+        menu.append(new MenuItem({type: 'separator'}));
+        menu.append(new MenuItem(
+          {
+            label: 'MenuItem2',
+            type: 'checkbox',
+            checked: true
+          }
+        ));
+        */
+        var feedTarget = document.getElementsByClassName("feed-template");
+        window.addEventListener('contextmenu', (e) => {
+          console.log(e);
+          e.preventDefault();
+          if(e.target.className !== "image-cover-black") return;
+          menu.popup(remote.getCurrentWindow());
+        }, false);
+      </script>
     </body>
 </html>

@@ -2,13 +2,15 @@
   <window-controlles></window-controlles>
   <back-btn></back-btn>
   <forward-btn></forward-btn>
-  <div search-bar></div>
+  <div class="search-box-menu-top">
+    <filters-tv-feed></filters-tv-feed>
+  </div>
 </div>
 
-<section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed('popular' ,feed.page)">
-    <div id="feed-ajax" class="feed-module" >
+<section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed('popular')">
+    <div id="feed-ajax" class="feed-module" ng-class="tvFeed.loading ? 'spinner' : ''" scrolly>
       <!-- FEED -->
-          <div class="feed-template index-template-feed " ng-repeat="serie in dataResults track by $index">
+          <div class="feed-template index-template-feed " ng-repeat="serie in tvFeed.dataResults track by $index">
              <figure class="favorite " data-id="" title="Add to favorite">
                <div ng-click="tvFeed.addToFavorite(serie.id)" favorite-icon></div>
             </figure>

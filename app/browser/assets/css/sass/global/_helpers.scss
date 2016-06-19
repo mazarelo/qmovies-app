@@ -5,9 +5,37 @@
 /*
   Set the color of the icon
 */
+
+
+.spinner{
+  background:url(../img/global/loading.svg) center center;
+  background-size: 50px 50px;
+  background-repeat: no-repeat;
+}
+
+.ng-hide-animate {
+  transition: opacity 0.3s ease-out;
+  opacity: 1;
+}
+
+.ng-hide-animate.ng-hide {
+  opacity: 0;
+}
+
 .favorite-active{
     fill: rgba($red, 1);
 }
+
+.blur{
+  -webkit-filter: blur(10px); /* Prefixed CSS3 blur filters */
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: url(../img/blur.svg#blur); /* Firefox needs SVG */
+  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='5');
+  filter: blur(10px); /* Someday, sigh ... */
+}
+
 .fullHeight{
   height:100%;
 }

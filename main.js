@@ -14,11 +14,13 @@ const tempFiles = `${__dirname}/app/browser/downloads/temp`;
 var win;
 
 function createWindow() {
+  var startTime = Date.now();
   // Create the browser window.
   win = new BrowserWindow({
     width: 1280,
    height: 724,
-   frame:false
+   frame:false,
+    show: false
    //type: "textured"
  });
 
@@ -28,6 +30,13 @@ function createWindow() {
   // Open the DevTools.
   win.webContents.openDevTools();
 
+  win.webContents.on('did-finish-load', function() {
+    setTimeout(function(){
+      win.show();
+      console.error(Date.now() - startTime);
+    }, 40);
+  })
+  
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -47,7 +56,7 @@ const platform = require('os').platform();
 let appIcon = null;
 app.on('ready', () => {
   createWindow();
-  
+
   var trayImage;
   var imageFolder = __dirname + '/app/browser/assets/img/global/iMac-icon.png';
 
