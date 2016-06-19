@@ -1,0 +1,94 @@
+
+.previous-forward-controlls{
+  float:left;
+  opacity:0.5;
+  margin:4px 0 0 0;
+  display:table-cell;
+
+  @include transition("opacity 0.3s ease-out");
+  &:hover{
+    opacity:0.8;
+  }
+
+  img{
+    vertical-align: middle;
+    width:15px;
+  }
+}
+
+.window-controllers-wrapper{
+  width:100%;
+  float:left;
+  padding:8px;
+  height:$menuSize;
+  background: rgba(0, 0, 0, 0.30);
+  display: table;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  .window-cmd-icons{
+    //  margin-right:5px;
+    margin: 5px 5px 0 5px;
+    padding:0;
+    opacity:0.7;
+    float:left;
+    @include transition("opacity 0.3s ease-out");
+    &:hover{
+      opacity:0.9;
+    }
+    img{
+      width:13px;
+    }
+  }
+}
+
+.search-box-menu-top{
+    height:100%;
+    width:auto;
+    float:left;
+    margin-left: 1%;
+    padding:1px;
+    input.m-typeahead{
+        width:150px;
+        height:100%;
+        background-color: rgba(255, 255, 255, 1);
+        border:none;
+        padding:0 10px;
+        max-width:100%;
+        float:left;
+        margin-right:10px;
+        border-radius: 20px;
+        @include transition("background 0.3s ease-out");
+    }
+
+    select{
+        width:80px;
+        height:100%;
+        float:left;
+        margin-right:10px;
+        max-width:100px;
+        padding:0 10px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border:none;
+        border-left:1px solid rgba(0,0,0,0.4);
+    }
+
+    button{
+        width:80px;
+        max-width:100px;
+        margin-left:1%;
+        height:100%;
+        float:left;
+        font-size:150%;
+        &:hover{
+            background-color:rgba($red,0.4);
+        }
+    }
+}
+.tp-user-avatar {
+    width: 30px;
+    height: 30px;
+    float: right;
+    border-radius: 50%;
+    margin-right:10px;
+    background-color: white;
+    overflow: hidden;
+}

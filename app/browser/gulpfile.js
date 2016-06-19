@@ -11,6 +11,7 @@ gulp.task('watch',function(){
   /* WATCH FOR CHANGES ON CONTROLLERS AND SERVICES */
     gulp.watch("scripts/app/controllers/*.js" , ['controllers']);
     gulp.watch("scripts/app/services/*.js" , ['services']);
+    gulp.watch("scripts/app/directives/*.js" , ['directives']);
     /* WATCH FOR CHANGES ON SASS */
     gulp.watch("**/*.scss" , ['compile']);
 });
@@ -30,7 +31,7 @@ gulp.task('controllers', function() {
 });
 
 gulp.task('directives', function() {
-   return gulp.src(['js/app/directives/*.js'])
+   return gulp.src(['scripts/app/directives/*.js'])
         .pipe(concat('directives.js'))
         .pipe(gulp.dest('./scripts/app/'));
 });
@@ -54,4 +55,3 @@ gulp.task('scripts', function() {
 });
 */
 gulp.task('default', ['watch']);
-

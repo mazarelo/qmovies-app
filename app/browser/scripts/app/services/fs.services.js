@@ -12,7 +12,8 @@ myApp.service('folder', function(){
      };
 
      this.removeFolder = function(dir){
-      var folder = __dirname+"/"+dir;
+      let folder = __dirname+"/"+dir;
+      console.log(folder);
       fs.unlink(folder);
      };
 });

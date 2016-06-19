@@ -1,0 +1,16 @@
+<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+  <window-controlles></window-controlles>
+</div>
+<section id="content-trigger" class="main-content contentFull" ng-init="tv.movieDetails()">
+  <h1 >{{movieInformation.title}} ({{movieInformation.year}})</h1>
+  <p>{{movieInformation.description_full}}</p>
+  <span>Rating:{{movieInformation.rating}}/10</span>
+  <h2>Genre</h2>
+  <button  ng-repeat="genre in movieInformation.genres track by $index">{{genre}}</button>
+  <select ng-model="movie.download">
+    <option value="" selected="selected">Quality</option>
+    <option ng-repeat="torrent in movieInformation.torrents.torrent" value="{{torrent.url}}">{{torrent.quality}} ({{torrent.size}})</option>
+  </select>
+  <button ng-click="movie.playTorrent(movie.download)">Play</button>
+  <div id="player"></div>
+</section>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="movies">
 <head>
-    <title>Electron / Angular / ES6 Sample </title>
+    <title>QMOVIES</title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="scripts/lib/angular.min.js"></script>
     <script src="scripts/lib/angular.route.min.js"></script>
@@ -11,8 +11,7 @@
     <script src="scripts/app/directives.js"></script>
     <script src="scripts/app/controllers.js"></script>
 </head>
-    <body>
-        <h1>Electron / Angular</h1>
-        <div ng-view></div>
+    <body scrolly="showMore()">
+      <div class="fullHeight" ng-view></div>
     </body>
 </html>
