@@ -6,7 +6,7 @@
   margin: 0 0 50px 1%;
   float: left;
   font-size: 80%;
-  @include opacity($opacity: 0.5);
+  @include opacity($opacity: 0.8);
   -webkit-app-region: no-drag;
   transition:none;
   &:hover {
@@ -227,9 +227,10 @@
 .feed-module {
     width: 100%;
     height: calc(100% - 40px);
-    overflow: scroll;
+    overflow-y: scroll;
     float: left;
     color: lighten($templateBackgroundColor, 50%);
+    -webkit-app-region: no-drag;
     margin-top: 15px;
 
     h1 {

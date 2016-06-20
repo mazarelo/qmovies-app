@@ -17,10 +17,13 @@ function createWindow() {
   var startTime = Date.now();
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1280,
+    width: 1300,
    height: 724,
    frame:false,
-    show: false
+   backgroundColor: '#222',
+   show: false,
+   darkTheme:true,
+   titleBarStyle: "hidden-inset"
    //type: "textured"
  });
 
@@ -58,7 +61,7 @@ app.on('ready', () => {
   createWindow();
 
   var trayImage;
-  var imageFolder = __dirname + '/app/browser/assets/img/global/iMac-icon.png';
+  var imageFolder = __dirname +'/app/browser/assets/img/logo.png';
 
   // Determine appropriate icon for platform
   if (platform == 'darwin') {
