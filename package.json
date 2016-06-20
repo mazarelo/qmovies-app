@@ -1,25 +1,33 @@
 {
   "name": "qmovies",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "productName": "Qmovies",
+  "author": "Joao Mazarelo",
+  "contributors": [{
+    "name": "Joao Mazarelo",
+    "email": "info@mazarelo.com"
+  }],
+  "description": "Movie and Tv Series",
   "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager ./ qmovies --platform=win32 --arch=x64 --icon=./app/browser/assets/img/logo.ico --out=./dist --overwrite",
+    "setup": "electron-installer-squirrel-windows ./dist/qmovies-win32-x64"
+  },
   "dependencies": {
     "electron-prebuilt": "^1.2.3",
-    "gulp": "^3.9.1",
     "kickass-torrent": "0.0.3",
     "webtorrent": "^0.95.1"
   },
   "devDependencies": {
+    "electron-installer-squirrel-windows": "^1.3.0",
     "electron-packager": "^7.0.4"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://mazarelo@bitbucket.org/mazarelo/qmoviesapp.git"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/mazarelo/qmoviesapp#readme"
 }
