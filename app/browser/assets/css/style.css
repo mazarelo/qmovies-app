@@ -542,7 +542,8 @@ a {
 @import "common-html/typeahead";
 */
 .video-header {
-  -webkit-app-region: drag; }
+  -webkit-app-region: drag;
+  float: left; }
   .video-header h4 {
     -webkit-app-region: drag; }
 
