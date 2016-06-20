@@ -23,7 +23,7 @@ function createWindow() {
    backgroundColor: '#222',
    show: false,
    darkTheme:true,
-   titleBarStyle: "hidden-inset"
+   //titleBarStyle: "hidden-inset"
    //type: "textured"
  });
 
@@ -39,7 +39,7 @@ function createWindow() {
       console.error(Date.now() - startTime);
     }, 40);
   })
-  
+
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
