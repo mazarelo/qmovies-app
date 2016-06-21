@@ -5,15 +5,13 @@ const fs = require('fs');
 const {app} = electron;
 // Module to create native browser window.
 const {BrowserWindow} = electron;
-const tempFiles = `${__dirname}/browser/downloads/temp`;
-const updater = require('electron-updater');
+const tempFiles = `${__dirname}/app/browser/downloads/temp`;
 
 
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var win;
-
 
 function createWindow() {
   var startTime = Date.now();
@@ -30,7 +28,7 @@ function createWindow() {
  });
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/browser/index.html`);
+  win.loadURL(`file://${__dirname}/app/browser/index.html`);
 
   // Open the DevTools.
   win.webContents.openDevTools();
@@ -60,38 +58,23 @@ const platform = require('os').platform();
 
 let appIcon = null;
 app.on('ready', () => {
+  createWindow();
 
-  updater.on('ready', function() {  
-    createWindow();
+  var trayImage;
+  var imageFolder = __dirname +'/app/browser/assets/img/logo.png';
 
-    var trayImage;
-    var imageFolder = __dirname +'/browser/assets/img/logo.png';
+  // Determine appropriate icon for platform
+  if (platform == 'darwin') {
+      trayImage = imageFolder ;
+  }
+  else if (platform == 'win32') {
+      trayImage = imageFolder;
+  }
+  appIcon = new Tray(trayImage);
 
-    // Determine appropriate icon for platform
-    if (platform == 'darwin') {
-        trayImage = imageFolder ;
-    }
-    else if (platform == 'win32') {
-        trayImage = imageFolder;
-    }
-    appIcon = new Tray(trayImage);
-
-    if (platform == "darwin") {
-      appIcon.setPressedImage(imageFolder);
-    }
-
-  });
-
-  updater.on('update-required', function() {  
-      app.quit();
-  });
-
-  updater.on('update-available', function() {  
-
-  });
-  
-  updater.start();
-    
+  if (platform == "darwin") {
+    appIcon.setPressedImage(imageFolder);
+  }
 });
 
 
