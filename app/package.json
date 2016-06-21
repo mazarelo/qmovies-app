@@ -1,0 +1,33 @@
+{
+  "name": "qmovies",
+  "version": "1.0.0",
+  "author": "Joao Mazarelo",
+  "description": "movies and tv series",
+  "main": "main.js",
+  "dependencies": {
+    "fs": "0.0.2",
+    "kickass-torrent": "^0.0.3",
+    "os": "^0.1.1",
+    "webtorrent": "^0.95.1"
+  },
+  "devDependencies": {
+
+  },
+  "scripts":{
+    "dev": "electron . --enable-logging",
+
+    "clean": "rm -rf ./dist",
+    "clean:osx": "rm -rf ./dist/osx",
+    "clean:win": "rm -rf ./dist/win",
+
+    "pack": "npm run clean && npm run pack:osx",
+    "pack:osx": "npm run clean:osx && electron-packager . \"qmovies\" --out=dist/osx --platform=darwin --arch=x64 --version=0.36.2 --icon=browser/assets/img/osx/logo.icns --ignore=dist --ignore=builder.json  --ignore=README.md --ignore=.gitignore ",
+    "pack:win": "npm run clean:win && electron-packager . \"qmovies\" --out=dist/win --platform=win32 --arch=ia32 --version=0.36.2 --icon=browser/assets/img/win/logo.ico --ignore=dist  --ignore=builder.json  --ignore=README.md --ignore=.gitignore ",
+
+    "build": "npm run build:osx",
+    "build:osx": "npm run pack:osx && electron-builder \"dist/osx/qmovies-darwin-x64/qmovies.app\" --platform=osx --out=\"dist/osx\" ",
+    "build:win": "npm run pack:win && electron-builder \"dist/win/qmovies-win32-ia32\" --platform=win --out=\"dist/win\" --config=builder.json"
+  },
+  "author": "",
+  "license": "MIT"
+}

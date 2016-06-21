@@ -9,44 +9,43 @@ const babel = require('gulp-babel');
 
 gulp.task('watch',function(){
   /* WATCH FOR CHANGES ON CONTROLLERS AND SERVICES */
-    gulp.watch("scripts/app/controllers/*.js" , ['controllers']);
-    gulp.watch("scripts/app/services/*.js" , ['services']);
-    gulp.watch("scripts/app/directives/*.js" , ['directives']);
-    gulp.watch("scripts/app/filters/*.js" , ['filters']);
+    gulp.watch("./app/browser/scripts/app/controllers/*.js" , ['controllers']);
+    gulp.watch("./app/browser/scripts/app/services/*.js" , ['services']);
+    gulp.watch("./app/browser/scripts/app/directives/*.js" , ['directives']);
+    gulp.watch("./app/browser/scripts/app/filters/*.js" , ['filters']);
     /* WATCH FOR CHANGES ON SASS */
-    gulp.watch("**/*.scss" , ['compile']);
+    gulp.watch("./app/browser/css/**/*.scss" , ['compile']);
 });
 
-
 gulp.task('compile', function() {
-    return gulp.src("assets/css/sass/**/*.scss")
+    return gulp.src("app/browser/assets/css/sass/**/*.scss")
         .pipe(sass({errLogToConsole: true}))
-        .pipe(gulp.dest('assets/css'))
+        .pipe(gulp.dest('./app/browser/assets/css'))
         /*.pipe(browserSync.stream())*/;
 });
 
 gulp.task('controllers', function() {
-   return gulp.src(['scripts/app/controllers/*.js'])
+   return gulp.src(['./app/browser/scripts/app/controllers/*.js'])
         .pipe(concat('controllers.js'))
-        .pipe(gulp.dest('./scripts/app/'));
+        .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 gulp.task('filters', function() {
-   return gulp.src(['scripts/app/filters/*.js'])
+   return gulp.src(['./app/browser/scripts/app/filters/*.js'])
         .pipe(concat('filters.js'))
-        .pipe(gulp.dest('./scripts/app/'));
+        .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 gulp.task('directives', function() {
-   return gulp.src(['scripts/app/directives/*.js'])
+   return gulp.src(['./app/browser/scripts/app/directives/*.js'])
         .pipe(concat('directives.js'))
-        .pipe(gulp.dest('./scripts/app/'));
+        .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 gulp.task('services', function() {
-   return gulp.src(['scripts/app/services/*.js'])
+   return gulp.src(['./app/browser/scripts/app/services/*.js'])
         .pipe(concat('services.js'))
-        .pipe(gulp.dest('./scripts/app/'));
+        .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 /*

@@ -5,7 +5,7 @@ const fs = require('fs');
 const {app} = electron;
 // Module to create native browser window.
 const {BrowserWindow} = electron;
-const tempFiles = `${__dirname}/app/browser/downloads/temp`;
+const tempFiles = `${__dirname}/browser/downloads/temp`;
 
 
 
@@ -28,7 +28,7 @@ function createWindow() {
  });
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/app/browser/index.html`);
+  win.loadURL(`file://${__dirname}/browser/index.html`);
 
   // Open the DevTools.
   win.webContents.openDevTools();
@@ -61,7 +61,7 @@ app.on('ready', () => {
   createWindow();
 
   var trayImage;
-  var imageFolder = __dirname +'/app/browser/assets/img/logo.png';
+  var imageFolder = __dirname +'/browser/assets/img/logo.png';
 
   // Determine appropriate icon for platform
   if (platform == 'darwin') {
