@@ -1,17 +1,52 @@
 const gulp        = require('gulp');
-//const gutil = require('gulp-util');
+const gutil = require('gulp-util');
 const sass        = require('gulp-sass');
-//const babel = require('gulp-babel');
+const concat = require('gulp-concat');
+const sourcemaps = require("gulp-sourcemaps");
+const uglify = require('gulp-uglify');
+const babel = require('gulp-babel');
 // Static Server + watching scss/html files
-gulp.task('serve', ['compile'], function() {
-    gulp.watch(["**/*.scss"], ['compile']);
+
+gulp.task('watch',function(){
+  /* WATCH FOR CHANGES ON CONTROLLERS AND SERVICES */
+    gulp.watch("scripts/app/controllers/*.js" , ['controllers']);
+    gulp.watch("scripts/app/services/*.js" , ['services']);
+    gulp.watch("scripts/app/directives/*.js" , ['directives']);
+    gulp.watch("scripts/app/filters/*.js" , ['filters']);
+    /* WATCH FOR CHANGES ON SASS */
+    gulp.watch("**/*.scss" , ['compile']);
 });
 
+
 gulp.task('compile', function() {
-    return gulp.src("src/assets/css/sass/**/*.scss")
+    return gulp.src("assets/css/sass/**/*.scss")
         .pipe(sass({errLogToConsole: true}))
-        .pipe(gulp.dest('src/assets/css'))
+        .pipe(gulp.dest('assets/css'))
         /*.pipe(browserSync.stream())*/;
+});
+
+gulp.task('controllers', function() {
+   return gulp.src(['scripts/app/controllers/*.js'])
+        .pipe(concat('controllers.js'))
+        .pipe(gulp.dest('./scripts/app/'));
+});
+
+gulp.task('filters', function() {
+   return gulp.src(['scripts/app/filters/*.js'])
+        .pipe(concat('filters.js'))
+        .pipe(gulp.dest('./scripts/app/'));
+});
+
+gulp.task('directives', function() {
+   return gulp.src(['scripts/app/directives/*.js'])
+        .pipe(concat('directives.js'))
+        .pipe(gulp.dest('./scripts/app/'));
+});
+
+gulp.task('services', function() {
+   return gulp.src(['scripts/app/services/*.js'])
+        .pipe(concat('services.js'))
+        .pipe(gulp.dest('./scripts/app/'));
 });
 
 /*
@@ -26,4 +61,4 @@ gulp.task('scripts', function() {
        .pipe(gulp.dest('./js/'));
 });
 */
-gulp.task('default', ['serve']);
+gulp.task('default', ['watch']);
