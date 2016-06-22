@@ -13,7 +13,7 @@ const tempFiles = `${__dirname}/browser/downloads/temp`;
 // be closed automatically when the JavaScript object is garbage collected.
 var win;
 
-function createWindow() {
+function createWindow(url) {
   var startTime = Date.now();
   // Create the browser window.
   win = new BrowserWindow({
@@ -28,7 +28,7 @@ function createWindow() {
  });
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/browser/index.html`);
+  win.loadURL(url);
 
   // Open the DevTools.
   win.webContents.openDevTools();
@@ -49,19 +49,36 @@ function createWindow() {
   });
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+/* on close remove all temporary files on disk */
+
+function rmDir(tempFiles){
+  try {
+     var files = fs.readdirSync(tempFiles);
+   }catch(e) {
+      return;
+  }
+ if (files.length > 0)
+   for (var i = 0; i < files.length; i++) {
+     var filePath = `${tempFiles}/${files[i]}`;
+     console.log(`File Path = ${filePath}`);
+     if (fs.statSync(filePath).isFile()){
+       fs.unlinkSync(filePath);
+     }else{
+       rmDir(filePath);
+     }
+   }
+ fs.rmdirSync(tempFiles);
+}
 
 const {Menu, Tray} = require('electron');
 const platform = require('os').platform();
 
 let appIcon = null;
 app.on('ready', () => {
-  createWindow();
+  createWindow(`file://${__dirname}/browser/index.html`);
 
   var trayImage;
-  var imageFolder = __dirname +'/browser/assets/img/logo.png';
+  var imageFolder = __dirname +'/browser/assets/img/logo-tray@2x.png';
 
   // Determine appropriate icon for platform
   if (platform == 'darwin') {
@@ -70,36 +87,42 @@ app.on('ready', () => {
   else if (platform == 'win32') {
       trayImage = imageFolder;
   }
-  appIcon = new Tray(trayImage);
+  trayMenu = new Tray(trayImage);
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Open Qmovies',click(){
+      win.show()
+    }},
+    {
+      type:'separator'
+    },
+    {label: 'Movies', click(){
+      win.loadURL(`file://${__dirname}/browser/index.html#/movies`);
+    }},
+    {label: 'Tv', click(){
+      win.loadURL(`file://${__dirname}/browser/index.html#/tv`);
+    }},
+    {
+      type:'separator'
+    },
+    {label: 'Quit', click(){
+        rmDir(tempFiles);
+        app.quit();
+    }}
+  ]);
+  trayMenu.setToolTip('This is my application.')
+  trayMenu.setContextMenu(contextMenu)
 
   if (platform == "darwin") {
-    appIcon.setPressedImage(imageFolder);
+    trayMenu.setPressedImage(imageFolder);
   }
 });
 
 
 
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  /* on close remove all temporary files on disk */
-  function rmDir(tempFiles){
-    try {
-       var files = fs.readdirSync(tempFiles);
-     }catch(e) {
-        return;
-    }
-   if (files.length > 0)
-     for (var i = 0; i < files.length; i++) {
-       var filePath = `${tempFiles}/${files[i]}`;
-       console.log(`File Path = ${filePath}`);
-       if (fs.statSync(filePath).isFile()){
-         fs.unlinkSync(filePath);
-       }else{
-         rmDir(filePath);
-       }
-     }
-   fs.rmdirSync(tempFiles);
-  }
+
   rmDir(tempFiles);
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q

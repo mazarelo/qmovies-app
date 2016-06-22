@@ -29,6 +29,7 @@
                       console.log('item 2 clicked');
                     }
                   },
+
                   {
                     label: 'watchlist',
                     click() {
@@ -38,7 +39,9 @@
                 ]
               };
         menu.append(new MenuItem({label:'play',click(){console.log('clicked play')}}));
+        menu.append(new MenuItem({type:'separator'}))
         menu.append(new MenuItem(template));
+        menu.append(new MenuItem({type:'separator'}))
         menu.append(new MenuItem({label:'delete',click(){console.log('Delete from favorites')}}));
       /* menu.append(new MenuItem(
          {
