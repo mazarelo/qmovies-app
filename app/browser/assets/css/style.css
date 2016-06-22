@@ -323,6 +323,10 @@ button {
   background-color: transparent;
   border: none;
   outline: none; }
+  button :focus {
+    background-color: transparent;
+    border: none;
+    outline: none; }
 
 a {
   text-decoration: none;
@@ -486,6 +490,17 @@ a {
         -o-transition: opacity 0.3s ease-out;
         transition: opacity 0.3s ease-out; }
 
+.window-controllers-wrapper.transparent {
+  background: transparent;
+  position: absolute;
+  top: 0;
+  height: 45px;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  -webkit-app-region: drag;
+  border-bottom: 1px solid rgba(255, 255, 255, 0); }
+
 .search-box-menu-top {
   height: 100%;
   width: auto;
@@ -555,9 +570,28 @@ a {
   height: 50px; }
 
 #player {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%; }
+  #player .torrent-info {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    z-index: 99999;
+    width: 20%;
+    text-align: center; }
+    #player .torrent-info #torrent-progress {
+      background-color: white;
+      border: 0;
+      height: 18px;
+      border-radius: 9px; }
+  #player .video-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; }
   #player .play-btn {
     width: 100px;
     position: absolute;
@@ -606,13 +640,15 @@ a {
     background-color: #000;
     top: 0;
     left: 0;
-    z-index: 0; }
+    z-index: 2;
+    -webkit-app-region: no-drag; }
     #player #video-placeholder video {
       position: absolute;
       top: 0;
       left: 0;
       z-index: 0;
       height: 100%;
+      -webkit-app-region: no-drag;
       width: 100%; }
 
 /* ==========================================================================
@@ -1100,6 +1136,121 @@ a {
     height: 40px;
     margin: 0 auto; }
 
+.gradient-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30%;
+  width: 100%;
+  background: linear-gradient(to bottom, black, transparent);
+  z-index: 0; }
+
+.gradient-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 30%;
+  width: 100%;
+  background: linear-gradient(to top, black, transparent);
+  z-index: 0; }
+
+.info-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  -webkit-app-region: drag; }
+  .info-content .quality-btn {
+    position: absolute;
+    top: 50px;
+    right: 25px;
+    z-index: 99;
+    -webkit-app-region: no-drag; }
+    .info-content .quality-btn .icon-quality {
+      display: inline-block; }
+    .info-content .quality-btn .quality-set {
+      display: inline-block; }
+      .info-content .quality-btn .quality-set fieldset {
+        display: block; }
+  .info-content .info-data {
+    position: absolute;
+    top: 50px;
+    left: 25px;
+    width: 40%;
+    height: 400px; }
+    .info-content .info-data .data-epi-season {
+      width: 100%; }
+    .info-content .info-data .under-layer {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); }
+      .info-content .info-data .under-layer .data-poster, .info-content .info-data .under-layer .episode-wrapper {
+        width: 49%;
+        height: 100%;
+        display: inline-block;
+        position: relative;
+        overflow: hidden; }
+      .info-content .info-data .under-layer .episode-wrapper .season-holder {
+        width: 25px;
+        display: inline-block; }
+      .info-content .info-data .under-layer .episode-wrapper .episode-holder {
+        display: inline-block;
+        vertical-align: top;
+        width: 80%; }
+        .info-content .info-data .under-layer .episode-wrapper .episode-holder button {
+          width: 100%;
+          text-align: left;
+          -webkit-transition: background 0.3s ease-out;
+          -khtml-transition: background 0.3s ease-out;
+          -moz-transition: background 0.3s ease-out;
+          -ms-transition: background 0.3s ease-out;
+          -o-transition: background 0.3s ease-out;
+          transition: background 0.3s ease-out;
+          -webkit-transition: color 0.3s ease-out;
+          -khtml-transition: color 0.3s ease-out;
+          -moz-transition: color 0.3s ease-out;
+          -ms-transition: color 0.3s ease-out;
+          -o-transition: color 0.3s ease-out;
+          transition: color 0.3s ease-out;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
+          .info-content .info-data .under-layer .episode-wrapper .episode-holder button.active {
+            background: white;
+            color: #333; }
+          .info-content .info-data .under-layer .episode-wrapper .episode-holder button .epi-index-roman {
+            width: 10px; }
+        .info-content .info-data .under-layer .episode-wrapper .episode-holder button.active {
+          background: white;
+          color: #333; }
+  .info-content .info-data-bottom {
+    width: 100%;
+    height: 100%; }
+    .info-content .info-data-bottom .data-details {
+      width: 400px;
+      height: 100%;
+      display: inline-block; }
+      .info-content .info-data-bottom .data-details .data-title {
+        width: 100%; }
+      .info-content .info-data-bottom .data-details .data-rating {
+        width: 100%; }
+        .info-content .info-data-bottom .data-details .data-rating img {
+          display: inline-block; }
+        .info-content .info-data-bottom .data-details .data-rating figcaption {
+          display: inline-block; }
+      .info-content .info-data-bottom .data-details .data-overview {
+        width: 100%; }
+      .info-content .info-data-bottom .data-details .video-controlls {
+        display: inline-block; }
+        .info-content .info-data-bottom .data-details .video-controlls img {
+          width: 30px; }
+      .info-content .info-data-bottom .data-details .auto-play {
+        width: 100%; }
+        .info-content .info-data-bottom .data-details .auto-play input {
+          display: inline-block; }
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
@@ -1109,6 +1260,9 @@ a {
 /*
   Set the color of the icon
 */
+.forceFullHeight {
+  height: 100% !important; }
+
 .spinner {
   background: url(../img/global/loading.svg) center center;
   background-size: 50px 50px;
@@ -1273,10 +1427,6 @@ img.image-cover-black {
   overflow: visible;
   position: static;
   width: auto; }
-
-.active {
-  border: 1px solid rgba(244, 67, 54, 0.6) !important;
-  border-radius: 3px; }
 
 /*
  * Hide visually and from screen readers, but maintain layout

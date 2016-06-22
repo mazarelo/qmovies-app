@@ -12,7 +12,7 @@
       <!-- FEED -->
           <div class="feed-template index-template-feed " ng-repeat="serie in tvFeed.dataResults track by $index">
              <figure class="favorite " data-id="" title="Add to favorite">
-               <div ng-click="tvFeed.addToFavorite(serie.id)" favorite-icon></div>
+               <div favorite-icon></div>
             </figure>
             <div class="ft-cover">
               <figure class="ft-rating">
@@ -21,9 +21,11 @@
                 <span>&nbsp;({{serie.vote_count}})</span>
               </figure>
               <ul>
-                <li ng-click="tvFeed.activateZoom(this)">
-                <!--<li ng-click="tvFeed.newWindow(serie.id)">-->
-                  <img src="http://image.tmdb.org/t/p/w300{{serie.poster_path}}" err-src="assets/img/no-image.jpg" class="image-cover-black">
+                <li>
+                  <a href="#/tv/{{serie.id}}/season/1">
+                    <!--<li ng-click="tvFeed.newWindow(serie.id)">-->
+                    <img src="http://image.tmdb.org/t/p/w300{{serie.poster_path}}" err-src="assets/img/no-image.jpg" class="image-cover-black">
+                  </a>
                 </li>
               </ul>
             </div>

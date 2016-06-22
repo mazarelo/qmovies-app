@@ -19,6 +19,48 @@ myApp.service('folder', function(){
 });
 
 myApp.service('kat', function( $q,$routeParams ){
+  
+  this.brightnessCheck = function(imageSrc,callback) {
+      var img = document.createElement("img");
+      img.src = imageSrc;
+      img.style.display = "none";
+      document.body.appendChild(img);
+
+      var colorSum = 0;
+
+      img.onload = function() {
+          // create canvas
+          var canvas = document.createElement("canvas");
+          canvas.width = this.width;
+          canvas.height = this.height;
+
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(this,0,0);
+
+          var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+          var data = imageData.data;
+          var r,g,b,avg;
+
+            for(var x = 0, len = data.length; x < len; x+=4) {
+              r = data[x];
+              g = data[x+1];
+              b = data[x+2];
+
+              avg = Math.floor((r+g+b)/3);
+              colorSum += avg;
+          }
+
+          var brightness = Math.floor(colorSum / (this.width*this.height));
+          callback(brightness);
+      }
+  }
+  /* To put in the controller */
+  var img = document.body.getElementsByTagName('img');
+  getImageBrightness(this.src,function(brightness) {
+    document.getElementsByTagName('pre')[0].innerHTML = "Brightness: "+brightness;
+  });            
+});
+myApp.service('kat', function( $q,$routeParams ){
   const kickass = require('kickass-torrent');
 
   function formatBytes(bytes,decimals) {
@@ -30,32 +72,34 @@ myApp.service('kat', function( $q,$routeParams ){
    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-
-  this.query = function(query){
+  this.query = function(query , season , episode){
       var deferred = $q.defer();
+      season = (season < 10 ? '0'+season : season);
+      episode = (episode< 10? '0'+episode : season);
+
       kickass({
-          q: `${query} S01E01`,//actual search term
+          q: `${query} S${season}E${episode}`,//actual search term
           field:'seeders',//seeders, leechers, time_add, files_count, empty for best match
           order:'desc',//asc or desc
           page: 1,//page count, obviously
           url: 'https://kat.al',//changes site default url (https://kat.cr)
-      },function(e, data){
-          //will get the contents from
-          //http://kickass.to/json.php?q=test&field=seeders&order=desc&page=2
-          if(e){
-            console.log(data)//actual json response
-          }
-          var final = [];
-          final.push(data.list[0]);
-          final.push(data.list[1]);
-          final.push(data.list[2]);
+          },function(e, data){
+              //will get the contents from
+              //http://kickass.to/json.php?q=test&field=seeders&order=desc&page=2
+              if(e){
+                console.log(data)//actual json response
+              }
+              var final = [];
+              final.push(data.list[0]);
+              final.push(data.list[1]);
+              final.push(data.list[2]);
 
-          final[0].size = formatBytes(final[0].size);
-          final[1].size = formatBytes(final[1].size);
-          final[2].size = formatBytes(final[2].size);
-          console.log(final);
-          deferred.resolve(final);
-      })
+              final[0].size = formatBytes(final[0].size);
+              final[1].size = formatBytes(final[1].size);
+              final[2].size = formatBytes(final[2].size);
+              console.log(final);
+              deferred.resolve(final);
+          })
       return deferred.promise;
     }
 
@@ -87,9 +131,9 @@ myApp.service('tmdb', function($http ,  $routeParams){
     return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}`);
   }
 
-  this.tvSeason = function(){
+  this.tvSeason = function(season = $routeParams.season){
     console.log(`${url}/tv/${$routeParams.tvId}/season/${$routeParams.season}?${apiKey}`);
-    return $http.get(`${url}/${$routeParams.tvId}/season/${$routeParams.season}?${apiKey}`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}/season/${season}?${apiKey}`);
   }
 
   this.tvEpisode = function(){
@@ -111,44 +155,62 @@ myApp.service('tmdb', function($http ,  $routeParams){
     return $http.get(`${url}/search/tv?query=${query}&page=${page}&${apiKey}`);
   }
 
-
 });
 
 myApp.service('webTorrent', function(folder , $q) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
-  const player = document.querySelector("#video-placeholder");
-  const loader = document.querySelector(".loading");
-  const playBtn = document.querySelector(".quality");
 
   this.play = function(magnet){
+    /* player */
+      const videoPlayer = document.querySelector("#video-placeholder");
+      const loader = document.querySelector(".video-loader");
+      const infoTarget = document.querySelector(".info-content");
+      /* torrent info */
+      const torrentDownloadSpeed = document.getElementById("torrent-download-speed");
+      const torrentDownloadBites = document.getElementById("torrent-downloaded");
+      const torrentProgress = document.getElementById("torrent-progress");
 
-    playBtn.classList.toggle('ng-hide');
-    loader.classList.toggle('ng-hide');
 
-    var magnetURI = magnet;
-    var deferred = $q.defer();
-    client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
-      player.innerHTML = "";
-      var final = [];
-      for(var i=0;i < torrent.files.length; i++){
-        var currentTorrent = torrent.files[i];
+      infoTarget.classList.toggle('ng-hide');
+      loader.classList.toggle('ng-hide');
 
-        if(currentTorrent['length'] <= 100000000){
-          //delete file;
-        }else{
-          final.push(torrent.files[i]);
+      var magnetURI = magnet;
+      var deferred = $q.defer();
+      client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
+        videoPlayer.innerHTML = "";
+        var final = [];
+        for(var i=0;i < torrent.files.length; i++){
+          var currentTorrent = torrent.files[i];
+          if(currentTorrent['length'] <= 100000000){
+            //delete file;
+          }else{
+            final.push(torrent.files[i]);
+          }
         }
-      }
-       final[0].appendTo(player);
-       player.className = "";
-       player.removeAttribute("style");
-       loader.classList.toggle('ng-hide');
+        var once = false;
 
-       let torrentName = torrent.name;
-       deferred.resolve(torrentName);
-     });
-    return deferred.promise;
+        torrent.on('download', function (bytes) {
+          torrentDownloadBites.textContent =  Math.floor( torrent.progress*100);
+          torrentProgress.value = Math.floor( torrent.progress*100);
+          if(Math.floor( torrent.progress*100) >=5){
+            if(once){
+              return
+            }
+            once = true;
+            final[0].appendTo(videoPlayer);
+            videoPlayer.className = "";
+            videoPlayer.removeAttribute("style");
+            loader.classList.toggle('ng-hide');
+            infoTarget.style.visibility = "hidden";
+            let torrentName = torrent.name;
+            deferred.resolve(torrentName);
+          }
+        });
+
+
+       });
+      return deferred.promise;
    };
 });
 

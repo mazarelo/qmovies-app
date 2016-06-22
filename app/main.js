@@ -98,7 +98,7 @@ app.on('ready', () => {
     {label: 'Movies', click(){
       win.loadURL(`file://${__dirname}/browser/index.html#/movies`);
     }},
-    {label: 'Tv', click(){
+    {label: 'Tv Series', click(){
       win.loadURL(`file://${__dirname}/browser/index.html#/tv`);
     }},
     {

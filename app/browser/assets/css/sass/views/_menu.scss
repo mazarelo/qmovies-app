@@ -30,7 +30,6 @@
     padding:0;
     opacity:1;
     float:left;
-   
 
     &:hover{
       .hover{
@@ -46,6 +45,18 @@
       }
     }
   }
+}
+
+.window-controllers-wrapper.transparent{
+  background: rgba(0, 0, 0, 0);
+  position:absolute;
+  top:0;
+  height:$menuSize;
+  left:0;
+  width:100%;
+  z-index:99999;
+  -webkit-app-region: drag;
+  border-bottom: 1px solid rgba(255, 255, 255, 0);
 }
 
 .search-box-menu-top{

@@ -6,7 +6,9 @@
   Set the color of the icon
 */
 
-
+.forceFullHeight{
+  height:100%!important;
+}
 .spinner{
   background:url(../img/global/loading.svg) center center;
   background-size: 50px 50px;
@@ -207,10 +209,7 @@ img.image-cover-black{
     position: static;
     width: auto;
 }
-.active{
-      border: 1px solid rgba($red,0.6)!important;
-      border-radius:3px;
-}
+
 /*
  * Hide visually and from screen readers, but maintain layout
  */

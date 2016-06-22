@@ -9,16 +9,8 @@ myApp.config(function($routeProvider, $locationProvider) {
     templateUrl: 'views/tv.html',
     controller: 'TvController as tvFeed'
   })
-  .when('/tv/:tvId', {
-    templateUrl: 'views/tv-individual.html',
-    controller: 'TvController as tv'
-  })
   .when('/tv/:tvId/season/:season', {
-    templateUrl: 'views/feed.html',
-    controller: 'TvController as tv'
-  })
-  .when('/tv/:tvId/season/:season/episode/:episode', {
-    templateUrl: 'views/feed.html',
+    templateUrl: 'views/tv-main.html',
     controller: 'TvController as tv'
   })
   .when('/movies', {
@@ -26,7 +18,7 @@ myApp.config(function($routeProvider, $locationProvider) {
     controller: 'MoviesController as movieFeed'
   })
   .when('/movies/:movieId', {
-    templateUrl: 'views/movies-individual.html',
+    templateUrl: 'views/movies-main.html',
     controller: 'MoviesController as movie'
   })
   .otherwise({

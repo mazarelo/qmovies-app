@@ -15,10 +15,32 @@
 }
 
 #player{
-  position:relative;
+  position:absolute;
   width:100%;
   height:100%;
+  .torrent-info{
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:99999;
+    width:20%;
+    text-align:center;
 
+    #torrent-progress{
+      background-color: white;
+       border: 0;
+       height: 18px;
+       border-radius: 9px;
+    }
+  }
+  .video-loader{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
   .play-btn{
     width:100px;
     position:absolute;
@@ -76,13 +98,15 @@
     background-color:#000;
     top:0;
     left:0;
-    z-index:0;
+    z-index:2;
+    -webkit-app-region: no-drag;
     video{
       position:absolute;
       top:0;
       left:0;
       z-index:0;
       height:100%;
+      -webkit-app-region: no-drag;
       width:100%;
     }
   }

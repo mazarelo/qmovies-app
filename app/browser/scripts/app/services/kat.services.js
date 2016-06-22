@@ -10,32 +10,34 @@ myApp.service('kat', function( $q,$routeParams ){
    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-
-  this.query = function(query){
+  this.query = function(query , season , episode){
       var deferred = $q.defer();
+      season = (season < 10 ? '0'+season : season);
+      episode = (episode< 10? '0'+episode : season);
+
       kickass({
-          q: `${query} S01E01`,//actual search term
+          q: `${query} S${season}E${episode}`,//actual search term
           field:'seeders',//seeders, leechers, time_add, files_count, empty for best match
           order:'desc',//asc or desc
           page: 1,//page count, obviously
           url: 'https://kat.al',//changes site default url (https://kat.cr)
-      },function(e, data){
-          //will get the contents from
-          //http://kickass.to/json.php?q=test&field=seeders&order=desc&page=2
-          if(e){
-            console.log(data)//actual json response
-          }
-          var final = [];
-          final.push(data.list[0]);
-          final.push(data.list[1]);
-          final.push(data.list[2]);
+          },function(e, data){
+              //will get the contents from
+              //http://kickass.to/json.php?q=test&field=seeders&order=desc&page=2
+              if(e){
+                console.log(data)//actual json response
+              }
+              var final = [];
+              final.push(data.list[0]);
+              final.push(data.list[1]);
+              final.push(data.list[2]);
 
-          final[0].size = formatBytes(final[0].size);
-          final[1].size = formatBytes(final[1].size);
-          final[2].size = formatBytes(final[2].size);
-          console.log(final);
-          deferred.resolve(final);
-      })
+              final[0].size = formatBytes(final[0].size);
+              final[1].size = formatBytes(final[1].size);
+              final[2].size = formatBytes(final[2].size);
+              console.log(final);
+              deferred.resolve(final);
+          })
       return deferred.promise;
     }
 

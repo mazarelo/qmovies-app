@@ -200,7 +200,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     });
   }
 
-  
+
   self.activateZoom = function(element){
     let target = element;
     console.log(target);
@@ -225,18 +225,46 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
       self.loading = false;
     });
   }
+  self.playEpisode = function(episode){
 
+    console.log("name:"+self.info.name);
+    console.log("episode:"+episode);
+    console.log("season:"+self.season);
+
+    kat.query(self.info.name , self.season ,episode ).then(function(response){
+      console.log(response);
+      self.torrents = response;
+      self.loading = false;
+    });
+  }
+  self.getSeasonInfo = function($event ,season){
+    self.season = season;
+    let seasons = document.getElementsByClassName("season-btn");
+    for(let i=0;i<seasons.length;i++){
+      let classes = seasons[i].className.replace('active','');
+      seasons[i].className = classes;
+    }
+    $event.target.classList.toggle("active");
+    tmdb.tvSeason(season).then(function(response){
+      self.seasonData = response.data;
+      console.log(self.seasonData);
+    });
+  }
   self.getTvData = function(){
     self.loading = true;
     tmdb.tvSerie().then(function(response){
       console.log(response.data);
       self.info = response.data;
-      kat.query(self.info.name).then(function(response){
-        console.log(response);
-        self.torrents = response;
-        self.loading = false;
-      });
+      self.season = 1;
+      self.getSeasonsNumber = function(num) {
+        return new Array(num);
+      }
     });
+    tmdb.tvSeason().then(function(response){
+      self.seasonData = response.data;
+      console.log(self.seasonData);
+    });
+
   }
 
   self.playTorrent = function(magnet){

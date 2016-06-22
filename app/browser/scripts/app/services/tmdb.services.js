@@ -23,9 +23,9 @@ myApp.service('tmdb', function($http ,  $routeParams){
     return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}`);
   }
 
-  this.tvSeason = function(){
+  this.tvSeason = function(season = $routeParams.season){
     console.log(`${url}/tv/${$routeParams.tvId}/season/${$routeParams.season}?${apiKey}`);
-    return $http.get(`${url}/${$routeParams.tvId}/season/${$routeParams.season}?${apiKey}`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}/season/${season}?${apiKey}`);
   }
 
   this.tvEpisode = function(){
@@ -46,6 +46,5 @@ myApp.service('tmdb', function($http ,  $routeParams){
   this.tvSearch = function(query , page ){
     return $http.get(`${url}/search/tv?query=${query}&page=${page}&${apiKey}`);
   }
-
 
 });

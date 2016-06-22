@@ -1,0 +1,157 @@
+.gradient-top{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30%;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,1), transparent);
+  z-index:0;
+}
+
+.gradient-bottom{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 30%;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+  z-index:0;
+}
+
+.info-content{
+  width:100%;
+  height:100%;
+  position:relative;
+  top:0;
+  left:0;
+  z-index:90;
+  -webkit-app-region: drag;
+
+  .quality-btn{
+    position:absolute;
+    top:50px;
+    right:25px;
+    z-index:99;
+    -webkit-app-region: no-drag;
+    .icon-quality{
+      display:inline-block;
+    }
+    .quality-set{
+      display:inline-block;
+      fieldset{
+        display:block;
+      }
+    }
+  }
+
+
+  .info-data{
+    position:absolute;
+    top:50px;
+    left:25px;
+    width:40%;
+    height:400px;
+
+    .data-epi-season{
+      width:100%;
+
+    }
+    .under-layer{
+      width:100%;
+      height:100%;
+      background-color:rgba(0,0,0,0.5);
+
+      .data-poster{
+          width:49%;
+          height:100%;
+          display:inline-block;
+          position:relative;
+          overflow: hidden;
+      }
+      .episode-wrapper{
+          @extend .data-poster;
+
+          .season-holder{
+            width:25px;
+            display:inline-block;
+          }
+          .episode-holder{
+            display:inline-block;
+            vertical-align: top;
+            width:80%;
+            button{
+              width:100%;
+              text-align: left;
+              @include transition("background 0.3s ease-out");
+              @include transition("color 0.3s ease-out");
+              @include textOverflowEllipsis();
+
+              &.active{
+                background:white;
+                color:#333;
+              }
+
+              .epi-index-roman{
+                width:10px;
+              }
+
+            }
+            button.active{
+              background:white;
+              color:#333;
+            }
+
+          }
+
+      }
+
+    }
+  }
+
+  .info-data-bottom{
+      width:100%;
+      height:100%;
+
+      .data-details{
+        width:400px;
+        height:100%;
+        display:inline-block;
+
+        .data-title{
+          width:100%;
+        }
+
+        .data-rating{
+          width:100%;
+          img{
+            display:inline-block;
+          }
+          figcaption{
+            display:inline-block;
+          }
+        }
+
+        .data-overview{
+          width:100%;
+        }
+
+        .video-controlls{
+          display:inline-block;
+          img{
+            width:30px;
+          }
+        }
+        .auto-play{
+          width:100%;
+
+          input{
+            display:inline-block;
+          }
+        }
+
+      }
+  }
+
+
+
+}

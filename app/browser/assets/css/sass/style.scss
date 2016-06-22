@@ -8,14 +8,11 @@
  * Kroc Camen, and the H5BP dev community and team.
  */
 
-
-
 /*Global */
 @import "global/variables";
 
 @import "global/colors";
 @import "global/mixins";
-
 @import "vendor/normalizer";
 /* @import "global/animations"; */
 /* ==========================================================================
@@ -35,6 +32,8 @@
 /*Index page */
 @import "views/main";
 @import "views/feed";
+@import "views/_main-tv";
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

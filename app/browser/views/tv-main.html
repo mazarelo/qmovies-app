@@ -1,0 +1,118 @@
+<div class="window-controllers-wrapper transparent" ng-controller="MenuController as menu">
+  <window-controlles></window-controlles>
+  <back-btn></back-btn>
+  <forward-btn></forward-btn>
+</div>
+<section id="content-trigger" class="main-content contentFull forceFullHeight" ng-init="tv.getTvData()">
+  <div id="player" ng-controller="VideoController as video">
+    <div class="video-loader ng-hide-animate ng-hide">
+      <figure>
+          <img src="assets/img/global/loading.svg" width="50">
+      </figure>
+    </div>
+    <div class="torrent-info">
+      <p>
+        <span id="torrent-downloaded"></span> of <span id="">100%</span><br>
+        <span id="torrent-download-speed"></span>
+        <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
+      </p>
+    </div>
+    <div id="video-placeholder" ng-click="video.checkStatus"
+    style="background: url(http://image.tmdb.org/t/p/w1920{{tv.info.backdrop_path}}) no-repeat center center ;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+    </div>
+  </div>
+
+  <div class="info-content ng-hide-animate">
+    <!-- gradient top -->
+    <div class="gradient-top"></div>
+    <!-- quality button -->
+    <div class="quality-btn">
+      <figure class="icon-quality">
+        <img src="#">
+      </figure>
+      <div class="quality-set">
+        <fieldset ng-repeat="torrent in tv.torrents">
+          <input  ng-model="tv.download" type="radio" value="{{torrent.hash}}">
+          <label for="">{{torrent.quality}}({{torrent.size}})</label>
+        </fieldset>
+      </div>
+    </div>
+    <!-- top data -->
+    <div class="info-data">
+      <div class="data-epi-season">
+        <h1>
+          <button>SEASON 4</button>/
+          <button>EPISODE 1</button>
+          <button>
+            <img src="#">
+          </button>
+        </h1>
+      </div>
+      <div class="under-layer">
+        <figure class="data-poster">
+          <img src="http://image.tmdb.org/t/p/w300{{tv.info.poster_path}}" err-src="assets/img/no-image.jpg" class="image-cover-black">
+        </figure>
+        <div class="episode-wrapper">
+          <div class="season-holder">
+              <button
+                ng-repeat="i in tv.getSeasonsNumber(tv.info.number_of_seasons) track by $index"
+                ng-click="tv.getSeasonInfo($event , $index+1)" class="season-btn">
+                {{$index+1}}
+            </button>
+          </div>
+          <div class="episode-holder">
+            <button
+              ng-repeat="episode in tv.seasonData.episodes track by episode.episode_number"
+              ng-click="tv.playEpisode(episode.episode_number)">
+              <span class="epi-index-roman">{{episode.episode_number | romanize}}</span>
+              {{episode.name}}
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+  <!-- gradient bottom -->
+  <div class="gradient-bottom">
+    <!-- bottom data -->
+    <div class="info-data-bottom">
+      <div class="data-details">
+        <h1 class="data-title">
+          <button>
+            <img src="#">
+          </button>
+          {{tv.info.name}}
+        </h1>
+        <figure class="data-rating">
+          <img src="#">
+          <figcaption>
+            {{tv.info.vote_average}}/10
+          </figcaption>
+        </figure>
+        <p class="data-overview">
+          {{tv.info.overview}}
+        </p>
+        <div class="video-controlls">
+          <figure>
+            <img src="#">
+          </figure>
+          <figure ng-click="tv.playTorrent(tv.download)">
+            <img src="#">
+          </figure>
+          <figure>
+            <img src="#">
+          </figure>
+        </div>
+        <div class="auto-play">
+          <input type="checkbox">
+          <label for="">Keep playing</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>

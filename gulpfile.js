@@ -12,13 +12,14 @@ gulp.task('watch',function(){
     gulp.watch("./app/browser/scripts/app/controllers/*.js" , ['controllers']);
     gulp.watch("./app/browser/scripts/app/services/*.js" , ['services']);
     gulp.watch("./app/browser/scripts/app/directives/*.js" , ['directives']);
+
     gulp.watch("./app/browser/scripts/app/filters/*.js" , ['filters']);
     /* WATCH FOR CHANGES ON SASS */
-    gulp.watch("./app/browser/css/**/*.scss" , ['compile']);
+    gulp.watch("./app/browser/assets/css/sass/**/*.scss" , ['compile']);
 });
 
 gulp.task('compile', function() {
-    return gulp.src("app/browser/assets/css/sass/**/*.scss")
+    return gulp.src("./app/browser/assets/css/sass/**/*.scss")
         .pipe(sass({errLogToConsole: true}))
         .pipe(gulp.dest('./app/browser/assets/css'))
         /*.pipe(browserSync.stream())*/;
