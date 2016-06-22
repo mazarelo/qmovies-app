@@ -18,22 +18,6 @@ myApp.service('window', function() {
         popup.show();
       }, 40);
     })
-    var trayImage;
-    var imageFolder = __dirname + '/app/browser/assets/img/global/iMac-icon.png';
-
-    // Determine appropriate icon for platform
-    if (platform == 'darwin') {
-        trayImage = imageFolder ;
-    }
-    else if (platform == 'win32') {
-        trayImage = imageFolder;
-    }
-    appIcon = new Tray(trayImage);
-
-    if (platform == "darwin") {
-      appIcon.setPressedImage(imageFolder);
-    }
-
     //window.open(`#/${platform}/${url}`, `${platform}` ,"resizable,scrollbars,status,width=1280,height=720");
   }
 

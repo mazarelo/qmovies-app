@@ -3,11 +3,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
   self.page = 1;
   self.requestRunning = false;
   self.loading = true;
-  self.torrents;
-  self.download;
-  self.dataResults;
   window.tvSubMenu;
-  self.query;
   self.lists = {
       value: "on_the_air",
       options: [
@@ -93,6 +89,13 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     });
   }
 
+  
+  self.activateZoom = function(element){
+    let target = element;
+    console.log(target);
+    return target;
+  }
+
   self.discover = function(){
     self.loading = true;
     tmdb.tvDiscover(`first_air_date_year=${self.years.value}` ,  `sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
@@ -132,6 +135,4 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
       $scope.Title = response;
     });
   };
-
-
 });
