@@ -17,12 +17,12 @@ function createWindow() {
   var startTime = Date.now();
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1300,
-   height: 724,
+    width: 1280,
+   height: 800,
    frame:false,
    backgroundColor: '#222',
    show: false,
-   darkTheme:true,
+   darkTheme:true
    //titleBarStyle: "hidden-inset"
    //type: "textured"
  });
