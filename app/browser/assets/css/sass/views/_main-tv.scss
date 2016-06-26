@@ -12,6 +12,7 @@
   position: absolute;
   bottom: 0;
   left: 0;
+  padding:0 5%;
   height: 30%;
   width: 100%;
   background: linear-gradient(to top, rgba(0,0,0,1), transparent);
@@ -34,6 +35,8 @@
     z-index:99;
     -webkit-app-region: no-drag;
     .icon-quality{
+      width: 50px;
+      vertical-align: top;
       display:inline-block;
     }
     .quality-set{
@@ -47,10 +50,10 @@
 
   .info-data{
     position:absolute;
-    top:50px;
-    left:25px;
-    width:40%;
-    height:400px;
+    top:10%;
+    left:5%;
+    width: 40vw;
+    height: 30vw;
 
     .data-epi-season{
       width:100%;
@@ -70,15 +73,33 @@
       }
       .episode-wrapper{
           @extend .data-poster;
+          padding: 3% 0;
 
           .season-holder{
-            width:25px;
+            width:10%;
             display:inline-block;
+
+            .season-btn{
+              width:100%;
+              display:block;
+              &:hover{
+                background-color:rgba(255,255,255,0.5);
+                color:#333;
+              }
+
+              &.active{
+                background-color:white;
+                color:#333;
+              }
+            }
           }
           .episode-holder{
             display:inline-block;
             vertical-align: top;
-            width:80%;
+            width:88%;
+            overflow-Y: scroll;
+            height:100%;
+
             button{
               width:100%;
               text-align: left;
@@ -86,6 +107,10 @@
               @include transition("color 0.3s ease-out");
               @include textOverflowEllipsis();
 
+              &:hover{
+                background-color:rgba(255,255,255,0.5);
+                color:#333;
+              }
               &.active{
                 background:white;
                 color:#333;
@@ -93,12 +118,18 @@
 
               .epi-index-roman{
                 width:10px;
+                font-size:80%;
+                opacity:0.7;
               }
 
             }
             button.active{
               background:white;
               color:#333;
+            }
+
+            &.active{
+              border-bottom:1px solid white;
             }
 
           }
@@ -119,12 +150,19 @@
 
         .data-title{
           width:100%;
+          text-transform: uppercase;
+
+          img{
+            width:30px;
+          }
         }
 
         .data-rating{
           width:100%;
           img{
             display:inline-block;
+            width:10px;
+            min-width:0;
           }
           figcaption{
             display:inline-block;
@@ -136,10 +174,14 @@
         }
 
         .video-controlls{
-          display:inline-block;
-          img{
-            width:30px;
+          figure{
+            display:inline-block;
+
+            img{
+              height:30px;
+            }
           }
+
         }
         .auto-play{
           width:100%;

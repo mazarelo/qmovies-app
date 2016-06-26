@@ -11,10 +11,6 @@ myApp.filter('round', function() {
   }
 });
 
-myApp.filter('escape', function() {
-  return window.encodeURIComponent;
-});
-
 myApp.filter('romanize', function(){
   return function(num) {
     if (!+num)
@@ -29,4 +25,8 @@ myApp.filter('romanize', function(){
         roman = (key[+digits.pop() + (i * 10)] || "") + roman;
     return Array(+digits.join("") + 1).join("M") + roman;
 }
+});
+
+myApp.filter('escape', function() {
+  return window.encodeURIComponent;
 });

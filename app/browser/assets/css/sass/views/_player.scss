@@ -18,19 +18,21 @@
   position:absolute;
   width:100%;
   height:100%;
+
   .torrent-info{
     position:absolute;
-    top:40%;
-    left:40%;
+    bottom:0;
+    left:0;
     z-index:99999;
-    width:20%;
+    width:100%;
     text-align:center;
+    -webkit-app-region: drag;
 
     #torrent-progress{
-      background-color: white;
        border: 0;
-       height: 18px;
-       border-radius: 9px;
+       width:100%;
+       height: 5px;
+       opacity:0.5;
     }
   }
   .video-loader{

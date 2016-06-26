@@ -1,3 +1,21 @@
+myApp.service('dates', function(){
+    this.compareDates = function(d){
+      let currentDate = new Date();
+      let targetDate = new Date(d);
+      return currentDate.getTime() >= targetDate.getTime();
+    }
+});
+
+myApp.service('eztv', function( $q , $routeParams ){
+
+  this.query = function(title , season=1 , episode=1){
+    var deferred = $q.defer();
+    // search for game of thrones season 1 episode 2 with all scrapers
+  //deferred.resolve(results);
+      return deferred.promise;
+    };
+});
+
 myApp.service('folder', function(){
     const fs = require('fs');
 
@@ -64,13 +82,26 @@ myApp.service('kat', function( $q,$routeParams ){
   const kickass = require('kickass-torrent');
 
   function formatBytes(bytes,decimals) {
-   if(bytes == 0) return '0 Byte';
-   var k = 1000;
-   var dm = decimals + 1 || 3;
-   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-   var i = Math.floor(Math.log(bytes) / Math.log(k));
-   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
+     if(bytes == 0) return '0 Byte';
+     var k = 1000;
+     var dm = decimals + 1 || 3;
+     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+     var i = Math.floor(Math.log(bytes) / Math.log(k));
+     return Math.round((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  function checkResolution(name , bytes){
+    if(name.includes("720")){
+      return "720p";
+    }else if(name.includes("1080")){
+      return "1080p";
+    }else if(name.includes("4k")){
+      return "4k";
+    }else{
+      return formatBytes(bytes)
+    }
+
+  }
 
   this.query = function(query , season , episode){
       var deferred = $q.defer();
@@ -79,7 +110,7 @@ myApp.service('kat', function( $q,$routeParams ){
 
       kickass({
           q: `${query} S${season}E${episode}`,//actual search term
-          field:'seeders',//seeders, leechers, time_add, files_count, empty for best match
+          field:'',//seeders, leechers, time_add, files_count, empty for best match
           order:'desc',//asc or desc
           page: 1,//page count, obviously
           url: 'https://kat.al',//changes site default url (https://kat.cr)
@@ -87,17 +118,18 @@ myApp.service('kat', function( $q,$routeParams ){
               //will get the contents from
               //http://kickass.to/json.php?q=test&field=seeders&order=desc&page=2
               if(e){
-                console.log(data)//actual json response
+                console.log(data);
               }
+
               var final = [];
               final.push(data.list[0]);
               final.push(data.list[1]);
               final.push(data.list[2]);
 
-              final[0].size = formatBytes(final[0].size);
-              final[1].size = formatBytes(final[1].size);
-              final[2].size = formatBytes(final[2].size);
-              console.log(final);
+              final[0].size = checkResolution(final[0].title , final[0].size);
+              final[1].size = checkResolution(final[1].title , final[1].size);
+              final[2].size = checkResolution(final[2].title , final[2].size);
+
               deferred.resolve(final);
           })
       return deferred.promise;
@@ -157,7 +189,49 @@ myApp.service('tmdb', function($http ,  $routeParams){
 
 });
 
-myApp.service('webTorrent', function(folder , $q) {
+myApp.service('torrentz', function(folder ,video , $q) {
+//http://www.torrentz.eu/verified?f=dead+pool
+
+});
+
+myApp.service('video', function() {
+
+  this.milisecondsToReadable = function(milliseconds){
+      // TIP: to find current time in milliseconds, use:
+      // var  current_time_milliseconds = new Date().getTime();
+
+      function numberEnding (number) {
+          return (number > 1) ? 's' : '';
+      }
+
+      var temp = Math.floor(milliseconds / 1000);
+      var years = Math.floor(temp / 31536000);
+      if (years) {
+          return years + ' year' + numberEnding(years);
+      }
+      //TODO: Months! Maybe weeks?
+      var days = Math.floor((temp %= 31536000) / 86400);
+      if (days) {
+          return days + ' day' + numberEnding(days);
+      }
+      var hours = Math.floor((temp %= 86400) / 3600);
+      if (hours) {
+          return hours + ' hour' + numberEnding(hours);
+      }
+      var minutes = Math.floor((temp %= 3600) / 60);
+      if (minutes) {
+          return minutes + ' minute' + numberEnding(minutes);
+      }
+      var seconds = temp % 60;
+      if (seconds) {
+          return seconds + ' second' + numberEnding(seconds);
+      }
+      return 'less than a second'; //'just now' //or other string you like;
+  }
+
+});
+
+myApp.service('webTorrent', function(folder ,video , $q) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
 
@@ -170,13 +244,15 @@ myApp.service('webTorrent', function(folder , $q) {
       const torrentDownloadSpeed = document.getElementById("torrent-download-speed");
       const torrentDownloadBites = document.getElementById("torrent-downloaded");
       const torrentProgress = document.getElementById("torrent-progress");
+      const timeRemaining = document.getElementById("torrent-time");
 
-
+      document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
       infoTarget.classList.toggle('ng-hide');
       loader.classList.toggle('ng-hide');
 
       var magnetURI = magnet;
       var deferred = $q.defer();
+
       client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
         videoPlayer.innerHTML = "";
         var final = [];
@@ -193,12 +269,19 @@ myApp.service('webTorrent', function(folder , $q) {
         torrent.on('download', function (bytes) {
           torrentDownloadBites.textContent =  Math.floor( torrent.progress*100);
           torrentProgress.value = Math.floor( torrent.progress*100);
+          timeRemaining.textContent = video.milisecondsToReadable(torrent.timeRemaining);
+
           if(Math.floor( torrent.progress*100) >=5){
             if(once){
               return
             }
             once = true;
-            final[0].appendTo(videoPlayer);
+
+            final[0].appendTo("#video-placeholder", function(err, elem) {
+              console.log(err);
+              document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
+            })
+
             videoPlayer.className = "";
             videoPlayer.removeAttribute("style");
             loader.classList.toggle('ng-hide');
@@ -207,8 +290,6 @@ myApp.service('webTorrent', function(folder , $q) {
             deferred.resolve(torrentName);
           }
         });
-
-
        });
       return deferred.promise;
    };

@@ -1,4 +1,4 @@
-myApp.service('webTorrent', function(folder , $q) {
+myApp.service('webTorrent', function(folder ,video , $q) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
 
@@ -11,13 +11,15 @@ myApp.service('webTorrent', function(folder , $q) {
       const torrentDownloadSpeed = document.getElementById("torrent-download-speed");
       const torrentDownloadBites = document.getElementById("torrent-downloaded");
       const torrentProgress = document.getElementById("torrent-progress");
+      const timeRemaining = document.getElementById("torrent-time");
 
-
+      document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
       infoTarget.classList.toggle('ng-hide');
       loader.classList.toggle('ng-hide');
 
       var magnetURI = magnet;
       var deferred = $q.defer();
+
       client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
         videoPlayer.innerHTML = "";
         var final = [];
@@ -34,12 +36,19 @@ myApp.service('webTorrent', function(folder , $q) {
         torrent.on('download', function (bytes) {
           torrentDownloadBites.textContent =  Math.floor( torrent.progress*100);
           torrentProgress.value = Math.floor( torrent.progress*100);
+          timeRemaining.textContent = video.milisecondsToReadable(torrent.timeRemaining);
+
           if(Math.floor( torrent.progress*100) >=5){
             if(once){
               return
             }
             once = true;
-            final[0].appendTo(videoPlayer);
+
+            final[0].appendTo("#video-placeholder", function(err, elem) {
+              console.log(err);
+              document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
+            })
+
             videoPlayer.className = "";
             videoPlayer.removeAttribute("style");
             loader.classList.toggle('ng-hide');
@@ -48,8 +57,6 @@ myApp.service('webTorrent', function(folder , $q) {
             deferred.resolve(torrentName);
           }
         });
-
-
        });
       return deferred.promise;
    };
