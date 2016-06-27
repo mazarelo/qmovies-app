@@ -1,0 +1,51 @@
+<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+  <window-controlles></window-controlles>
+</div>
+
+<section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed('popular')">
+  <div class="feed-search">
+    <!-- search bar -->
+    <fieldset class="query-search">
+      <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="movieFeed.query" ng-change="movieFeed.moviesData()">
+      <button><img src="#"></button>
+    </fieldset>
+    <!-- global search terms -->
+    <fieldset class="pre-set-btn">
+      <button class="active">Popular</button>
+      <button>Latest</button>
+      <button>On the Air</button>
+    </fieldset>
+    <!-- search genre -->
+    <ul ng-model="movieFeed.genre.value" ng-change="movieFeed.moviesData()" class="genre-buttons">
+      <li ng-repeat="genre in movieFeed.genre.options" value="{{genre.value}}">
+        <button ng-click="{{genre.value}}">{{genre.name}}</option>
+      </li>
+    </ul>
+  </div>
+  <!-- FEED -->
+  <div id="feed-ajax" class="feed-module" ng-class="tvFeed.loading ? 'spinner' : ''" scrolly>
+    <!-- feed template -->
+    <div class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
+    <a href="#/tv/{{serie.id}}/season/1">
+      <div class="ft-cover" 
+          style="background: url(http://image.tmdb.org/t/p/w500{{serie.backdrop_path}}) no-repeat center center; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;">
+           <!-- <img src="http://image.tmdb.org/t/p/w300{{serie.backdrop_path}}" err-src="assets/img/no-image.jpg" class="image-cover-black"> -->
+      </div>
+      <header class="ft-title">
+        <h4>{{serie.name}}</h4>
+        <figure class="ft-rating">
+          <img src="assets/img/dark-template/icons/svg/rating-star.svg">
+          <figcaption>{{serie.vote_average}}/10</figcaption>
+        </figure>
+        <date>{{serie.first_air_date}}</date>
+        <p>{{serie.overview}}</p>
+      </header>
+      </a>
+    </div>
+
+  </div>
+</section>

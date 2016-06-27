@@ -6,7 +6,7 @@ myApp.config(function($routeProvider, $locationProvider) {
     controller:'MainController as intro'
   })
   .when('/tv', {
-    templateUrl: 'views/tv.html',
+    templateUrl: 'views/tv-alternative.html',
     controller: 'TvController as tvFeed'
   })
   .when('/tv/:tvId/season/:season', {

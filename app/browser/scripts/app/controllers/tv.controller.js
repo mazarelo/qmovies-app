@@ -64,6 +64,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
   self.getFeed = function(type){
     tmdb.tvFeed(type , self.page).then(function(response){
       self.dataResults = response.data.results;
+      console.log(response.data.results);
       self.loading = false;
     });
   }
