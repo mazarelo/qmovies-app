@@ -2,43 +2,35 @@
   <window-controlles></window-controlles>
 </div>
 
-<section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed('popular')">
-<div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{tvFeed.dataResults[0].backdrop_path}}) no-repeat center center; 
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                background-size: cover; opacity:0.3;" ></div>
+<section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed()">
+  <div ng-class="tvFeed.loading ? 'loading-spinner' : ''" class="spinner"></div>
+  <div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{tvFeed.dataResults[0].backdrop_path}}) no-repeat center center;background-size: cover; opacity:0.3;">
+  </div>
   <div class="feed-search">
     <!-- search bar -->
     <fieldset class="query-search">
-      <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="tvFeed.query" ng-change="tvFeed.search()">
+      <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="tvFeed.query" ng-change="tvFeed.currentSearch = 'search';tvFeed.search()">
       <button><img src="#"></button>
     </fieldset>
     <!-- global search terms -->
-    <fieldset class="pre-set-btn">
-      <button class="active">Popular</button>
-      <button>Latest</button>
-      <button>On the Air</button>
+    <fieldset class="pre-set-btn" ng-model="tvFeed.list.value">
+      <button  ng-repeat="list in tvFeed.list.options" ng-click="tvFeed.currentSearch = 'getFeed';tvFeed.list.value = list.value; tvFeed.getFeed()">{{list.name}}</button>
     </fieldset>
     <!-- search genre -->
-    <ul ng-model="tvFeed.genre.value" ng-change="tvFeed.moviesData()" class="genre-buttons">
-      <li ng-repeat="genre in tvFeed.genre.options" value="{{genre.value}}">
-        <button ng-click="{{genre.value}}">{{genre.name}}</option>
+    <ul ng-model="tvFeed.genre.value" ng-change="tvFeed.tvData()" class="genre-buttons">
+      <li ng-repeat="genre in tvFeed.genre.options">
+        <button ng-click="tvFeed.currentSearch = 'discover';tvFeed.genre.value = genre.value; tvFeed.discover()">{{genre.name}}</option>
       </li>
     </ul>
   </div>
   <!-- FEED -->
-  <div id="feed-ajax" class="feed-module" ng-class="tvFeed.loading ? 'spinner' : ''" scrolly>
+  <div id="feed-ajax" class="feed-module"  scrolly>
     <!-- feed template -->
     <div class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
     <a href="#/tv/{{serie.id}}/season/1">
     <div class="backdrop"></div>
-      <div class="ft-cover" 
-          style="background: url(http://image.tmdb.org/t/p/w1000{{serie.backdrop_path}}) no-repeat center center; 
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                background-size: cover;"></div>
+      <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
+      </div>
       <h4 class="name">{{serie.name}}</h4>
       <header class="ft-title">
         <figure class="ft-rating">

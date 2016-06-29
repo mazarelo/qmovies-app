@@ -318,24 +318,39 @@ myApp.service('window', function() {
     //window.open(`#/${platform}/${url}`, `${platform}` ,"resizable,scrollbars,status,width=1280,height=720");
   }
 
-   this.minimize = function() {
-     const window = remote.getCurrentWindow();
-     window.minimize();
-   }
+  this.scrollToTop = function(scrollDuration) {
+    let feedEl = document.getElementById("feed-ajax");
+    currentScrollTop = feedEl.scrollTop;
+    let scrollStep = feedEl.scrollTop / (scrollDuration / 15);
+      
+    let scrollInterval = setInterval(function(){
+        if (feedEl.scrollTop != 0 ) {
+          console.log(feedEl.scrollTop);
+            feedEl.scrollTop = feedEl.scrollTop - scrollStep;
+        }
+        else clearInterval(scrollInterval); 
+    },15);
+  }
 
-   this.maximize = function() {
-     const window = remote.getCurrentWindow();
-     if (!window.isMaximized()) {
-        window.maximize();
-      } else {
-        window.unmaximize();
-      }
-   }
+  this.minimize = function() {
+    const window = remote.getCurrentWindow();
+    window.minimize();
+  }
 
-   this.close = function() {
-     const window = remote.getCurrentWindow();
-     window.close();
-   };
+  this.maximize = function() {
+    const window = remote.getCurrentWindow();
+    if (!window.isMaximized()) {
+      window.maximize();
+    } else {
+      window.unmaximize();
+    }
+  }
+
+  this.close = function() {
+    const window = remote.getCurrentWindow();
+    window.close();
+  };
+
 });
 
 myApp.service('yify', function($http){

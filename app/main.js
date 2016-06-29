@@ -22,6 +22,7 @@ function createWindow(url) {
    frame:false,
    backgroundColor: '#222',
    show: false,
+   resizable: true,
    darkTheme:true
    //titleBarStyle: "hidden-inset"
    //type: "textured"

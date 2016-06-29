@@ -42,6 +42,7 @@
     width:100%;
     display:table;
     margin-top:5%;
+
     button{
       margin-right:1%;
       display:inline-block;
@@ -79,9 +80,9 @@
         padding:4px 10px;
         background-color:transparent;
         color:rgba(255,255,255,0.5);
-         border:1px solid rgba(255,255,255,0);
+        border:1px solid rgba(255,255,255,0);
         @include transition("border 0.3s ease-out");
-      @include transition("color 0.3s ease-out");
+        @include transition("color 0.3s ease-out");
 
       &:hover{
         border:1px solid white;
@@ -104,7 +105,6 @@
   color: lighten($templateBackgroundColor, 50%);
   -webkit-app-region: no-drag;
   margin-top: 2%;
-
   .feed-template{
     float:left;
     margin:0;
@@ -114,10 +114,12 @@
     height: 25vh;
     width: 19.3vw;
     overflow: hidden;
+    /*background: url(../img/no-image.jpg) no-repeat center center;
+    background-size: cover; */
 
     &:nth-child(1){
       width: 20vw;
-      height: 44vh;
+      height: 39.9vh;
     }
 
     &:nth-child(2){
@@ -131,8 +133,8 @@
     }
 
     &:nth-child(4){
-      height: 24vh;
       width: 38vw;
+      height: 20vh;
     }
 
     &:nth-child(5){
@@ -152,16 +154,25 @@
 
     &:nth-child(8){
       width: 20vw;
-      height: 34vh;
+      height: 30vh;
     }
     &:nth-child(9){
       width: 38vw;
-      height: 34vh;
+      height: 30vh;
+    }
+
+    a{
+      float: left;
+      height: 100%;
+      width: 100%;
+      background-color:rgba(0,0,0,1);
     }
 
     .ft-cover{
       width:100%;
       height:100%;
+      opacity:1;
+      @include transition("opacity .3s ease");
     }
 
     .backdrop{
@@ -170,15 +181,21 @@
       left: 5px;
       width: calc(100% - 10px);
       height: calc(100% - 10px);
-      background: linear-gradient(to top, #000,transparent); 
+      background:linear-gradient(to top, #000 0%, rgba(0,0,0,0.5) 20% , transparent 40%);
       z-index:9;
     }
 
     &:hover{
+      
+      .ft-cover{
+        opacity:0.5;
+      }
+
       .ft-title{
         transform: translateY(-100%);
         opacity:1;
       }
+      
       .name{
         transform: translateY(-100%);
         opacity:0;
@@ -191,7 +208,7 @@
       left: 10px;
       z-index: 99;
       opacity:0.5;
-      @include transition("all  .2s ease-out");
+      @include transition("all  .2s ease");
     }
 
     .ft-title{
@@ -203,7 +220,7 @@
       height:auto;
       z-index:99;
       opacity:0;
-      @include transition("all  .3s cubic-bezier(0.0, 0.0, 0.58, 1.0)");
+      @include transition("all  .3s ease");
     }
   }
 

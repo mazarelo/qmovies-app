@@ -239,7 +239,6 @@ myApp.directive('scrolly', function () {
                     scope.tvFeed.requestRunning = true;
                     scope.tvFeed.page = scope.tvFeed.page +1;
                     scope.tvFeed.loadMore();
-                    console.log(scope.tvFeed.page);
                 }
             })
         }

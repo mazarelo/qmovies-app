@@ -24,7 +24,8 @@
   background: rgba(0, 0, 0, 0.30);
   display: table;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
+  z-index:9999;
+  position:relative;
   .window-cmd-icons{
     margin: 5px 5px 0 5px;
     padding:0;

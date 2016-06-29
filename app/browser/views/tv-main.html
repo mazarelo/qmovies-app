@@ -28,18 +28,7 @@
   <div class="info-content ng-hide-animate">
     <!-- gradient top -->
     <div class="gradient-top"></div>
-    <!-- quality button -->
-    <div class="quality-btn">
-      <figure class="icon-quality">
-        <img src="assets/img/global/hd.svg">
-      </figure>
-      <div class="quality-set">
-        <fieldset ng-repeat="torrent in tv.torrents">
-          <input  ng-model="tv.download" type="radio" ng-value="torrent.hash">
-          <label for="">{{torrent.size}}</label>
-        </fieldset>
-      </div>
-    </div>
+    
     <!-- top data -->
     <div class="info-data">
       <div class="data-epi-season">
@@ -53,6 +42,18 @@
       </div>
       <div class="under-layer">
         <figure class="data-poster">
+          <!-- quality button -->
+          <div class="quality-btn">
+            <figure class="icon-quality">
+              <img src="assets/img/global/hd.svg">
+            </figure>
+            <div class="quality-set">
+              <fieldset ng-repeat="torrent in tv.torrents">
+                <input  ng-model="tv.download" type="radio" ng-value="torrent.hash">
+                <label for="">{{torrent.size}}</label>
+              </fieldset>
+            </div>
+          </div>
           <img src="http://image.tmdb.org/t/p/w300{{tv.info.poster_path}}" err-src="assets/img/no-image.jpg" class="image-cover-black">
         </figure>
         <div class="episode-wrapper">

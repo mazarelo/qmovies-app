@@ -4,6 +4,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
   self.requestRunning = false;
   self.loading = true;
   window.tvSubMenu;
+  /* get current search */
+  self.currentSearch = "getFeed";
+
   self.lists = {
       value: "on_the_air",
       options: [
@@ -51,42 +54,80 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     self.sortBy = {
         value: "popularity.desc",
         options: [
-          { value: "popularity.desc", name: "Popularity" },
-          { value: "release_date.desc", name: "Release Date" },
-          { value: "revenue.desc", name: "Revenue" },
+          { value: "popularity.desc", name: "Popular" },
           { value: "primary_release_date.desc", name: "Year" },
           { value: "original_title.asc", name: "Title" },
-          { value: "vote_average.desc", name: "Rate" },
-          { value: "vote_count.desc", name: "Most Voted" }
+          { value: "vote_average.desc", name: "Rate" }
         ]
       }
 
-  self.getFeed = function(type){
-    tmdb.tvFeed(type , self.page).then(function(response){
-      self.dataResults = response.data.results;
-      console.log(response.data.results);
-      self.loading = false;
-    });
-  }
+    self.list = {
+        value: "popular",
+        options: [
+          { value: "popular", name: "Popular" },
+          { value: "on_the_air", name: "On the Air" },
+          { value: "airing_today", name: "Airing Today" },
+          { value: "top_rated", name: "Top Rated" }
+        ]
+      }
+
+    self.getFeed = function(){
+      self.page = 1;
+      self.requestRunning = false;
+      self.loading = true;
+      /* scroll feed-ajax to top */
+      window.scrollToTop(1000);
+
+      tmdb.tvFeed(self.list.value , self.page).then(function(response){
+        self.dataResults = response.data.results;
+        self.loading = false;
+        self.requestRunning = false;
+      });
+    }
 
   self.newWindow = function(url){
     window.open("tv",url);
   }
 
-
   self.loadMore = function(){
+    /* activate loaders */
     self.loading = true;
-    tmdb.tvDiscover(`first_air_date_year=${self.years.value}` , `sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
-      if(response.data.results.length === 0){
-        return self.requestRunning = true;
-      }else{
-        response.data.results.forEach( function (arrayItem){
-          self.dataResults.push(arrayItem);
-        });
-        self.requestRunning = false;
-        self.loading = false;
-      }
-    });
+    /* check what function to call */
+    if(self.currentSearch == "getFeed"){
+      tmdb.tvFeed(self.list.value , self.page).then(function(response){
+        if(response.data.results.length === 0){
+          return self.requestRunning = true;
+        }else{
+          response.data.results.forEach( function (arrayItem){
+            self.dataResults.push(arrayItem);
+          });
+          self.requestRunning = false;
+          self.loading = false;
+        };
+      });
+    }else if(self.currentSearch = "discover"){
+      tmdb.tvDiscover(`sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
+        if(response.data.results.length === 0){
+          return self.requestRunning = true;
+        }else{
+          response.data.results.forEach( function (arrayItem){
+            self.dataResults.push(arrayItem);
+          });
+          self.requestRunning = false;
+          self.loading = false;
+        }
+      });
+    }else if(self.currentSearch == "search"){
+      tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
+        if(response.data.results.length === 0){
+          return self.requestRunning = true;
+        }else{
+         self.dataResults = response.data.results;
+         self.loading = false;
+        }
+      });
+    }
+    self.loading = false;
   }
 
 
@@ -97,20 +138,29 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
 
   self.discover = function(){
     self.loading = true;
-    tmdb.tvDiscover(`first_air_date_year=${self.years.value}` ,  `sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
+    self.page = 1;
+    /* scroll feed-ajax to top */
+    window.scrollToTop(1000);
+    tmdb.tvDiscover(`sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
       self.dataResults = response.data.results;
       self.requestRunning = false;
-      self.page = 1;
       self.loading = false;
     });
   }
 
   self.search = function(){
     self.loading = true;
-    tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
-      self.dataResults = response.data.results;
+    self.page = 1;
+    /* scroll feed-ajax to top */
+    if(self.query.length >3){
+      window.scrollToTop(1000);
+      tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
+        self.dataResults = response.data.results;
+        self.loading = false;
+      });
+    }else if(self.query.length <=3){
       self.loading = false;
-    });
+    }
   }
 
   self.dateCheck = function(d){
@@ -141,6 +191,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
 
   self.getSeasonInfo = function($event ,season){
     self.season = season;
+    self.loading = true;
     let seasons = document.getElementsByClassName("season-btn");
     for(let i=0;i<seasons.length;i++){
       let classes = seasons[i].className.replace('active','');
@@ -149,6 +200,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     $event.target.classList.toggle("active");
     tmdb.tvSeason(season).then(function(response){
       self.seasonData = response.data;
+      self.loading = false;
     });
   }
   self.getTvData = function(){
@@ -164,6 +216,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     tmdb.tvSeason().then(function(response){
       self.seasonData = response.data;
       console.log(self.seasonData);
+      self.loading = false;
     });
 
   }
@@ -173,7 +226,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
     webTorrent.play(hash).then(function(response){
       $scope.Title = response;
-
+      self.loading = false;
     });
   };
 });
