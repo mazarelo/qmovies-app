@@ -1,4 +1,4 @@
-myApp.controller("MainController" , function( $scope, folder, webTorrent ) {
+myApp.controller("MainController" , function( $scope, folder, webTorrent, database ) {
   const self = this;
   self.pageName = "Dope";
   self.MovieTitle = "Loading Title";
@@ -245,7 +245,6 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     self.loading = false;
   }
 
-
   self.activateZoom = function(element){
     let target = element;
     return target;
@@ -285,12 +284,16 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
   self.playEpisode = function($event , episode){
     self.episode = episode;
     let episodes = document.getElementsByClassName("episode-btn");
+
     for(let i = 0 ; i < episodes.length ; i++){
       let classes = episodes[i].className.replace('active','');
       episodes[i].className = classes;
     }
+    
     $event.target.classList.toggle("active");
-    /*kat.query(self.info.name , self.season ,episode ).then(function(response){
+
+    /*
+    kat.query(self.info.name , self.season ,episode ).then(function(response){
       self.torrents = response;
       self.loading = false;
       try{
@@ -298,10 +301,13 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
       }catch(err){
         console.log(err);
       }
-    }); */
+    });
+    */
+
     eztv.query(self.info.name).then(function(data){
       console.log(data);
     })
+
   }
 
   self.getSeasonInfo = function($event ,season){
