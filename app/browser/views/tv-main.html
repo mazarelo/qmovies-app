@@ -17,11 +17,7 @@
         <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
     </div>
     <div id="video-placeholder" ng-click="video.checkStatus"
-    style="background: url(http://image.tmdb.org/t/p/w1920{{tv.info.backdrop_path}}) no-repeat center center ;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;">
+      style="background: url(http://image.tmdb.org/t/p/w1920{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;">
     </div>
   </div>
 
@@ -52,6 +48,13 @@
                 <input  ng-model="tv.download" type="radio" ng-value="torrent.hash">
                 <label for="">{{torrent.size}}</label>
               </fieldset>
+            </div>
+          </div>
+          <div class="days-left">
+            <div class="dl-wrapper">
+              <!-- Days left for the next air date -->
+              <span class="days-title">comming in</span>
+              <date>{{tv.daysLeft(tv.info.last_air_date)}}</date>
             </div>
           </div>
           <img src="http://image.tmdb.org/t/p/w300{{tv.info.poster_path}}" err-src="assets/img/no-image.jpg" class="image-cover-black">
@@ -94,6 +97,8 @@
             {{tv.info.vote_average}}/10
           </figcaption>
         </figure>
+        
+        <!-- end -->
         <p class="data-overview">
           {{tv.info.overview}}
         </p>

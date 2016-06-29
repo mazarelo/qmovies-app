@@ -3,6 +3,7 @@
 <head>
     <title>QMOVIES</title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
 </head>
     <body>
       <div class="fullHeight"  ng-if='!isRouteLoading' ng-view></div>
@@ -48,7 +49,7 @@
         window.addEventListener('contextmenu', (e) => {
           console.log(e);
           e.preventDefault();
-          if(e.target.className !== "image-cover-black") return;
+          if(e.target.className !== "ft-cover") return;
           menu.popup(remote.getCurrentWindow());
         }, false);
       </script>

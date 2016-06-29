@@ -89,6 +89,10 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     window.open("tv",url);
   }
 
+  self.daysLeft = function(future){
+    return dates.daysLeft(future);
+  }
+
   self.loadMore = function(){
     /* activate loaders */
     self.loading = true;
@@ -207,6 +211,8 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     self.loading = true;
     tmdb.tvSerie().then(function(response){
       self.info = response.data;
+      console.log("tv data ");
+      console.log(self.info);
       self.season = 1;
       self.episode = 1;
       self.getSeasonsNumber = function(num) {

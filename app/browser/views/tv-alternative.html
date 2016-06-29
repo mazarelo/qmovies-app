@@ -10,7 +10,7 @@
     <!-- search bar -->
     <fieldset class="query-search">
       <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="tvFeed.query" ng-change="tvFeed.currentSearch = 'search';tvFeed.search()">
-      <button><img src="#"></button>
+      <button><img src="assets/img/global/loupe.svg"></button>
     </fieldset>
     <!-- global search terms -->
     <fieldset class="pre-set-btn" ng-model="tvFeed.list.value">
@@ -37,6 +37,7 @@
           <h4 >{{serie.name}}</h4>
           <figcaption>{{serie.vote_average | number:1 }}/10</figcaption>
         </figure>
+       
         <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->
         <p>{{serie.overview | limitTo : 150 }}...</p>
       </header>
