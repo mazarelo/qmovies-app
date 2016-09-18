@@ -289,24 +289,27 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
       let classes = episodes[i].className.replace('active','');
       episodes[i].className = classes;
     }
-    
+
     $event.target.classList.toggle("active");
 
-    /*
     kat.query(self.info.name , self.season ,episode ).then(function(response){
       self.torrents = response;
       self.loading = false;
+
       try{
         self.info.backdrop_path = self.seasonData.episodes[self.episode].still_path;
       }catch(err){
         console.log(err);
       }
-    });
-    */
 
+    });
+
+    /*
     eztv.query(self.info.name).then(function(data){
+      console.log("data from EZTV");
       console.log(data);
     })
+    */
 
   }
 

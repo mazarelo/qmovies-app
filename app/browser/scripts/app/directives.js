@@ -110,7 +110,11 @@ myApp.directive("maximizeWindow", function() {
     </button>`,
     link: function(scope, element, attrs) {
        element.on('click', function() {
-           window.maximize();
+         if(remote.getCurrentWindow().isFullScreen()){
+           remote.getCurrentWindow().setFullScreen(false);
+         }else{
+           remote.getCurrentWindow().setFullScreen(true);
+         }
        });
      }
   }

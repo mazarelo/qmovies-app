@@ -14,14 +14,13 @@ myApp.service('dates', function(){
       // Convert both dates to milliseconds
       let date1_ms = today.getTime();
       let date2_ms = releaseData.getTime();
-      console.log(date1_ms);
-      console.log(date2_ms);
       // Calculate the difference in milliseconds
       let difference_ms = date2_ms - date1_ms;
       let daysLeft = Math.round(difference_ms/one_day);
-      if(daysLeft <0){
+      if(daysLeft<0){
         daysLeft = "Br";
       }
-      return daysLeft; 
+      return daysLeft;
     }
+
 });

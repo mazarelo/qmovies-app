@@ -27,6 +27,31 @@ myApp.filter('romanize', function(){
 }
 });
 
+myApp.filter('formatBytes', function(){
+  return function( bytes , decimals ){
+    if(bytes == 0) return '0 Byte';
+    var k = 1000;
+    var dm = decimals + 1 || 3;
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+});
+
+myApp.filter('checkResolution', function(){
+  return function( name , bytes ){
+    if(name.includes("720")){
+      return "720p";
+    }else if(name.includes("1080")){
+      return "1080p";
+    }else if(name.includes("4k")){
+      return "4k";
+    }else{
+      return $filter('formatBytes')(bytes);
+    }
+  }
+});
+
 myApp.filter('escape', function() {
   return window.encodeURIComponent;
 });

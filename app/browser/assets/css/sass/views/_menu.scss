@@ -26,12 +26,18 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index:9999;
   position:relative;
+  /* ----------- */
+  //display:none;
+  /* ------------ */
+
   .window-cmd-icons{
     margin: 5px 5px 0 5px;
     padding:0;
     opacity:1;
     float:left;
-
+    /* ---------- */
+    display:none;
+    /* ---------- */
     &:hover{
       .hover{
         opacity:1;

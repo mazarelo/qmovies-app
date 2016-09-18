@@ -114,24 +114,28 @@ myApp.service('dates', function(){
       // Convert both dates to milliseconds
       let date1_ms = today.getTime();
       let date2_ms = releaseData.getTime();
-      console.log(date1_ms);
-      console.log(date2_ms);
       // Calculate the difference in milliseconds
       let difference_ms = date2_ms - date1_ms;
       let daysLeft = Math.round(difference_ms/one_day);
       if(daysLeft <0){
         daysLeft = "Br";
       }
-      return daysLeft; 
+      return daysLeft;
     }
 });
 
 myApp.service('eztv', function( $q , $routeParams ){
+  const eztv = require('eztv');
 
   this.query = function(title , season=1 , episode=1){
     var deferred = $q.defer();
     // search for game of thrones season 1 episode 2 with all scrapers
   //deferred.resolve(results);
+    eztv.getShows({query: title}, function(error, results) {
+        // Do stuff...
+        console.log(results);
+        console.log(error);
+    });
       return deferred.promise;
     };
 });
@@ -156,8 +160,8 @@ myApp.service('folder', function(){
      };
 });
 
-myApp.service('kat', function( $q,$routeParams ){
-  
+myApp.service('imageChecker', function( $q,$routeParams ){
+
   this.brightnessCheck = function(imageSrc,callback) {
       var img = document.createElement("img");
       img.src = imageSrc;
@@ -196,11 +200,12 @@ myApp.service('kat', function( $q,$routeParams ){
   var img = document.body.getElementsByTagName('img');
   getImageBrightness(this.src,function(brightness) {
     document.getElementsByTagName('pre')[0].innerHTML = "Brightness: "+brightness;
-  });            
+  });
 });
-myApp.service('kat', function( $q,$routeParams ){
-  const kickass = require('kickass-torrent');
 
+myApp.service('kat', function( $q , $routeParams , $filter ){
+  const kickass = require('kickass-torrent');
+/*
   function formatBytes(bytes,decimals) {
      if(bytes == 0) return '0 Byte';
      var k = 1000;
@@ -218,38 +223,46 @@ myApp.service('kat', function( $q,$routeParams ){
     }else if(name.includes("4k")){
       return "4k";
     }else{
-      return formatBytes(bytes)
+      return $filter('formatBytes')(bytes);
     }
-
   }
+*/
 
   this.query = function(query , season , episode){
       var deferred = $q.defer();
       season = (season < 10 ? '0'+season : season);
       episode = (episode< 10? '0'+episode : season);
+      console.log(`Torrent Query Started : ${query} S${season}E${episode}`);
 
       kickass({
           q: `${query} S${season}E${episode}`,//actual search term
           field:'',//seeders, leechers, time_add, files_count, empty for best match
           order:'desc',//asc or desc
           page: 1,//page count, obviously
-          url: 'https://kat.al',//changes site default url (https://kat.cr)
+          url: 'https://kat.am',//changes site default url (https://kat.cr)
           },function(e, data){
               //will get the contents from
               //http://kickass.to/json.php?q=test&field=seeders&order=desc&page=2
               if(e){
-                console.log(data);
+                console.log("Error:");
+                return console.log(data);
               }
+
+              console.log("data from Kickass:");
+              console.log(data);
 
               var final = [];
               final.push(data.list[0]);
               final.push(data.list[1]);
               final.push(data.list[2]);
-
+              /*
               final[0].size = checkResolution(final[0].title , final[0].size);
               final[1].size = checkResolution(final[1].title , final[1].size);
               final[2].size = checkResolution(final[2].title , final[2].size);
-
+              */
+              final[0].size = $filter('checkResolution')(final[0].title , final[0].size);
+              final[1].size = $filter('checkResolution')(final[1].title , final[1].size);
+              final[2].size = $filter('checkResolution')(final[2].title , final[2].size);
               deferred.resolve(final);
           })
       return deferred.promise;
@@ -258,15 +271,23 @@ myApp.service('kat', function( $q,$routeParams ){
 });
 
 
-myApp.service('tmdb', function($http ,  $routeParams){
+myApp.service('tmdb', function( $http ,  $routeParams ){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
+  /* -------- todo list (nodeJs---------- */
+  /* -----------OFFLINE MODE------------- */
 
+  /* Check if Json exists on temp files
+    update Json file if user has internet and file has been stored for more than 1 day
+    store Images on tempFiles or Browser cache
+    while there is no connection read Info from Json instead */
 
+  /* ---------------END------------------ */
+  /* ------------------------------------ */
 
   this.fetchTmdb = function(platform = "tv", type , query , page){
     console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
@@ -299,8 +320,9 @@ myApp.service('tmdb', function($http ,  $routeParams){
         terms.forEach(function (item) {
           termArray.push(item);
         });
+
         console.log(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
-    return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+        return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
   }
 
   this.tvSearch = function(query , page ){
@@ -417,15 +439,17 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
 myApp.service('window', function() {
   const remote = require('electron').remote;
-  const {BrowserWindow} = require('electron').remote
+  const {BrowserWindow} = require('electron').remote;
+
   this.open = function( platform , url ){
     var popup = new BrowserWindow({
-                  width: 1280,
-                 height: 724,
-                 frame:false,
-                  show: false
-                 //type: "textured"
-               });
+      width: 1280,
+      height: 724,
+      frame:false,
+      show: false
+      //type: "textured"
+    });
+
     // and load the index.html of the app.
     popup.loadURL(`file://${__dirname}/index.html#/${platform}/${url}`);
     // Open the DevTools.
@@ -442,13 +466,13 @@ myApp.service('window', function() {
     let feedEl = document.getElementById("feed-ajax");
     currentScrollTop = feedEl.scrollTop;
     let scrollStep = feedEl.scrollTop / (scrollDuration / 15);
-      
+
     let scrollInterval = setInterval(function(){
-        if (feedEl.scrollTop != 0 ) {
-          console.log(feedEl.scrollTop);
-            feedEl.scrollTop = feedEl.scrollTop - scrollStep;
-        }
-        else clearInterval(scrollInterval); 
+      if (feedEl.scrollTop != 0 ) {
+        console.log(feedEl.scrollTop);
+        feedEl.scrollTop = feedEl.scrollTop - scrollStep;
+      }
+      else clearInterval(scrollInterval);
     },15);
   }
 
@@ -459,11 +483,19 @@ myApp.service('window', function() {
 
   this.maximize = function() {
     const window = remote.getCurrentWindow();
-    if (!window.isMaximized()) {
+
+    if(window.isFullScreen()){
+      window.setFullScreen(false);
+    }else{
+      window.setFullScreen(true);
+    }
+
+    /*if (!window.isMaximized()) {
       window.maximize();
     } else {
       window.unmaximize();
-    }
+    }*/
+
   }
 
   this.close = function() {

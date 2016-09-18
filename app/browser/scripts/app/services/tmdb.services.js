@@ -1,15 +1,30 @@
-myApp.service('tmdb', function($http ,  $routeParams){
+myApp.service('tmdb', function( $http ,  $routeParams ){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
+  /* -------- todo list (nodeJs---------- */
+  /* -----------OFFLINE MODE------------- */
 
-
+  /* Check if Json exists on temp files
+    update Json file if user has internet and file has been stored for more than 1 day
+    store Images on tempFiles or Browser cache
+    while there is no connection read Info from Json instead */
+    function getApiFeed(query){
+      if(false){
+        return $http.get(/* localfile */);
+      }else{
+        return $http.get(query);
+      }
+    }
+  /* ---------------END------------------ */
+  /* ------------------------------------ */
 
   this.fetchTmdb = function(platform = "tv", type , query , page){
-    console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
+    console.log(getApiFeed(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`));
+    getApiFeed(query)
     return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
   }
 
@@ -39,8 +54,9 @@ myApp.service('tmdb', function($http ,  $routeParams){
         terms.forEach(function (item) {
           termArray.push(item);
         });
+
         console.log(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
-    return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+        return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
   }
 
   this.tvSearch = function(query , page ){

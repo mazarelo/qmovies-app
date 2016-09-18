@@ -1,14 +1,16 @@
 myApp.service('window', function() {
   const remote = require('electron').remote;
-  const {BrowserWindow} = require('electron').remote
+  const {BrowserWindow} = require('electron').remote;
+
   this.open = function( platform , url ){
     var popup = new BrowserWindow({
-                  width: 1280,
-                 height: 724,
-                 frame:false,
-                  show: false
-                 //type: "textured"
-               });
+      width: 1280,
+      height: 724,
+      frame:false,
+      show: false
+      //type: "textured"
+    });
+
     // and load the index.html of the app.
     popup.loadURL(`file://${__dirname}/index.html#/${platform}/${url}`);
     // Open the DevTools.
@@ -25,13 +27,13 @@ myApp.service('window', function() {
     let feedEl = document.getElementById("feed-ajax");
     currentScrollTop = feedEl.scrollTop;
     let scrollStep = feedEl.scrollTop / (scrollDuration / 15);
-      
+
     let scrollInterval = setInterval(function(){
-        if (feedEl.scrollTop != 0 ) {
-          console.log(feedEl.scrollTop);
-            feedEl.scrollTop = feedEl.scrollTop - scrollStep;
-        }
-        else clearInterval(scrollInterval); 
+      if (feedEl.scrollTop != 0 ) {
+        console.log(feedEl.scrollTop);
+        feedEl.scrollTop = feedEl.scrollTop - scrollStep;
+      }
+      else clearInterval(scrollInterval);
     },15);
   }
 
@@ -42,11 +44,19 @@ myApp.service('window', function() {
 
   this.maximize = function() {
     const window = remote.getCurrentWindow();
-    if (!window.isMaximized()) {
+
+    if(window.isFullScreen()){
+      window.setFullScreen(false);
+    }else{
+      window.setFullScreen(true);
+    }
+
+    /*if (!window.isMaximized()) {
       window.maximize();
     } else {
       window.unmaximize();
-    }
+    }*/
+
   }
 
   this.close = function() {

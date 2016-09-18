@@ -7,8 +7,6 @@ const {app} = electron;
 const {BrowserWindow} = electron;
 const tempFiles = `${__dirname}/browser/downloads/temp`;
 
-
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var win;
@@ -19,9 +17,10 @@ function createWindow(url) {
   win = new BrowserWindow({
     width: 1280,
    height: 800,
-   frame:false,
+   frame:true,
    backgroundColor: '#222',
    show: false,
+   maximizable:true,
    resizable: true,
    darkTheme:true
    //titleBarStyle: "hidden-inset"
@@ -33,8 +32,9 @@ function createWindow(url) {
 
   // Open the DevTools.
   win.webContents.openDevTools();
+  /* OSX FULL SCREEN */
 
-  win.webContents.on('did-finish-load', function() {
+  win.webContents.on('did-finish-load', () => {
     setTimeout(function(){
       win.show();
       console.error(Date.now() - startTime);
@@ -51,13 +51,13 @@ function createWindow(url) {
 };
 
 /* on close remove all temporary files on disk */
-
 function rmDir(tempFiles){
   try {
      var files = fs.readdirSync(tempFiles);
    }catch(e) {
-      return;
+      return console.log(e);
   }
+
  if (files.length > 0)
    for (var i = 0; i < files.length; i++) {
      var filePath = `${tempFiles}/${files[i]}`;
@@ -73,8 +73,8 @@ function rmDir(tempFiles){
 
 const {Menu, Tray} = require('electron');
 const platform = require('os').platform();
-
 let appIcon = null;
+
 app.on('ready', () => {
   createWindow(`file://${__dirname}/browser/index.html`);
 
@@ -88,8 +88,10 @@ app.on('ready', () => {
   else if (platform == 'win32') {
       trayImage = imageFolder;
   }
+
   trayMenu = new Tray(trayImage);
-  const contextMenu = Menu.buildFromTemplate([
+
+  var contextMenu = Menu.buildFromTemplate([
     {label: 'Open Qmovies',click(){
       win.show()
     }},
@@ -110,16 +112,15 @@ app.on('ready', () => {
         app.quit();
     }}
   ]);
+
   trayMenu.setToolTip('This is my application.')
   trayMenu.setContextMenu(contextMenu)
 
   if (platform == "darwin") {
     trayMenu.setPressedImage(imageFolder);
   }
+
 });
-
-
-
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -139,9 +140,6 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-
-
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
