@@ -1,5 +1,5 @@
-myApp.service('kat', function( $q,$routeParams ){
-  
+myApp.service('imageChecker', function( $q,$routeParams ){
+
   this.brightnessCheck = function(imageSrc,callback) {
       var img = document.createElement("img");
       img.src = imageSrc;
@@ -38,5 +38,5 @@ myApp.service('kat', function( $q,$routeParams ){
   var img = document.body.getElementsByTagName('img');
   getImageBrightness(this.src,function(brightness) {
     document.getElementsByTagName('pre')[0].innerHTML = "Brightness: "+brightness;
-  });            
+  });
 });
