@@ -583,10 +583,14 @@ a {
     position: absolute;
     bottom: 0;
     left: 0;
-    z-index: 99999;
+    z-index: 9;
     width: 100%;
     text-align: center;
     -webkit-app-region: drag; }
+    #player .torrent-info.top {
+      top: 15px !important;
+      right: 0 !important;
+      bottom: auto !important; }
     #player .torrent-info #torrent-progress {
       border: 0;
       width: 100%;

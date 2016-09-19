@@ -109,11 +109,13 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 
 });
 
-myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorrent , eztv , dates , $rootScope) {
+myApp.controller("TvController" , function( $scope, tmdb , window , qmovies,eztv , webTorrent , dates , $rootScope) {
   const self = this;
   self.page = 1;
   self.requestRunning = false;
+  self.torrents =[];
   self.loading = true;
+  self.download;
   window.tvSubMenu;
   /* get current search */
   self.currentSearch = "getFeed";
@@ -292,7 +294,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     
     $event.target.classList.toggle("active");
 
-    /*
+    /* kick ass torrent scrapper 
     kat.query(self.info.name , self.season ,episode ).then(function(response){
       self.torrents = response;
       self.loading = false;
@@ -304,10 +306,18 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
     });
     */
 
-    eztv.query(self.info.name).then(function(data){
-      console.log(data);
-    })
+    eztv.query(self.info.name , self.season , episode , self.imdb ).then(function(data){
+      //self.torrents.push(data);
+      //self.loading = false;
+      self.torrents = {"Q480":{0:{magnet: data["480p"].url}}};
+      console.log(self.torrents);
+    });
 
+   qmovies.getTvTorrents(self.info.name , self.season , episode).then(function(response){
+      console.log(response.data);
+      self.torrents = response.data;
+      self.loading = false;
+    });
   }
 
   self.getSeasonInfo = function($event ,season){
@@ -318,12 +328,14 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
       let classes = seasons[i].className.replace('active','');
       seasons[i].className = classes;
     }
+
     $event.target.classList.toggle("active");
     tmdb.tvSeason(season).then(function(response){
       self.seasonData = response.data;
       self.loading = false;
     });
   }
+
   self.getTvData = function(){
     self.loading = true;
     tmdb.tvSerie().then(function(response){
@@ -331,11 +343,13 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
       console.log("tv data ");
       console.log(self.info);
       self.season = 1;
+      self.imdb = self.info.external_ids.imdb_id;
       self.episode = 1;
       self.getSeasonsNumber = function(num) {
         return new Array(num);
       }
     });
+
     tmdb.tvSeason().then(function(response){
       self.seasonData = response.data;
       console.log(self.seasonData);
@@ -345,12 +359,20 @@ myApp.controller("TvController" , function( $scope, tmdb , window , kat, webTorr
   }
 
   self.playTorrent = function(magnet){
-    // Yes it is
-    let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
-    webTorrent.play(hash).then(function(response){
-      $scope.Title = response;
-      self.loading = false;
-    });
+    //let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
+    let hash = self.download;
+    //hash = hash.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i);
+    console.log(hash);
+    
+    try{
+      webTorrent.play(hash).then(function(response){
+        $scope.Title = response;
+        self.loading = false;
+      });
+    }catch(err){
+      console.log(err);
+    }
+ 
   };
 });
 

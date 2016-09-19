@@ -5,9 +5,6 @@ myApp.service('tmdb', function($http ,  $routeParams){
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
-
-
-
   this.fetchTmdb = function(platform = "tv", type , query , page){
     console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
     return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
@@ -19,8 +16,8 @@ myApp.service('tmdb', function($http ,  $routeParams){
   }
 
   this.tvSerie = function(){
-    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}`);
-    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}`);
+    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
   }
 
   this.tvSeason = function(season = $routeParams.season){

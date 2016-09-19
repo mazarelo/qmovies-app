@@ -127,11 +127,40 @@ myApp.service('dates', function(){
 });
 
 myApp.service('eztv', function( $q , $routeParams ){
+const EZTV = require("eztv-api-pt");
 
-  this.query = function(title , season=1 , episode=1){
+  this.query = function(title , season=1 , episode=1 , imdbId){
+    let eztv = new EZTV();
     var deferred = $q.defer();
-    // search for game of thrones season 1 episode 2 with all scrapers
-  //deferred.resolve(results);
+    const tvSerie = {
+      name:title,
+      ep: episode,
+      se: season
+    }
+
+    eztv.getAllShows().then(res => {
+      const data = res;
+      console.log("data:");
+      console.table(data);
+      var result;
+
+      for( var i = 0; i < data.length; i++ ) {
+        if( data[i].show.indexOf(tvSerie.name) > -1 ) {
+            result = data[i];
+            break;
+        }
+      }
+
+      eztv.getShowData(result).then(res => {
+        try{
+          res.episodes[tvSerie.se];
+          deferred.resolve(res.episodes[tvSerie.se.toString()][tvSerie.ep.toString()]);
+        }catch(err){
+            console.warn(err);
+        }
+      });
+
+    }).catch(err => console.error(err));
       return deferred.promise;
     };
 });
@@ -258,15 +287,47 @@ myApp.service('kat', function( $q,$routeParams ){
 });
 
 
+myApp.service('mpft', function( $q , $routeParams ){
+
+const FindTorrent = require('machinepack-findtorrent');
+
+  this.query = function(title , season=1 , episode=1){
+    var deferred = $q.defer();
+    // Query EZTV Torrents.
+    FindTorrent.queryAll({
+      query: 'Walking dead S05E02'
+      }).exec({
+      // An unexpected error occurred.
+      error: function (err){
+       console.log('error', err);
+      },
+      // OK.
+      success: function (data){
+       deferred.resolve(data);
+      },
+    });
+        return deferred.promise;
+    };
+   
+});
+
+
+myApp.service('qmovies', function($http , $routeParams ){
+  this.getTvTorrents = function(title , season=1 , episode=1){
+    season = (season <10 ? "0"+season : season );
+    episode = (episode <10 ? "0"+episode : episode );
+    console.log(`http://qmovies.eu/app/functions/series/getEpisodeTorrentsScrapper.php?title=${title} S${season}E${episode}`);
+    return $http.get(`http://qmovies.eu/app/functions/series/getEpisodeTorrentsScrapper.php?title=${title} S${season}E${episode}`);
+  };
+});
+
+
 myApp.service('tmdb', function($http ,  $routeParams){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
-
-
-
 
   this.fetchTmdb = function(platform = "tv", type , query , page){
     console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
@@ -279,8 +340,8 @@ myApp.service('tmdb', function($http ,  $routeParams){
   }
 
   this.tvSerie = function(){
-    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}`);
-    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}`);
+    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
   }
 
   this.tvSeason = function(season = $routeParams.season){
@@ -351,9 +412,10 @@ myApp.service('video', function() {
 
 });
 
-myApp.service('webTorrent', function(folder ,video , $q) {
+myApp.service('webTorrent', function(folder ,video , $q , folder) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
+  const notVideoFiles = ["jpg","jpeg","png","txt","gif"];
 
   this.play = function(magnet){
     /* player */
@@ -376,40 +438,65 @@ myApp.service('webTorrent', function(folder ,video , $q) {
       client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
         videoPlayer.innerHTML = "";
         var final = [];
+
         for(var i=0;i < torrent.files.length; i++){
           var currentTorrent = torrent.files[i];
+          var checkExtension = currentTorrent.name.split(".");
+          
+          if(notVideoFiles.indexOf(checkExtension[checkExtension.length])){
+            console.log("image found");
+          }
+
           if(currentTorrent['length'] <= 100000000){
             //delete file;
           }else{
             final.push(torrent.files[i]);
           }
         }
-        var once = false;
 
+        var once = false;
+        /* start seeding a torrent */
+        try{
+          client.seed(final, function (torrent) {
+            console.log('Client is seeding:', torrent.infoHash)
+          });
+        }catch(err){
+          console.log(err);
+        }
+
+        try{
+        /* download torrent */
         torrent.on('download', function (bytes) {
           torrentDownloadBites.textContent =  Math.floor( torrent.progress*100);
           torrentProgress.value = Math.floor( torrent.progress*100);
           timeRemaining.textContent = video.milisecondsToReadable(torrent.timeRemaining);
 
-          if(Math.floor( torrent.progress*100) >=5){
+          if(Math.floor( torrent.progress*100) >= 2){
             if(once){
               return
             }
-            once = true;
 
-            final[0].appendTo("#video-placeholder", function(err, elem) {
+            once = true;
+            console.log(final);
+
+            final[0].appendTo("#video-placeholder", { maxBlobLength: 2 * 1000 * 1000 * 1000 } , function(err, elem) {
               console.log(err);
-              document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
-            })
+              document.querySelector("#video-placeholder video").src = final[0].path[0];
+            });
+            /* place downloading bar at top */
+            document.getElementById("torrent-wrapper").classList.toggle("top");
 
             videoPlayer.className = "";
             videoPlayer.removeAttribute("style");
             loader.classList.toggle('ng-hide');
             infoTarget.style.visibility = "hidden";
-            let torrentName = torrent.name;
-            deferred.resolve(torrentName);
+            deferred.resolve(torrent.name);
           }
         });
+      }catch(err){
+        console.log(err);
+      }
+
        });
       return deferred.promise;
    };

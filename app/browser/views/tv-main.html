@@ -44,9 +44,9 @@
               <img src="assets/img/global/hd.svg">
             </figure>
             <div class="quality-set">
-              <fieldset ng-repeat="torrent in tv.torrents">
-                <input  ng-model="tv.download" type="radio" ng-value="torrent.hash">
-                <label for="">{{torrent.size}}</label>
+              <fieldset ng-repeat="(key, val) in tv.torrents">
+                <input  ng-model="tv.download" type="radio" id="{{key}}" ng-value="tv.torrents[key][0].magnet">
+                <label for="{{key}}">{{key}}</label>
               </fieldset>
             </div>
           </div>
