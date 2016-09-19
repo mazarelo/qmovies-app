@@ -22,5 +22,4 @@ myApp.service('dates', function(){
       }
       return daysLeft;
     }
-
 });

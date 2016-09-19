@@ -2,6 +2,9 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   const self = this;
   self.download;
   self.loading = true;
+  self.torrents;
+  self.requestRunning = false;
+  self.currentSearch = "getFeed";
   self.sortBy = {
     value: "year",
     options: [
@@ -15,6 +18,17 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
       {value: 'date_added', name: 'Recently added'}
     ]
    };
+
+   self.lists = {
+     value: "on_the_air",
+     options: [
+       {name: "Latest", value: "latest"},
+       {name: "On the air", value: "on_the_air"},
+       {name: "Airing today", value: "airing_today"},
+       {name: "Top rated", value: "top_rated"},
+       {name: "Most popular", value: "popular"}
+     ]
+   }
 
    self.query = "";
    self.genre = {
@@ -46,15 +60,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     alert(added);
   }
 
-   self.moviesData = function(){
-     self.loading = true;
-     yify.listMovies(self.sortBy.value , self.genre.value , self.query).then(function(response){
-       console.log(response.data.data.movies);
-       self.dataResults = response.data.data.movies;
-       self.loading = false;
-     });
-   };
-
    self.newWindow = function(id){
      window.open("movies" , id);
    }
@@ -62,16 +67,15 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.feedDetails = function(){
     self.loading = true;
     yify.listMovies(self.sortBy.value , self.genre.value, self.query).then(function(response){
-      console.log(response.data.data.movies);
+      console.log(response);
       self.dataResults = response.data.data.movies;
       self.loading = false;
     });
   }
 
-  self.playTorrent = function(magnet){
+  self.playTorrent = function(){
     $scope.MovieTitle = "waiting";
-    // Yes it is
-    webTorrent.play(magnet).then(function(response){
+    webTorrent.play(self.download).then(function(response){
       console.log(response);
       $scope.MovieTitle = response;
       self.loading = false;
@@ -82,6 +86,11 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     self.loading = true;
     yify.movieDetails($routeParams.movieId).then(function(response){
       console.log(response.data.data);
+      if(Array.isArray(response.data.data.torrents.torrent)){
+        self.torrents = response.data.data.torrents.torrent;
+      }else{
+        self.torrents = response.data.data.torrents;
+      }
       self.info = response.data.data;
       self.loading = false;
     });

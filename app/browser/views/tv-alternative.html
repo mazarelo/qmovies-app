@@ -1,5 +1,7 @@
 <div class="window-controllers-wrapper" ng-controller="MenuController as menu">
   <window-controlles></window-controlles>
+  <back-btn></back-btn>
+  <forward-btn></forward-btn>
 </div>
 
 <section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed()">
@@ -20,29 +22,27 @@
     <ul ng-model="tvFeed.genre.value" ng-change="tvFeed.tvData()" class="genre-buttons">
       <li ng-repeat="genre in tvFeed.genre.options">
         <button ng-click="tvFeed.currentSearch = 'discover';tvFeed.genre.value = genre.value; tvFeed.discover()">{{genre.name}}</option>
-      </li>
-    </ul>
-  </div>
-  <!-- FEED -->
-  <div id="feed-ajax" class="feed-module"  scrolly>
-    <!-- feed template -->
-    <div class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
-    <a href="#/tv/{{serie.id}}/season/1">
-    <div class="backdrop"></div>
-      <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
-      </div>
-      <h4 class="name">{{serie.name}}</h4>
-      <header class="ft-title">
-        <figure class="ft-rating">
-          <h4 >{{serie.name}}</h4>
-          <figcaption>{{serie.vote_average | number:1 }}/10</figcaption>
-        </figure>
-       
-        <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->
-        <p>{{serie.overview | limitTo : 150 }}...</p>
-      </header>
-      </a>
+        </li>
+      </ul>
     </div>
-
-  </div>
-</section>
+    <!-- FEED -->
+    <div id="feed-ajax" class="feed-module"  scrolly>
+      <!-- feed template -->
+      <div class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
+        <a href="#/tv/{{serie.id}}/season/1">
+          <div class="backdrop"></div>
+          <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
+          </div>
+          <h4 class="name">{{serie.name}}</h4>
+          <header class="ft-title">
+            <figure class="ft-rating">
+              <h4>{{serie.name}}</h4>
+              <figcaption>{{serie.vote_average | number:1 }}/10</figcaption>
+            </figure>
+            <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->
+            <p>{{serie.overview | limitTo : 150 }}...</p>
+          </header>
+        </a>
+      </div>
+    </div>
+  </section>

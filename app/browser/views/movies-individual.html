@@ -1,11 +1,29 @@
-<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+<div class="window-controllers-wrapper transparent" ng-controller="MenuController as menu">
   <window-controlles></window-controlles>
-  <div class="video-header">
-    <h4>{{movie.info.title}} ({{movie.info.year}})</h4>
-  </div>
+  <back-btn></back-btn>
+  <forward-btn></forward-btn>
 </div>
+<!--<div class="video-header">
+  <h4>{{movie.info.title}} ({{movie.info.year}})</h4>
+</div>-->
 <section id="content-trigger" class="main-content contentFull" ng-init="movie.movieDetails()">
   <div id="player" ng-controller="VideoController as video">
+    <div class="video-loader ng-hide-animate ng-hide">
+      <figure>
+          <img src="assets/img/global/loading.svg" width="50">
+      </figure>
+    </div>
+
+    <div id="torrent-wrapper" class="torrent-info ng-hide">
+        <span id="torrent-time"></span>
+        <span id="torrent-downloaded">0</span> of <span id="">100%</span><br>
+        <span id="torrent-download-speed"></span>
+        <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
+    </div>
+    <div id="video-placeholder" ng-click="video.checkStatus" class="blur" style="background: url({{movie.info.medium_cover_image}}) no-repeat center center;background-size: cover;">
+    </div>
+  </div>
+  <div class="info-content">
     <div class="play-btn">
         <div class="loading ng-hide-animate ng-hide">
           <figure>
@@ -15,17 +33,10 @@
         <div class="quality ng-hide-animate">
           <select ng-model="movie.download">
             <option value="" selected="selected">Quality</option>
-            <option ng-repeat="torrent in movie.info.torrents.torrent" value="{{torrent.url}}">{{torrent.quality}} ({{torrent.size}})</option>
+            <option ng-repeat="torrent in movie.torrents" value="{{torrent.url}}">{{torrent.quality}} ({{torrent.size}})</option>
           </select>
-          <button ng-click="movie.playTorrent(movie.download)">Play</button>
+          <button ng-click="movie.playTorrent()">Play</button>
         </div>
     </div>
-    <div id="video-placeholder" ng-click="video.checkStatus" class="blur" style="background: url({{movie.info.medium_cover_image}}) no-repeat center center ;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;">
-    </div>
   </div>
-
 </section>

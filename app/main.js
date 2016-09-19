@@ -39,7 +39,8 @@ function createWindow(url) {
       win.show();
       console.error(Date.now() - startTime);
     }, 40);
-  })
+
+  });
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -134,6 +135,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
+
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {

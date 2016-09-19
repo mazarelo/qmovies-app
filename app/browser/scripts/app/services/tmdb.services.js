@@ -1,4 +1,4 @@
-myApp.service('tmdb', function($http ,  $routeParams){
+myApp.service('tmdb', function($http , folder , $routeParams){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
@@ -44,4 +44,7 @@ myApp.service('tmdb', function($http ,  $routeParams){
     return $http.get(`${url}/search/tv?query=${query}&page=${page}&${apiKey}`);
   }
 
+  this.movieSearch = function(query , page ){
+    return $http.get(`${url}/search/movies?query=${query}&page=${page}&${apiKey}`);
+  }
 });

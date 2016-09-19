@@ -18,7 +18,7 @@ myApp.config(function($routeProvider, $locationProvider) {
     controller: 'MoviesController as movieFeed'
   })
   .when('/movies/:movieId', {
-    templateUrl: 'views/movies-main.html',
+    templateUrl: 'views/movies-individual.html',
     controller: 'MoviesController as movie'
   })
   .otherwise({

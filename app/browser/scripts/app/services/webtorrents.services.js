@@ -35,11 +35,11 @@ myApp.service('webTorrent', function(folder ,video , $q) {
         } */
 
         torrent.files.forEach(function(element, index){
-          var currentTorrent = torrent.files[i];
+          var currentTorrent = torrent.files[index];
           if(currentTorrent['length'] <= 100000000){
             //delete file;
           }else{
-            final.push(torrent.files[i]);
+            final.push(torrent.files[index]);
           }
         });
 
@@ -50,7 +50,7 @@ myApp.service('webTorrent', function(folder ,video , $q) {
           torrentProgress.value = Math.floor( torrent.progress*100);
           timeRemaining.textContent = video.milisecondsToReadable(torrent.timeRemaining);
 
-          if(Math.floor( torrent.progress*100) >=5){
+          if(Math.floor( torrent.progress*100) >= 1){
 
             if(once){
               return
@@ -60,7 +60,7 @@ myApp.service('webTorrent', function(folder ,video , $q) {
             final[0].appendTo("#video-placeholder", function(err, elem) {
               console.log(err);
               document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
-            })
+            });
 
             videoPlayer.className = "";
             videoPlayer.removeAttribute("style");
