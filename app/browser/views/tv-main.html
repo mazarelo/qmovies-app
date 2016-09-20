@@ -24,7 +24,6 @@
   <div class="info-content ng-hide-animate">
     <!-- gradient top -->
     <div class="gradient-top"></div>
-    
     <!-- top data -->
     <div class="info-data">
       <div class="data-epi-season">
@@ -39,7 +38,7 @@
       <div class="under-layer">
         <figure class="data-poster">
           <!-- quality button -->
-          <div class="quality-btn">
+      <!--  <div class="quality-btn">
             <figure class="icon-quality">
               <img src="assets/img/global/hd.svg">
             </figure>
@@ -49,7 +48,7 @@
                 <label for="{{key}}">{{key}}</label>
               </fieldset>
             </div>
-          </div>
+          </div> -->
           <div class="days-left">
             <div class="dl-wrapper">
               <!-- Days left for the next air date -->
@@ -97,7 +96,7 @@
             {{tv.info.vote_average}}/10
           </figcaption>
         </figure>
-        
+
         <!-- end -->
         <p class="data-overview">
           {{tv.info.overview}}
@@ -106,9 +105,11 @@
           <figure>
             <img src="assets/img/global/stop.svg">
           </figure>
-          <figure ng-click="tv.playTorrent(tv.download)">
-            <img src="assets/img/global/play.svg">
-          </figure>
+          <a href="#/tv/{{tv.tvId}}/season/{{tv.season}}/episode/{{tv.episode}}">
+            <figure >
+              <img src="assets/img/global/play.svg">
+            </figure>
+          </a>
           <figure>
             <img src="assets/img/global/forward.svg">
           </figure>

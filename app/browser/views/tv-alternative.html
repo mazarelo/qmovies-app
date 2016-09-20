@@ -16,7 +16,7 @@
     </fieldset>
     <!-- global search terms -->
     <fieldset class="pre-set-btn" ng-model="tvFeed.list.value">
-      <button  ng-repeat="list in tvFeed.list.options" ng-click="tvFeed.currentSearch = 'getFeed';tvFeed.list.value = list.value; tvFeed.getFeed()">{{list.name}}</button>
+      <button ng-repeat="list in tvFeed.list.options" ng-click="tvFeed.currentSearch = 'getFeed';tvFeed.list.value = list.value; tvFeed.getFeed();">{{list.name}}</button>
     </fieldset>
     <!-- search genre -->
     <ul ng-model="tvFeed.genre.value" ng-change="tvFeed.tvData()" class="genre-buttons">

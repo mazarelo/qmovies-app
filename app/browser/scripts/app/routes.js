@@ -13,6 +13,10 @@ myApp.config(function($routeProvider, $locationProvider) {
     templateUrl: 'views/tv-main.html',
     controller: 'TvController as tv'
   })
+  .when('/tv/:tvId/season/:season/episode/:episode', {
+    templateUrl: 'views/tv-individual.html',
+    controller: 'TvController as tv'
+  })
   .when('/movies', {
     templateUrl: 'views/movies.html',
     controller: 'MoviesController as movieFeed'
