@@ -74,6 +74,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   }
 
   self.playTorrent = function(){
+    self.loading = true;
     $scope.MovieTitle = "waiting";
     webTorrent.play(self.download).then(function(response){
       console.log(response);
@@ -85,7 +86,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.movieDetails = function(){
     self.loading = true;
     yify.movieDetails($routeParams.movieId).then(function(response){
-      console.log(response.data.data);
       if(Array.isArray(response.data.data.torrents.torrent)){
         self.torrents = response.data.data.torrents.torrent;
       }else{

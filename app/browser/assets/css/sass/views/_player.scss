@@ -13,17 +13,12 @@
 .loading{
   height:50px;
 }
-
-#player{
-  position:absolute;
-  width:100%;
-  height:100%;
-
-  .torrent-info{
+/* torrent loader */
+.torrent-info{
     position:absolute;
     bottom:0;
     left:0;
-    z-index: 9;
+    z-index: 99999999;
     width:100%;
     text-align:center;
     -webkit-app-region: drag;
@@ -41,6 +36,12 @@
        opacity:0.5;
     }
   }
+#player{
+  position:absolute;
+  width:100%;
+  height:100%;
+
+  
   .video-loader{
     position: absolute;
     top: 0;
@@ -49,39 +50,7 @@
     height: 100%;
     z-index: 1;
   }
-  .play-btn{
-    width:100px;
-    position:absolute;
-    top:45%;
-    width:100%;
-    text-align: center;
-    z-index: 90;
 
-    select{
-      background: transparent;
-      display:block;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: transparent;
-      font-size: 143%;
-      margin-bottom: 1%;
-      padding: 10px;
-      margin:1% auto;
-    }
-
-    button{
-      display:block;
-      font-size: 200%;
-      background: rgba(255, 255, 255, 0.89);
-      font-size: 200%;
-      border-radius: 10px;
-      padding: 4px 25px;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      color: #333;
-      display: block;
-      margin: 0 auto;
-    }
-  }
 
   #video-controls{
     position:absolute;
@@ -119,3 +88,37 @@
     }
   }
 }
+
+.play-btn{
+    width:100px;
+    position:absolute;
+    top:45%;
+    width:100%;
+    text-align: center;
+    z-index: 90;
+
+    select{
+      background: transparent;
+      display:block;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: transparent;
+      font-size: 143%;
+      margin-bottom: 1%;
+      padding: 10px;
+      margin:1% auto;
+    }
+
+    button{
+      display:block;
+      font-size: 200%;
+      background: rgba(255, 255, 255, 0.89);
+      font-size: 200%;
+      border-radius: 10px;
+      padding: 4px 25px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      color: #333;
+      display: block;
+      margin: 0 auto;
+    }
+  }

@@ -580,27 +580,29 @@ a {
 .loading {
   height: 50px; }
 
+/* torrent loader */
+.torrent-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 99999999;
+  width: 100%;
+  text-align: center;
+  -webkit-app-region: drag; }
+  .torrent-info.top {
+    top: 15px !important;
+    right: 0 !important;
+    bottom: auto !important; }
+  .torrent-info #torrent-progress {
+    border: 0;
+    width: 100%;
+    height: 5px;
+    opacity: 0.5; }
+
 #player {
   position: absolute;
   width: 100%;
   height: 100%; }
-  #player .torrent-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 9;
-    width: 100%;
-    text-align: center;
-    -webkit-app-region: drag; }
-    #player .torrent-info.top {
-      top: 15px !important;
-      right: 0 !important;
-      bottom: auto !important; }
-    #player .torrent-info #torrent-progress {
-      border: 0;
-      width: 100%;
-      height: 5px;
-      opacity: 0.5; }
   #player .video-loader {
     position: absolute;
     top: 0;
@@ -608,34 +610,6 @@ a {
     width: 100%;
     height: 100%;
     z-index: 1; }
-  #player .play-btn {
-    width: 100px;
-    position: absolute;
-    top: 45%;
-    width: 100%;
-    text-align: center;
-    z-index: 90; }
-    #player .play-btn select {
-      background: transparent;
-      display: block;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: transparent;
-      font-size: 143%;
-      margin-bottom: 1%;
-      padding: 10px;
-      margin: 1% auto; }
-    #player .play-btn button {
-      display: block;
-      font-size: 200%;
-      background: rgba(255, 255, 255, 0.89);
-      font-size: 200%;
-      border-radius: 10px;
-      padding: 4px 25px;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      color: #333;
-      display: block;
-      margin: 0 auto; }
   #player #video-controls {
     position: absolute;
     height: 40px;
@@ -666,6 +640,35 @@ a {
       height: 100%;
       -webkit-app-region: no-drag;
       width: 100%; }
+
+.play-btn {
+  width: 100px;
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-align: center;
+  z-index: 90; }
+  .play-btn select {
+    background: transparent;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: transparent;
+    font-size: 143%;
+    margin-bottom: 1%;
+    padding: 10px;
+    margin: 1% auto; }
+  .play-btn button {
+    display: block;
+    font-size: 200%;
+    background: rgba(255, 255, 255, 0.89);
+    font-size: 200%;
+    border-radius: 10px;
+    padding: 4px 25px;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    color: #333;
+    display: block;
+    margin: 0 auto; }
 
 /* ==========================================================================
    Author's custom styles
@@ -1208,7 +1211,7 @@ a {
   transition: opacity 0.3s ease; }
 
 .spinner.loading-spinner {
-  z-index: 99999999;
+  z-index: 999999;
   opacity: 1; }
 
 .ng-hide-animate {

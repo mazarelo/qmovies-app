@@ -3,24 +3,8 @@
   <back-btn></back-btn>
   <forward-btn></forward-btn>
 </div>
-<section id="content-trigger" class="main-content contentFull forceFullHeight" ng-init="tv.getTvData()">
-  <div id="player" ng-controller="VideoController as video">
-    <div class="video-loader ng-hide-animate ng-hide">
-      <figure>
-          <img src="assets/img/global/loading.svg" width="50">
-      </figure>
-    </div>
-    <div id="torrent-wrapper" class="torrent-info ng-hide">
-        <span id="torrent-time"></span>
-        <span id="torrent-downloaded">0</span> of <span id="">100%</span><br>
-        <span id="torrent-download-speed"></span>
-        <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
-    </div>
-    <div id="video-placeholder" ng-click="video.checkStatus"
-      style="background: url(http://image.tmdb.org/t/p/w1920{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;">
-    </div>
-  </div>
-
+<section id="content-trigger" class="main-content contentFull forceFullHeight" ng-init="tv.getTvData()" style="background: url(http://image.tmdb.org/t/p/w1920{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;">
+  <div ng-class="tv.loading ? 'loading-spinner' : ''" class="spinner"></div>
   <div class="info-content ng-hide-animate">
     <!-- gradient top -->
     <div class="gradient-top"></div>
@@ -67,14 +51,15 @@
             </button>
           </div>
           <div class="episode-holder">
-            <button
-              ng-repeat="episode in tv.seasonData.episodes track by episode.episode_number"
-              ng-click="tv.playEpisode($event ,episode.episode_number)"
-              class="episode-btn"
-              ng-if="tv.dateCheck(episode.air_date)">
-              <span class="epi-index-roman">{{episode.episode_number | romanize}}</span>
-              {{episode.name}}
-            </button>
+            <a href="#/tv/{{tv.tvId}}/season/{{tv.season}}/episode/{{tv.episode}}">
+              <button 
+                ng-repeat="episode in tv.seasonData.episodes track by episode.episode_number"
+                class="episode-btn"
+                ng-if="tv.dateCheck(episode.air_date)">
+                <span class="epi-index-roman">{{episode.episode_number | romanize}}</span>
+                {{episode.name}}
+              </button>
+            </a>
           </div>
       </div>
     </div>
@@ -105,11 +90,11 @@
           <figure>
             <img src="assets/img/global/stop.svg">
           </figure>
-          <a href="#/tv/{{tv.tvId}}/season/{{tv.season}}/episode/{{tv.episode}}">
+
             <figure >
               <img src="assets/img/global/play.svg">
             </figure>
-          </a>
+
           <figure>
             <img src="assets/img/global/forward.svg">
           </figure>
