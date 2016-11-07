@@ -4,8 +4,9 @@ myApp.service('yify', function($http){
   const movieDetails = "http://yify.is/api/v2/movie_details.json";
 
   this.listMovies = function( sortBy, genre, query ){
-    console.log(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
-    return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
+    //console.log(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
+    //return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
+    return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=rating&limit=50&order_by=desc&with_images=true`);
   }
 
   this.movieDetails = function( id ){

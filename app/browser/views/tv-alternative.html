@@ -21,7 +21,7 @@
     <!-- search genre -->
     <ul ng-model="tvFeed.genre.value" ng-change="tvFeed.tvData()" class="genre-buttons">
       <li ng-repeat="genre in tvFeed.genre.options">
-        <button ng-click="tvFeed.currentSearch = 'discover';tvFeed.genre.value = genre.value; tvFeed.discover()">{{genre.name}}</option>
+        <button ng-click="tvFeed.currentSearch = 'discover';tvFeed.genre.value = genre.value; tvFeed.discover();">{{genre.name}}</option>
         </li>
       </ul>
     </div>

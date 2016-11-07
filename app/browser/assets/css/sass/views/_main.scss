@@ -7,10 +7,13 @@
 .main-content{
   width:80%;
   float:left;
-  height:98%;
+  /* height:98%;
   height: -webkit-calc(100% - 45px);
   height: -moz-calc(100% - 45px);
   height: calc(100% - 45px);
+  */
+ 
+  height:100%;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   background-color:transparent;

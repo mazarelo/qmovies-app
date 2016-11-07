@@ -1,3 +1,8 @@
+myApp.controller("LoginController" , function( $scope, database ) {
+  const self = this;
+  self.pageName = "Login";
+});
+
 myApp.controller("MainController" , function( $scope, folder, webTorrent, database ) {
   const self = this;
   self.pageName = "Dope";
@@ -63,10 +68,10 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
            {name: 'Animation',value: 'Animation'},
            {name: 'Horror',value: 'Horror'},
            {name: 'Musical',value: 'Musical'},
-           {name: 'Romance',value: 'Romance'},
+           /*{name: 'Romance',value: 'Romance'},*/
            {name: 'Film-Noir',value: 'Film-Noir'},
            {name: 'Family',value: 'Family'},
-           {name: 'Sport',value: 'Sport'},
+           /*{name: 'Sport',value: 'Sport'},*/
            {name: 'War',value: 'War'},
            {name: 'Sci-fi',value: 'Sci-fi'},
            {name: 'Thriller',value: 'Thriller'},
@@ -86,9 +91,13 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 
   self.feedDetails = function(){
     self.loading = true;
-    yify.listMovies(self.sortBy.value , self.genre.value, self.query).then(function(response){
+    yify.listMovies( self.sortBy.value , self.genre.value, self.query).then(function(response){
       console.log(response);
-      self.dataResults = response.data.data.movies;
+      try{
+        self.dataResults = response.data.data.movies;
+      }catch(err){
+        console.log(err);
+      }
       self.loading = false;
     });
   }
@@ -117,6 +126,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   };
 
 });
+
 
 myApp.controller("TvController" , function( $scope, tmdb , window , folder , $routeParams , qmovies,eztv , webTorrent , dates , $rootScope) {
   const self = this;

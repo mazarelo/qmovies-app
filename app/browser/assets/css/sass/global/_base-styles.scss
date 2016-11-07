@@ -15,7 +15,7 @@ html {
     line-height: 1.4;
 }
 body:after {
-  content: url(http://mazarelo.com/qmovies/img/loading.svg);
+  //content: url();
   display: none;
 }
 /*
@@ -118,8 +118,9 @@ body{
     height: 100%;
     -webkit-app-region: drag;
     font-size:80%;
-
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    //font-family: 'Montserrat', sans-serif;
+    //font-family: 'Raleway', sans-serif;
 
   /*
     font-family: 'Ubuntu', sans-serif;
@@ -179,6 +180,8 @@ h3{
 
 h4{
     font-size:120%;
+   font-weight: bold;
+    
 }
 
 h5{

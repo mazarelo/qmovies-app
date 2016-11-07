@@ -183,7 +183,6 @@ html {
   line-height: 1.4; }
 
 body:after {
-  content: url(http://mazarelo.com/qmovies/img/loading.svg);
   display: none; }
 
 /*
@@ -273,7 +272,7 @@ body {
   height: 100%;
   -webkit-app-region: drag;
   font-size: 80%;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Roboto', sans-serif;
   /*
     font-family: 'Ubuntu', sans-serif;
     font-family: 'Lato', sans-serif;
@@ -317,7 +316,8 @@ h3 {
   font-size: 140%; }
 
 h4 {
-  font-size: 120%; }
+  font-size: 120%;
+  font-weight: bold; }
 
 h5 {
   font-size: 110%; }
@@ -680,10 +680,12 @@ a {
 .main-content {
   width: 80%;
   float: left;
-  height: 98%;
+  /* height:98%;
   height: -webkit-calc(100% - 45px);
   height: -moz-calc(100% - 45px);
   height: calc(100% - 45px);
+  */
+  height: 100%;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   background-color: transparent; }
@@ -821,7 +823,7 @@ a {
       width: 80%;
       float: left;
       height: 100%;
-      padding: 0 10px;
+      padding: 2px 10px;
       border: none;
       background-color: transparent; }
     .feed-search .query-search button {
@@ -831,7 +833,8 @@ a {
       .feed-search .query-search button img {
         max-width: 100%;
         min-width: 0;
-        width: 20px; }
+        width: 20px;
+        opacity: 0.3; }
   .feed-search .pre-set-btn {
     width: 100%;
     display: table;
@@ -858,8 +861,9 @@ a {
         color: rgba(244, 67, 54, 0.5);
         background-color: rgba(255, 255, 255, 0.8); }
       .feed-search .pre-set-btn button:hover {
-        color: rgba(244, 67, 54, 0.5);
-        background-color: rgba(255, 255, 255, 0.8); }
+        font-weight: bold;
+        color: rgba(244, 67, 54, 0.8);
+        background-color: white; }
   .feed-search .genre-buttons {
     width: 100%;
     display: table;
@@ -897,7 +901,7 @@ a {
 
 .feed-module {
   width: 60%;
-  height: calc(100% - 40px);
+  height: calc(100% - 80px);
   overflow-y: scroll;
   float: left;
   color: #b3b3b3;
@@ -912,11 +916,13 @@ a {
     height: 25vh;
     width: 19.3vw;
     overflow: hidden;
+    min-height: 200px;
     /*background: url(../img/no-image.jpg) no-repeat center center;
     background-size: cover; */ }
     .feed-module .feed-template:nth-child(1) {
       width: 20vw;
-      height: 39.9vh; }
+      height: 39.9vh;
+      min-height: 395px; }
     .feed-module .feed-template:nth-child(2) {
       width: 19vw;
       height: 20vh; }
@@ -976,8 +982,13 @@ a {
       position: absolute;
       top: calc(100% - 30px);
       left: 10px;
+      font-weight: bold;
       z-index: 99;
-      opacity: 0.5;
+      opacity: 0.7;
+      width: 93%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       -webkit-transition: all  .2s ease;
       -khtml-transition: all  .2s ease;
       -moz-transition: all  .2s ease;
@@ -993,12 +1004,22 @@ a {
       height: auto;
       z-index: 99;
       opacity: 0;
-      -webkit-transition: all  .3s ease;
-      -khtml-transition: all  .3s ease;
-      -moz-transition: all  .3s ease;
-      -ms-transition: all  .3s ease;
-      -o-transition: all  .3s ease;
-      transition: all  .3s ease; }
+      -webkit-transition: margin-top  .3s ease;
+      -khtml-transition: margin-top  .3s ease;
+      -moz-transition: margin-top  .3s ease;
+      -ms-transition: margin-top  .3s ease;
+      -o-transition: margin-top  .3s ease;
+      transition: margin-top  .3s ease;
+      -webkit-transition: opacity  .3s ease;
+      -khtml-transition: opacity  .3s ease;
+      -moz-transition: opacity  .3s ease;
+      -ms-transition: opacity  .3s ease;
+      -o-transition: opacity  .3s ease;
+      transition: opacity  .3s ease;
+      -webkit-transform: translate3d(0, 0, 0);
+      -moz-transform: translate3d(0, 0, 0);
+      -ms-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0); }
       .feed-module .feed-template .ft-title p {
         margin-top: 0;
         opacity: 0.7; }
@@ -1211,7 +1232,7 @@ a {
   transition: opacity 0.3s ease; }
 
 .spinner.loading-spinner {
-  z-index: 999999;
+  z-index: 999;
   opacity: 1; }
 
 .ng-hide-animate {

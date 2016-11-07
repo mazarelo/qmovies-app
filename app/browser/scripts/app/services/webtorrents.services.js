@@ -17,7 +17,8 @@ myApp.service('webTorrent', function(folder ,video , $q) {
     document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
     infoTarget.classList.toggle('ng-hide');
 
-    client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
+    //client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
+    client.add( magnetURI , {path: "C:\qmovies"} , function(torrent) {
       console.log("Client torrent added");
       videoPlayer.innerHTML = "";
       var final = [];

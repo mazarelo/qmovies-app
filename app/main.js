@@ -30,16 +30,16 @@ function createWindow(url) {
   // and load the index.html of the app.
   win.loadURL(url);
 
-  // Open the DevTools.
+  /* Open the DevTools.
   win.webContents.openDevTools();
+  */
+ 
   /* OSX FULL SCREEN */
-
   win.webContents.on('did-finish-load', () => {
     setTimeout(function(){
       win.show();
       console.error(Date.now() - startTime);
     }, 40);
-
   });
 
   // Emitted when the window is closed.

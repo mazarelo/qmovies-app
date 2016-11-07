@@ -6,7 +6,7 @@
 
 <section scroll id="content-trigger" class="main-content contentFull" ng-init="movieFeed.feedDetails()">
   <div ng-class="movieFeed.loading ? 'loading-spinner' : ''" class="spinner"></div>
-  <div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{movie.dataResults[0].backdrop_path}}) no-repeat center center;background-size: cover; opacity:0.3;"></div>
+  <div class="background-feed" style="background: url({{movieFeed.dataResults[0].background_image}}) no-repeat center center;background-size: cover; opacity:0.3;"></div>
   <!-- search by categories etc etc -->
   <div class="feed-search">
     <!-- search bar -->

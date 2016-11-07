@@ -125,9 +125,19 @@ myApp.service('dates', function(){
 });
 
 myApp.service('eztv', function( $q , $routeParams ){
-const EZTV = require("eztv-api-pt");
-
+  const EZTV = require("eztv");
+  
   this.query = function(title , season=1 , episode=1 , imdbId){
+    var deferred = $q.defer();
+    EZTV.getShows({query: 'big bang'}, function(error, results) {
+      deferred.resolve(results);
+      console.log(results);
+      console.log(error);
+      
+    });
+    return deferred.promise;
+  }
+    /*
     let eztv = new EZTV();
     var deferred = $q.defer();
     const tvSerie = {
@@ -161,6 +171,7 @@ const EZTV = require("eztv-api-pt");
     }).catch(err => console.error(err));
       return deferred.promise;
     };
+    */
 });
 
 myApp.service('folder', function($q){
@@ -482,7 +493,8 @@ myApp.service('webTorrent', function(folder ,video , $q) {
     document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
     infoTarget.classList.toggle('ng-hide');
 
-    client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
+    //client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
+    client.add( magnetURI , {path: "C:\qmovies"} , function(torrent) {
       console.log("Client torrent added");
       videoPlayer.innerHTML = "";
       var final = [];
@@ -611,8 +623,9 @@ myApp.service('yify', function($http){
   const movieDetails = "http://yify.is/api/v2/movie_details.json";
 
   this.listMovies = function( sortBy, genre, query ){
-    console.log(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
-    return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
+    //console.log(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
+    //return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
+    return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=rating&limit=50&order_by=desc&with_images=true`);
   }
 
   this.movieDetails = function( id ){

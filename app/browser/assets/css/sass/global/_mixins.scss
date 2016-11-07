@@ -13,6 +13,12 @@
   }
 }
 
+@mixin textOverFlowEllipsys(){
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @mixin BnW(){
   -webkit-filter: grayscale(1);
   -webkit-filter: grayscale(100%);

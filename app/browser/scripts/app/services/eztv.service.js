@@ -1,7 +1,17 @@
 myApp.service('eztv', function( $q , $routeParams ){
-const EZTV = require("eztv-api-pt");
-
+  const EZTV = require("eztv");
+  
   this.query = function(title , season=1 , episode=1 , imdbId){
+    var deferred = $q.defer();
+    EZTV.getShows({query: 'big bang'}, function(error, results) {
+      deferred.resolve(results);
+      console.log(results);
+      console.log(error);
+      
+    });
+    return deferred.promise;
+  }
+    /*
     let eztv = new EZTV();
     var deferred = $q.defer();
     const tvSerie = {
@@ -35,4 +45,5 @@ const EZTV = require("eztv-api-pt");
     }).catch(err => console.error(err));
       return deferred.promise;
     };
+    */
 });
