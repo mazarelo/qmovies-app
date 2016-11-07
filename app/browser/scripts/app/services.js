@@ -492,9 +492,9 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
     document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
     infoTarget.classList.toggle('ng-hide');
-
+    console.log(process.env.DOWNLOAD_PATH);
     //client.add( magnetURI , {path: __dirname+"/downloads/temp"} , function(torrent) {
-    client.add( magnetURI , {path: "C:\qmovies"} , function(torrent) {
+    client.add( magnetURI , {path: process.env.DOWNLOAD_PATH } , function(torrent) {
       console.log("Client torrent added");
       videoPlayer.innerHTML = "";
       var final = [];
@@ -622,11 +622,14 @@ myApp.service('yify', function($http){
   const listMovies = "http://yify.is/api/v2/list_movies.json";
   const movieDetails = "http://yify.is/api/v2/movie_details.json";
 
-  this.listMovies = function( sortBy, genre, query ){
-    //console.log(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
-    //return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=${sortBy}&limit=50&order_by=desc`);
-    return $http.get(`${listMovies}?query_term=${query}&genre=${genre}&sort_by=rating&limit=50&order_by=desc&with_images=true`);
+  this.listMovies = function( sortBy, genre ){
+    return $http.get(`${listMovies}?&genre=${genre}&sort_by=${sortBy}&limit=50`);
   }
+
+  this.querySearch = function(query){
+    return $http.get(`${listMovies}?query_term=${query}`);
+  }
+
 
   this.movieDetails = function( id ){
     return $http.get(`${movieDetails}?movie_id=${id}&with_images=true&with_cast=true`);

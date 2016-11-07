@@ -812,7 +812,7 @@ a {
   padding: 2%;
   height: 100%;
   position: relative;
-  z-index: 10;
+  z-index: 99999999;
   font-size: 120%;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.8), transparent); }
   .feed-search .query-search {

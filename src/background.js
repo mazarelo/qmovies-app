@@ -15,11 +15,36 @@ import createWindow from './helpers/window';
 import env from './env';
 
 const platform = require('os').platform();
-//export const tempFiles = `${__dirname}/browser/downloads/temp`;
-export const tempFiles = "C:\qmovies";
+//export const process.env.DOWNLOAD_PATH = `${__dirname}/browser/downloads/temp`;
+
+/* DEFINE TEMP FILE STRUCTURE */
+if (process.platform != 'darwin') {
+  process.env.DOWNLOAD_PATH = `%APPDATA%/${app.getName()}/downloads`;
+  console.log(process.env.DOWNLOAD_PATH);
+}else{
+  process.env.DOWNLOAD_PATH = `${process.env.HOME}/Library/Application Support/${app.getName()}/downloads`;
+  console.log(process.env.DOWNLOAD_PATH);
+}
+
+try {
+    // Query the entry
+    var stats = fs.lstatSync(process.env.DOWNLOAD_PATH);
+    console.log(stats);
+    // Is it a directory?
+    if (stats.isDirectory()) {
+      console.log("Download File exists");
+    }else{
+      fs.mkdir(process.env.DOWNLOAD_PATH, function(error) {
+        console.log(error);
+      });
+    }
+}
+catch (e) {
+    console.log(e);
+}
+
 
 export var mainWindow;
-
 export var createWindow = function(url) {
   var startTime = Date.now();
   // Create the browser window.
@@ -52,6 +77,8 @@ mainWindow.webContents.on('did-finish-load', () => {
 };
 
 
+
+
 var setApplicationMenu = function () {
     //var menus = [editMenuTemplate];
     var menus = [];
@@ -82,19 +109,18 @@ var setTrayMenu = function(){
   if (platform == "darwin") {
     trayMenu.setPressedImage(imageFolder);
   }
-
 }
 
-var rmDir = function(tempFiles){
-
+var rmDir = function(){
 try {
-     var files = fs.readdirSync(tempFiles);
+     var files = fs.readdirSync(process.env.DOWNLOAD_PATH);
   }catch(e) {
       return;
   }
+
  if (files.length > 0){
    for (var i = 0; i < files.length; i++) {
-     var filePath = `${tempFiles}/${files[i]}`;
+     var filePath = `${process.env.DOWNLOAD_PATH}/${files[i]}`;
      //console.log(`File Path = ${filePath}`);
      if ( fs.statSync(filePath).isFile() ){
        fs.unlinkSync(filePath);
@@ -103,7 +129,7 @@ try {
      }
    }
  }
- fs.rmdirSync(tempFiles);
+ fs.rmdirSync(process.env.DOWNLOAD_PATH);
 
 }
 
@@ -126,12 +152,11 @@ app.on('ready', function () {
 });
 
 app.on('window-all-closed', () => {
-    rmDir(tempFiles);
+    rmDir(process.env.DOWNLOAD_PATH);
     if (platform !== 'darwin') {
       app.quit();
     }
 });
-
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the

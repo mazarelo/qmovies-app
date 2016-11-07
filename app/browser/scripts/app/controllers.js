@@ -1,3 +1,4 @@
+/* login */
 myApp.controller("LoginController" , function( $scope, database ) {
   const self = this;
   self.pageName = "Login";
@@ -31,7 +32,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.requestRunning = false;
   self.currentSearch = "getFeed";
   self.sortBy = {
-    value: "year",
+    value: "latest",
     options: [
       {value: 'title', name: 'Title'},
       {value: 'year', name: 'Year'},
@@ -43,17 +44,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
       {value: 'date_added', name: 'Recently added'}
     ]
    };
-
-   self.lists = {
-     value: "on_the_air",
-     options: [
-       {name: "Latest", value: "latest"},
-       {name: "On the air", value: "on_the_air"},
-       {name: "Airing today", value: "airing_today"},
-       {name: "Top rated", value: "top_rated"},
-       {name: "Most popular", value: "popular"}
-     ]
-   }
 
    self.query = "";
    self.genre = {
@@ -87,6 +77,14 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 
    self.newWindow = function(id){
      window.open("movies" , id);
+   }
+
+   self.querySearch = function(){
+     self.loading = true;
+     yify.querySearch(self.query).then(function(response){
+        self.dataResults = response.data.data.movies;
+        self.loading = false;
+     });
    }
 
   self.feedDetails = function(){

@@ -40,54 +40,53 @@ gulp.task('watch', function () {
         };
     };
 
-    watch("./app/browser/scripts/app/controllers/*.js", batch(function (events, done) {
+    watch("./src/js/controllers/*.js", batch(function (events, done) {
         gulp.start('controllers', beepOnError(done));
     }));
-     watch("./app/browser/scripts/app/directives/*.js", batch(function (events, done) {
+     watch("./src/js/directives/*.js", batch(function (events, done) {
         gulp.start('directives', beepOnError(done));
     }));
-    watch("./app/browser/scripts/app/services/*.js", batch(function (events, done) {
+    watch("./src/js/services/*.js", batch(function (events, done) {
         gulp.start('services', beepOnError(done));
     }));
-    watch("./app/browser/scripts/app/filters/*.js", batch(function (events, done) {
+    watch("./src/js/filters/*.js", batch(function (events, done) {
         gulp.start('filters', beepOnError(done));
     }));
 
-    watch("./app/browser/assets/css/sass/**/*.scss", batch(function (events, done) {
+    watch("./src/stylesheets/sass/**/*.scss", batch(function (events, done) {
         gulp.start('compile', beepOnError(done));
     }));
 });
 
 gulp.task('compile', function() {
-    return gulp.src("./app/browser/assets/css/sass/**/*.scss")
+    return gulp.src("./src/stylesheets/sass/**/*.scss")
         .pipe(sass({errLogToConsole: true}))
         .pipe(gulp.dest('./app/browser/assets/css'))
         /*.pipe(browserSync.stream())*/;
 });
 
 gulp.task('controllers', function() {
-   return gulp.src(['./app/browser/scripts/app/controllers/*.js'])
+   return gulp.src(['./src/js/controllers/*.js'])
         .pipe(concat('controllers.js'))
         .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 gulp.task('filters', function() {
-   return gulp.src(['./app/browser/scripts/app/filters/*.js'])
+   return gulp.src(['./src/js/filters/*.js'])
         .pipe(concat('filters.js'))
         .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 gulp.task('directives', function() {
-   return gulp.src(['./app/browser/scripts/app/directives/*.js'])
+   return gulp.src(['./src/js/directives/*.js'])
         .pipe(concat('directives.js'))
         .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
 
 gulp.task('services', function() {
-   return gulp.src(['./app/browser/scripts/app/services/*.js'])
+   return gulp.src(['./src/js/services/*.js'])
         .pipe(concat('services.js'))
         .pipe(gulp.dest('./app/browser/scripts/app/'));
 });
-
 
 gulp.task('build', ['bundle', 'compile', 'environment']);
