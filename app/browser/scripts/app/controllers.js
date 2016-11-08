@@ -99,7 +99,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
       self.loading = false;
     });
   }
-
+  
   self.playTorrent = function(){
     self.loading = true;
     $scope.MovieTitle = "waiting";
@@ -114,6 +114,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     yify.movieDetails($routeParams.movieId).then(function(response){
       if(Array.isArray(response.data.data.torrents.torrent)){
         self.torrents = response.data.data.torrents.torrent;
+        self.download = self.torrents[0].url;
       }else{
         self.torrents = response.data.data.torrents;
       }

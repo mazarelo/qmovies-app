@@ -25,14 +25,9 @@
   </div>
   <div class="info-content">
     <div class="play-btn">
-        <div class="loading ng-hide-animate ng-hide">
-          <figure>
-              <img src="assets/img/global/loading.svg" width="50">
-          </figure>
-        </div>
         <div class="quality ng-hide-animate">
+          <h1>{{}}</h1>
           <select ng-model="movie.download">
-            <option value="" selected="selected">Quality</option>
             <option ng-repeat="torrent in movie.torrents" value="{{torrent.url}}">{{torrent.quality}} ({{torrent.size}})</option>
           </select>
           <button ng-click="movie.playTorrent()">Play</button>

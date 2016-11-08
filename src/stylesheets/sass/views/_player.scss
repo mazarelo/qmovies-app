@@ -6,10 +6,19 @@
     -webkit-app-region: drag;
   }
 }
+
 .quality{
   position:relative;
   z-index:99;
+  display: inline-block;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #333;
+  padding: 20px;
+
+
 }
+
 .loading{
   height:50px;
 }
@@ -116,26 +125,25 @@
     z-index: 90;
 
     select{
-      background: transparent;
-      display:block;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: transparent;
-      font-size: 143%;
-      margin-bottom: 1%;
-      padding: 10px;
-      margin:1% auto;
+      display: block;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: rgb(255, 255, 255);
+      font-size: 150%;
+      font-weight: bold;
+      padding: 5px 10px;
+      box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+      margin-bottom: 10%;
     }
 
     button{
-      display:block;
-      font-size: 200%;
       background: rgba(255, 255, 255, 0.89);
-      font-size: 200%;
-      border-radius: 10px;
-      padding: 4px 25px;
+      font-size: 150%;
+      display:inline-block;
+      margin-top: 1%;
+      padding: 5px 15px;
       text-transform: uppercase;
-      letter-spacing: 8px;
       color: #333;
+      font-weight: bold;
       display: block;
       margin: 0 auto;
     }
