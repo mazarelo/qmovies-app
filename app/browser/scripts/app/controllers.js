@@ -126,7 +126,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 });
 
 
-myApp.controller("TvController" , function( $scope, tmdb , window , folder , $routeParams , qmovies,eztv , webTorrent , dates , $rootScope) {
+myApp.controller("TvController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , webTorrent , dates , $rootScope) {
   const self = this;
   self.page = 1;
   self.requestRunning = false;
