@@ -78,7 +78,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     self.loading = true;
     $scope.MovieTitle = "waiting";
     webTorrent.play(self.download).then(function(response){
-      console.log(response);
       $scope.MovieTitle = response;
       self.loading = false;
     });

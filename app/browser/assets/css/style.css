@@ -580,19 +580,37 @@ a {
 .loading {
   height: 50px; }
 
+.spinner .middle-wrapper {
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle; }
+
 /* torrent loader */
 .torrent-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  background-color: rgba(255, 255, 255, 0.7);
   z-index: 99999999;
-  width: 100%;
+  width: 200px;
+  color: #333;
+  margin: 0 auto;
+  font-size: 150%;
+  padding: 20px;
   text-align: center;
-  -webkit-app-region: drag; }
+  -webkit-app-region: drag;
+  -webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  -khtml-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5); }
   .torrent-info.top {
     top: 15px !important;
     right: 0 !important;
     bottom: auto !important; }
+  .torrent-info h4 {
+    text-transform: uppercase; }
+  .torrent-info #torrent-time {
+    font-size: 60%;
+    display: block; }
   .torrent-info #torrent-progress {
     border: 0;
     width: 100%;
@@ -1233,7 +1251,8 @@ a {
 
 .spinner.loading-spinner {
   z-index: 999;
-  opacity: 1; }
+  opacity: 1;
+  display: table; }
 
 .ng-hide-animate {
   transition: opacity 0.3s ease-out;

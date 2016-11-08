@@ -7,13 +7,18 @@
   <h4>{{movie.info.title}} ({{movie.info.year}})</h4>
 </div>-->
 <section id="content-trigger" class="main-content contentFull" ng-init="movie.movieDetails()">
-  <div ng-class="movie.loading ? 'loading-spinner' : ''" class="spinner"></div>
-  <div id="torrent-wrapper" class="torrent-info ng-hide">
-    <span id="torrent-time"></span>
-    <span id="torrent-downloaded">0</span> of <span id="">100%</span><br>
-    <span id="torrent-download-speed"></span>
-    <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
+  <div ng-class="movie.loading ? 'loading-spinner' : ''" class="spinner">
+    <div class="middle-wrapper">
+      <div id="torrent-wrapper" class="torrent-info ng-hide">
+        <h4>Buffering...</h4>
+        <span id="torrent-time"></span>
+        <!--<span id="torrent-downloaded">0</span> of <span id="">100%</span><br>-->
+        <span id="torrent-download-speed"></span>
+        <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
+      </div>
+    </div>
   </div>
+  
   <div id="player" ng-controller="VideoController as video">
     <div id="video-placeholder" ng-click="video.checkStatus" class="blur" style="background: url({{movie.info.medium_cover_image}}) no-repeat center center;background-size: cover;">
     </div>

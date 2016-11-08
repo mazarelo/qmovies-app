@@ -13,20 +13,38 @@
 .loading{
   height:50px;
 }
+
+.spinner{
+  .middle-wrapper{
+    display:table-cell;
+    width: 100%;
+    vertical-align: middle;
+  }
+}
 /* torrent loader */
 .torrent-info{
-    position:absolute;
-    bottom:0;
-    left:0;
+    background-color: rgba(255,255,255,0.7);
     z-index: 99999999;
-    width:100%;
-    text-align:center;
+    width: 200px;
+    color: #333;
+    margin: 0 auto;
+    font-size: 150%;
+    padding: 20px;
+    text-align: center;
     -webkit-app-region: drag;
-
+    @include box-shadow(1px, 1px, 10px, rgba(0,0,0,.5));
+    
     &.top{
       top:15px!important;
       right:0!important;
       bottom:auto!important;
+    }
+    h4{
+      text-transform:uppercase;
+    }
+    #torrent-time{
+      font-size: 60%;
+      display: block;
     }
 
     #torrent-progress{
