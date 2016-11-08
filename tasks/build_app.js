@@ -1,22 +1,22 @@
 'use strict';
 
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var watch = require('gulp-watch');
-var batch = require('gulp-batch');
-var plumber = require('gulp-plumber');
-var jetpack = require('fs-jetpack');
-var bundle = require('./bundle');
-var utils = require('./utils');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const watch = require('gulp-watch');
+const batch = require('gulp-batch');
+const plumber = require('gulp-plumber');
+const jetpack = require('fs-jetpack');
+const bundle = require('./bundle');
+const utils = require('./utils');
 
 const concat = require('gulp-concat');
 const sourcemaps = require("gulp-sourcemaps");
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 
-var projectDir = jetpack;
-var srcDir = jetpack.cwd('./src');
-var destDir = jetpack.cwd('./app');
+const projectDir = jetpack;
+const srcDir = jetpack.cwd('./src');
+const destDir = jetpack.cwd('./app');
 
 gulp.task('bundle', function () {
     return Promise.all([

@@ -45,7 +45,6 @@
     "gulp-babel": "^6.1.2",
     "gulp-batch": "^1.0.5",
     "gulp-concat": "^2.6.0",
-    "gulp-less": "^3.0.3",
     "gulp-plumber": "^1.1.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^2.2.0",

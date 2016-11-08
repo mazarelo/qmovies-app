@@ -15,9 +15,7 @@ import createWindow from './helpers/window';
 import env from './env';
 
 const platform = require('os').platform();
-//export const process.env.DOWNLOAD_PATH = `${__dirname}/browser/downloads/temp`;
-
-/* DEFINE TEMP FILE STRUCTURE */
+/* DEFINE TEMP Folder */
 if (process.platform != 'darwin') {
   process.env.DOWNLOAD_PATH = `%APPDATA%/${app.getName()}/downloads`;
   console.log(process.env.DOWNLOAD_PATH);
@@ -29,7 +27,6 @@ if (process.platform != 'darwin') {
 try {
     // Query the entry
     var stats = fs.lstatSync(process.env.DOWNLOAD_PATH);
-    console.log(stats);
     // Is it a directory?
     if (stats.isDirectory()) {
       console.log("Download File exists");
@@ -42,7 +39,6 @@ try {
 catch (e) {
     console.log(e);
 }
-
 
 export var mainWindow;
 export var createWindow = function(url) {
@@ -76,10 +72,7 @@ mainWindow.webContents.on('did-finish-load', () => {
   });
 };
 
-
-
-
-var setApplicationMenu = function () {
+var setApplicationMenu = () => {
     //var menus = [editMenuTemplate];
     var menus = [];
     if (env.name !== 'production') {
@@ -88,7 +81,7 @@ var setApplicationMenu = function () {
     }
 };
 
-var setTrayMenu = function(){
+var setTrayMenu = () => {
   // Determine appropriate icon for platform
   var imageFolder = __dirname +'/browser/assets/img/logo-tray@2x.png';
   var trayImage;
@@ -100,7 +93,6 @@ var setTrayMenu = function(){
   }
 
   var trayMenu = new Tray(trayImage);
-
   var contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
 
   trayMenu.setToolTip('This is my application.')
@@ -111,7 +103,7 @@ var setTrayMenu = function(){
   }
 }
 
-var rmDir = function(){
+var rmDir = () =>{
 try {
      var files = fs.readdirSync(process.env.DOWNLOAD_PATH);
   }catch(e) {
@@ -130,7 +122,6 @@ try {
    }
  }
  fs.rmdirSync(process.env.DOWNLOAD_PATH);
-
 }
 
 // Save userData in separate folders for each environment.
@@ -141,7 +132,7 @@ if (env.name !== 'production') {
     app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
 
-app.on('ready', function () {
+app.on('ready', () => {
     setApplicationMenu();
     setTrayMenu();
     createWindow('file://' + __dirname + '/browser/index.html');

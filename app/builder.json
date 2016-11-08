@@ -3,10 +3,10 @@
     "title": "qmovies",
     "background": "assets/osx/background.png",
     "icon": "assets/img/logo.icns",
-    "icon-size": 128    
+    "icon-size": 128
   },
   "win" : {
-    "title" : "EA Todo",
+    "title" : "Qmovies",
     "icon" : "assets/win/logo.ico"
   }
 }
