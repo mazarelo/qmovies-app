@@ -16,13 +16,7 @@ import env from './env';
 
 const platform = require('os').platform();
 /* DEFINE TEMP Folder */
-if (process.platform != 'darwin') {
-  process.env.DOWNLOAD_PATH = `%APPDATA%/${app.getName()}/downloads`;
-  console.log(process.env.DOWNLOAD_PATH);
-}else{
-  process.env.DOWNLOAD_PATH = `${process.env.HOME}/Library/Application Support/${app.getName()}/downloads`;
-  console.log(process.env.DOWNLOAD_PATH);
-}
+process.env.DOWNLOAD_PATH =  process.platform != 'darwin' ? `${process.env.APPDATA}\${app.getName()}\downloads` : `${process.env.HOME}\Library\Application Support\${app.getName()}\downloads`
 
 try {
     // Query the entry
