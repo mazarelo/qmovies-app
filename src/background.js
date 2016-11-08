@@ -16,8 +16,8 @@ import env from './env';
 
 const platform = require('os').platform();
 /* DEFINE TEMP Folder */
-process.env.DOWNLOAD_PATH =  process.platform != 'darwin' ? `${process.env.APPDATA}\${app.getName()}\downloads` : `${process.env.HOME}\Library\Application Support\${app.getName()}\downloads`
-
+process.env.DOWNLOAD_PATH =  (process.platform != 'darwin') ? `${process.env.APPDATA}/${app.getName()}/downloads` : `${process.env.HOME}/Library/Application Support/${app.getName()}/downloads`
+console.log(process.env.DOWNLOAD_PATH);
 try {
     // Query the entry
     var stats = fs.lstatSync(process.env.DOWNLOAD_PATH);
