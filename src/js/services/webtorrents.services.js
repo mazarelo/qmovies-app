@@ -5,6 +5,7 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
   var once = false;
   var deferred = $q.defer();
+  var final = [];
 
   self.play = function(magnet){
 
@@ -28,8 +29,8 @@ myApp.service('webTorrent', function(folder ,video , $q) {
    };
 
    self.filterFiles = function( torrent ){
+
       document.querySelector("#video-placeholder").innerHTML = "";
-      var final = [];
       torrent.files.forEach(function(element, index){
         var currentTorrent = torrent.files[index];
         if(currentTorrent['length'] <= 100000000){

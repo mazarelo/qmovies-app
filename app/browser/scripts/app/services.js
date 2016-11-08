@@ -481,6 +481,7 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
   var once = false;
   var deferred = $q.defer();
+  var final = [];
 
   self.play = function(magnet){
 
@@ -498,14 +499,14 @@ myApp.service('webTorrent', function(folder ,video , $q) {
     client.add( magnetURI , {path: process.env.DOWNLOAD_PATH } , function(torrent){
       self.filterFiles(torrent);
       torrent.on('download', self.onDownload(torrent , final) );
-    } );
+    });
 
     return deferred.promise;
    };
 
    self.filterFiles = function( torrent ){
+
       document.querySelector("#video-placeholder").innerHTML = "";
-      var final = [];
       torrent.files.forEach(function(element, index){
         var currentTorrent = torrent.files[index];
         if(currentTorrent['length'] <= 100000000){
