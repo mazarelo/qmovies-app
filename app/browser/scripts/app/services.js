@@ -174,6 +174,37 @@ myApp.service('eztv', function( $q , $routeParams ){
     */
 });
 
+/* GET LIST OF SERIES */
+//https://eztvapi.ml/shows/{page}
+
+/* GET SERIE ID TORRENTS AND INFO */
+//https://eztvapi.ml/show/{serieId}
+
+
+
+myApp.service('eztvapi', function($http , $routeParams ){
+
+  const self = this;
+  const apiUrl = "https://eztvapi.ml";
+
+  self.getTotalPages = function(){
+    return $http.get(`${apiUrl}/shows`);
+  }
+
+  self.getFeed = function(page){
+    return $http.get(`${apiUrl}/shows/${page}`);
+  };
+
+  self.getSerieInfo = function(){
+    return $http.get(`${apiUrl}/show/${$routeParams.tvId}`);
+  }
+
+  self.getSerieSeason = function(){
+
+  }
+  
+});
+
 myApp.service('folder', function($q){
   const self = this;
   const fs = require('fs');
@@ -644,8 +675,8 @@ myApp.service('window', function() {
 
 myApp.service('yify', function($http){
 
-  const listMovies = "http://yify.is/api/v2/list_movies.json";
-  const movieDetails = "http://yify.is/api/v2/movie_details.json";
+  const listMovies = "https://yts.ag/api/v2/list_movies.json";
+  const movieDetails = "https://yts.ag/api/v2/movie_details.json";
 
   this.listMovies = function( sortBy, genre ){
     return $http.get(`${listMovies}?&genre=${genre}&sort_by=${sortBy}&limit=50`);
@@ -655,9 +686,8 @@ myApp.service('yify', function($http){
     return $http.get(`${listMovies}?query_term=${query}`);
   }
 
-
   this.movieDetails = function( id ){
-    return $http.get(`${movieDetails}?movie_id=${id}&with_images=true&with_cast=true`);
+    return $http.get(`${movieDetails}?movie_id=${id}`);
   }
 
 });
