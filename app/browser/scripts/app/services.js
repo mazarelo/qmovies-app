@@ -124,66 +124,13 @@ myApp.service('dates', function(){
     }
 });
 
-myApp.service('eztv', function( $q , $routeParams ){
-  const EZTV = require("eztv");
-  
-  this.query = function(title , season=1 , episode=1 , imdbId){
-    var deferred = $q.defer();
-    EZTV.getShows({query: 'big bang'}, function(error, results) {
-      deferred.resolve(results);
-      console.log(results);
-      console.log(error);
-      
-    });
-    return deferred.promise;
-  }
-    /*
-    let eztv = new EZTV();
-    var deferred = $q.defer();
-    const tvSerie = {
-      name:title,
-      ep: episode,
-      se: season
-    }
-
-    eztv.getAllShows().then(res => {
-      const data = res;
-      console.log("data:");
-      console.table(data);
-      var result;
-
-      for( var i = 0; i < data.length; i++ ) {
-        if( data[i].show.indexOf(tvSerie.name) > -1 ) {
-            result = data[i];
-            break;
-        }
-      }
-
-      eztv.getShowData(result).then(res => {
-        try{
-          res.episodes[tvSerie.se];
-          deferred.resolve(res.episodes[tvSerie.se.toString()][tvSerie.ep.toString()]);
-        }catch(err){
-            console.warn(err);
-        }
-      });
-
-    }).catch(err => console.error(err));
-      return deferred.promise;
-    };
-    */
-});
-
 /* GET LIST OF SERIES */
 //https://eztvapi.ml/shows/{page}
 
 /* GET SERIE ID TORRENTS AND INFO */
 //https://eztvapi.ml/show/{serieId}
 
-
-
 myApp.service('eztvapi', function($http , $routeParams ){
-
   const self = this;
   const apiUrl = "https://eztvapi.ml";
 
@@ -192,17 +139,18 @@ myApp.service('eztvapi', function($http , $routeParams ){
   }
 
   self.getFeed = function(page){
+    //return $http.get("./json/eztv-feed.json")
     return $http.get(`${apiUrl}/shows/${page}`);
   };
 
-  self.getSerieInfo = function(){
-    return $http.get(`${apiUrl}/show/${$routeParams.tvId}`);
+  self.getSerieInfo = function(imdbId){
+    return $http.get(`${apiUrl}/show/${imdbId}`);
   }
 
   self.getSerieSeason = function(){
 
   }
-  
+
 });
 
 myApp.service('folder', function($q){
@@ -403,11 +351,11 @@ const FindTorrent = require('machinepack-findtorrent');
 
 
 myApp.service('qmovies', function($http , $routeParams ){
-  this.getTvTorrents = function(title , season=1 , episode=1){
-    season = (season <10 ? "0"+season : season );
-    episode = (episode <10 ? "0"+episode : episode );
-    console.log(`http://qmovies.eu/app/functions/series/getEpisodeTorrentsScrapper.php?title=${title} S${season}E${episode}`);
-    return $http.get(`http://qmovies.eu/app/functions/series/getEpisodeTorrentsScrapper.php?title=${title} S${season}E${episode}`);
+  this.getTvEpisodeLinks = function(title){
+    var season = ($routeParams.season <10 ? "0"+$routeParams.season : $routeParams.season );
+    var episode = ($routeParams.episode <10 ? "0"+$routeParams.episode : $routeParams.season );
+    console.log(`http://qmovies.eu/app/functions/series/getEpisodeLinksScrapper.php?title=${title}&season=${season}&episode=${episode}`);
+    return $http.get(`http://qmovies.eu/app/functions/series/getEpisodeLinksScrapper.php?title=${title}&season=${season}&episode=${episode}`);
   };
 });
 
@@ -427,6 +375,10 @@ myApp.service('tmdb', function($http , folder , $routeParams){
   this.tvFeed = function(type , page){
     console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
     return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
+  }
+
+  this.getTvSerieExternalIds = function(){
+    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids`);
   }
 
   this.tvSerie = function(){
@@ -544,11 +496,9 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
         if(Math.floor( torrent.progress*100) >= 1){
           if(once) return;
-
           once = true;
 
           final[0].appendTo("#video-placeholder",{ maxBlobLength: 2* 1000 * 1000 * 1000 }, function(err, elem) {
-            console.log(err);
             document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
           });
 
@@ -675,8 +625,8 @@ myApp.service('window', function() {
 
 myApp.service('yify', function($http){
 
-  const listMovies = "https://yts.ag/api/v2/list_movies.json";
-  const movieDetails = "https://yts.ag/api/v2/movie_details.json";
+  const listMovies = "https://yts.ph/api/v2/list_movies.json";
+  const movieDetails = "https://yts.ph/api/v2/movie_details.json";
 
   this.listMovies = function( sortBy, genre ){
     return $http.get(`${listMovies}?&genre=${genre}&sort_by=${sortBy}&limit=50`);

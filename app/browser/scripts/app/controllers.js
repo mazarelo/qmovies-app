@@ -112,12 +112,12 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.movieDetails = function(){
     self.loading = true;
     yify.movieDetails($routeParams.movieId).then(function(response){
-      if(Array.isArray(response.data.data.movie.torrents)){
-        self.torrents = response.data.data.movie.torrents;
+      if(Array.isArray(response.data.data.torrents.torrent)){
+        self.torrents = response.data.data.torrents.torrent;
         self.download = self.torrents[0].url;
         console.log(response);
       }else{
-        self.torrents = response.data.data.movie.torrents;
+        self.torrents = response.data.data.torrents.torrent;
         console.log(response);
       }
       self.info = response.data.data;
@@ -128,7 +128,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 });
 
 
-myApp.controller("TvController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , webTorrent , dates , $rootScope) {
+myApp.controller("TvController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , eztvapi , webTorrent , dates , $rootScope) {
   const self = this;
   self.page = 1;
   self.requestRunning = false;
@@ -229,14 +229,31 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
 
     $event.target.classList.toggle("active");
     */
+    /*
+    eztvapi.getFeed(self.page).then(function(response){
+      var results = response.data;
+      var feed= {
+         data:{
+           results:[]
+         }
+       };
+
+      //console.log(response.data);
+      results.forEach(function(item){
+        feed.data.results.push({id :item._id, year:item.year , name:item.title, vote_average :0,backdrop_path:item.images.poster});
+      });
+      self.dataResults = feed.data.results;
+      console.log(response);
+      self.loading = false;
+      self.requestRunning = false;
+    });
+    */
     tmdb.tvFeed(self.list.value , self.page).then(function(response){
       self.dataResults = response.data.results;
       self.loading = false;
       self.requestRunning = false;
-      /* Create file for each json request */
-      folder.createJsonFile( "downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+      folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
     });
-
   }
 
   self.newWindow = function(url){
@@ -389,12 +406,52 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
 
   }
 
+  self.extractDomain = function(url) {
+      var domain;
+      //find & remove protocol (http, ftp, etc.) and get domain
+      if (url.indexOf("://") > -1) {
+          domain = url.split('/')[2];
+      }
+      else {
+          domain = url.split('/')[0];
+      }
+
+      if(url.indexOf("www.") > -1){
+        domain = domain.split('www.')[1];
+      }
+      //find & remove port number
+      domain = domain.split(':')[0];
+      domain = domain.split('.')[0];
+      return domain;
+  }
+
   self.loadTorrents = function(){
     self.loading = true;
     tmdb.tvSerie().then(function(response){
       self.info = response.data;
       self.imdb = self.info.external_ids.imdb_id;
+      /* query Qmovies for links */
+      qmovies.getTvEpisodeLinks(self.info.name).then(function(results){
+        var links = [];
+        console.log(results);
+        results.data.results.forEach(function(item){
+          let domainName = self.extractDomain(item);
+          links.push({ domain:domainName, url:item });
+        });
 
+        self.torrents = links;
+        self.loading = false;
+      });
+
+      /*
+      eztvapi.getSerieInfo(self.imdb).then(function(response){
+        console.log("Serie info:",response);
+        self.download = '480p';
+        self.torrents = response.data.episodes[0].torrents;
+        self.loading = false;
+      });
+      */
+      /*
       eztv.query(self.info.name , $routeParams.season , $routeParams.episode , self.imdb ).then(function(data){
           self.torrents = data;
           //self.loading = false;
@@ -402,6 +459,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
           console.log(data);
           self.loading = false;
       });
+      */
 
       /*qmovies.getTvTorrents(self.info.name , $routeParams.season , $routeParams.episode ).then(function(response){
           console.log(response.data);
@@ -415,12 +473,18 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
   self.playTorrent = function(){
     self.loading = true;
     //let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
-    let hash = self.download;
+    let link = self.download;
+
+    document.getElementById("player").innerHTML = `<iframe src="${link}" width="100%" frameborder="0" allowfullscreen></iframe>`;
+    self.loading = false;
+    document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
+    document.querySelector(".info-content").style.visibility = "hidden";
     //hash = hash.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i);
-    webTorrent.play(hash).then(function(response){
+  /*  webTorrent.play(hash).then(function(response){
       $scope.Title = response;
       self.loading = false;
     });
+    */
   };
 
 });

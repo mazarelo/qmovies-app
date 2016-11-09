@@ -37,11 +37,9 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
         if(Math.floor( torrent.progress*100) >= 1){
           if(once) return;
-
           once = true;
 
           final[0].appendTo("#video-placeholder",{ maxBlobLength: 2* 1000 * 1000 * 1000 }, function(err, elem) {
-            console.log(err);
             document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
           });
 

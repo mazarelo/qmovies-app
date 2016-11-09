@@ -31,12 +31,12 @@
       <div class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
         <a href="#/tv/{{serie.id}}/season/1">
           <div class="backdrop"></div>
-          <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
+          <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000/{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
           </div>
           <h4 class="name">{{serie.name}}</h4>
           <header class="ft-title">
             <figure class="ft-rating">
-              <h4>{{serie.name}}</h4>
+              <h4>{{serie.name}} {{serie.year}}</h4>
               <figcaption>{{serie.vote_average | number:1 }}/10</figcaption>
             </figure>
             <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->

@@ -4,10 +4,7 @@
 /* GET SERIE ID TORRENTS AND INFO */
 //https://eztvapi.ml/show/{serieId}
 
-
-
 myApp.service('eztvapi', function($http , $routeParams ){
-
   const self = this;
   const apiUrl = "https://eztvapi.ml";
 
@@ -16,15 +13,16 @@ myApp.service('eztvapi', function($http , $routeParams ){
   }
 
   self.getFeed = function(page){
+    //return $http.get("./json/eztv-feed.json")
     return $http.get(`${apiUrl}/shows/${page}`);
   };
 
-  self.getSerieInfo = function(){
-    return $http.get(`${apiUrl}/show/${$routeParams.tvId}`);
+  self.getSerieInfo = function(imdbId){
+    return $http.get(`${apiUrl}/show/${imdbId}`);
   }
 
   self.getSerieSeason = function(){
 
   }
-  
+
 });

@@ -86,12 +86,12 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.movieDetails = function(){
     self.loading = true;
     yify.movieDetails($routeParams.movieId).then(function(response){
-      if(Array.isArray(response.data.data.movie.torrents)){
-        self.torrents = response.data.data.movie.torrents;
+      if(Array.isArray(response.data.data.torrents.torrent)){
+        self.torrents = response.data.data.torrents.torrent;
         self.download = self.torrents[0].url;
         console.log(response);
       }else{
-        self.torrents = response.data.data.movie.torrents;
+        self.torrents = response.data.data.torrents.torrent;
         console.log(response);
       }
       self.info = response.data.data;

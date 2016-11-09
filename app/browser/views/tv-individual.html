@@ -7,12 +7,16 @@
   <h4>{{tv.info.name}} ({{tv.info.last_air_date}})</h4>
 </div>-->
 <section id="content-trigger" class="main-content contentFull" ng-init="tv.loadTorrents()">
-  <div ng-class="tv.loading ? 'loading-spinner' : ''" class="spinner"></div>
-  <div id="torrent-wrapper" class="torrent-info ng-hide">
-    <span id="torrent-time"></span>
-    <span id="torrent-downloaded">0</span> of <span id="">100%</span><br>
-    <span id="torrent-download-speed"></span>
-    <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
+  <div ng-class="tv.loading ? 'loading-spinner' : ''" class="spinner">
+    <div class="middle-wrapper">
+      <div id="torrent-wrapper" class="torrent-info ng-hide">
+        <h4>Buffering...</h4>
+        <span id="torrent-time"></span>
+        <!--<span id="torrent-downloaded">0</span> of <span id="">100%</span><br>-->
+        <span id="torrent-download-speed"></span>
+        <progress id="torrent-progress" max="100" value="0" style="width:100%;"></progress>
+      </div>
+    </div>
   </div>
   <div id="player" ng-controller="VideoController as video">
     <div id="video-placeholder" ng-click="video.checkStatus" class="blur" style="background: url(http://image.tmdb.org/t/p/w1920{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;">
@@ -20,15 +24,9 @@
   </div>
   <div class="info-content">
     <div class="play-btn">
-        <div class="loading ng-hide-animate ng-hide">
-          <figure>
-              <img src="assets/img/global/loading.svg" width="50">
-          </figure>
-        </div>
         <div class="quality ng-hide-animate">
           <select ng-model="tv.download">
-            <option value="" selected="selected">Quality</option>
-            <option ng-repeat="(key, val) in tv.torrents" ng-value="tv.torrents[key].url">{{key}}()</option>
+            <option ng-repeat="link in tv.torrents" ng-value="link.url">{{link.domain}}</option>
           </select>
           <button ng-click="tv.playTorrent()">Play</button>
         </div>

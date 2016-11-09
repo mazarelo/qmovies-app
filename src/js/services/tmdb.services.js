@@ -15,6 +15,10 @@ myApp.service('tmdb', function($http , folder , $routeParams){
     return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
   }
 
+  this.getTvSerieExternalIds = function(){
+    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids`);
+  }
+
   this.tvSerie = function(){
     console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
     return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
