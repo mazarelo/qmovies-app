@@ -6,7 +6,7 @@
 
 <section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed()">
   <div ng-class="tvFeed.loading ? 'loading-spinner' : ''" class="spinner"></div>
-  <div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{tvFeed.dataResults[0].backdrop_path}}) no-repeat center center;background-size: cover; opacity:0.3;">
+  <div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{tvFeed.dataResults[0].backdrop_path}}) no-repeat center center;background-size: cover; opacity:0.3;-webkit-filter: blur(10px)">
   </div>
   <div class="feed-search">
     <!-- search bar -->
@@ -27,8 +27,17 @@
     </div>
     <!-- FEED -->
     <div id="feed-ajax" class="feed-module"  scrolly>
+      <!-- IF NO RESULTS IN LIST -->
+      <div class="no-results" ng-if="tvFeed.dataResults.length == 0">
+        <div class="nr-center">
+          <figure class="nr-img">
+            <img src="assets/img/internet.svg">
+          </figure>
+          <h3 class="nr-err-title">Failed to connect<br><a href="" class="refresh">Retry</a></h3>
+        </div>
+      </div>
       <!-- feed template -->
-      <div class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
+      <div ng-if="tvFeed.dataResults.length > 0" class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
         <a href="#/tv/{{serie.id}}/season/1">
           <div class="backdrop"></div>
           <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000/{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">

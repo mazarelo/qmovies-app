@@ -6,7 +6,7 @@
 
 <section scroll id="content-trigger" class="main-content contentFull" ng-init="movieFeed.feedDetails()">
   <div ng-class="movieFeed.loading ? 'loading-spinner' : ''" class="spinner"></div>
-  <div class="background-feed" style="background: url({{movieFeed.dataResults[0].background_image}}) no-repeat center center;background-size: cover; opacity:0.3;"></div>
+  <div class="background-feed" style="background: url({{movieFeed.dataResults[0].medium_cover_image}}) no-repeat center center;background-size: cover; opacity:0.3;-webkit-filter: blur(10px)"></div>
   <!-- search by categories etc etc -->
   <div class="feed-search">
     <!-- search bar -->
@@ -27,9 +27,19 @@
       </li>
     </ul>
   </div>
-  <div id="feed-ajax" class="feed-module"  scrolly>
+
+  <div id="feed-ajax" class="feed-module" scrolly>
+    <!-- IF NO RESULTS IN LIST -->
+    <div class="no-results" ng-if="movieFeed.dataResults.length == 0">
+      <div class="nr-center">
+        <figure class="nr-img">
+          <img src="assets/img/internet.svg">
+        </figure>
+        <h3 class="nr-err-title">{{movieFeed.errDescription}}<br><a ng-click="movieFeed.reloadPage" class="refresh">Retry</a></h3>
+      </div>
+    </div>
     <!-- FEED -->
-    <div class="feed-template index-template-feed" ng-repeat="movie in movieFeed.dataResults track by $index">
+    <div ng-if="movieFeed.dataResults.length > 0" class="feed-template index-template-feed" ng-repeat="movie in movieFeed.dataResults track by $index">
       <a href="#/movies/{{movie.id}}">
         <div class="backdrop"></div>
         <div class="ft-cover" style="background: url({{movie.medium_cover_image}}) no-repeat center center;background-size: cover;"></div>

@@ -123,6 +123,10 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.loading = false;
       self.requestRunning = false;
       folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+    }, function(err){
+      console.log("error", err);
+      self.dataResults = "";
+      self.loading = false;
     });
   }
 
@@ -151,6 +155,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
           self.requestRunning = false;
           self.loading = false;
         };
+      }, function(err){
+        console.log("error", err);
+        self.loading = false;
       });
     }else if(self.currentSearch = "discover"){
       tmdb.tvDiscover(`sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
@@ -163,6 +170,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
           self.requestRunning = false;
           self.loading = false;
         }
+      }, function(err){
+        console.log("error", err);
+        self.loading = false;
       });
     }else if(self.currentSearch == "search"){
       tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
@@ -191,6 +201,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.dataResults = response.data.results;
       self.requestRunning = false;
       self.loading = false;
+    }, function(err){
+      console.log("error", err);
+      self.loading = false;
     });
   }
 
@@ -202,6 +215,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       window.scrollToTop(1000);
       tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
         self.dataResults = response.data.results;
+        self.loading = false;
+      }, function(err){
+        console.log("error", err);
         self.loading = false;
       });
     }else if(self.query.length <=3){

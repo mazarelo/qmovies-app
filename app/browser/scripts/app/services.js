@@ -637,7 +637,7 @@ myApp.service('yify', function($http){
   }
 
   this.movieDetails = function( id ){
-    return $http.get(`${movieDetails}?movie_id=${id}`);
+    return $http.get(`${movieDetails}?movie_id=${id}&with_images=true`);
   }
 
 });

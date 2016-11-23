@@ -24,12 +24,13 @@ myApp.controller("MenuController" , function( $scope, window ) {
   }
 });
 
-myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window ) {
+myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route) {
   const self = this;
   self.download;
   self.loading = true;
   self.torrents;
   self.requestRunning = false;
+  self.errDescription = "Failed to connect";
   self.currentSearch = "getFeed";
   self.sortBy = {
     value: "latest",
@@ -84,9 +85,17 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
      yify.querySearch(self.query).then(function(response){
         self.dataResults = response.data.data.movies;
         self.loading = false;
+     }, function(err){
+       console.log("error", err);
+       self.errDescription = "Failed to connect";
+       self.loading = false;
      });
    }
 
+   self.reloadPage = function(){
+     $route.reload();
+   }
+   /* main feed */
   self.feedDetails = function(){
     self.loading = true;
     yify.listMovies( self.sortBy.value , self.genre.value, self.query).then(function(response){
@@ -96,6 +105,10 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
       }catch(err){
         console.log(err);
       }
+      self.loading = false;
+    }, function(err){
+      console.log("error", err);
+      self.dataResults = "";
       self.loading = false;
     });
   }
@@ -112,14 +125,26 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.movieDetails = function(){
     self.loading = true;
     yify.movieDetails($routeParams.movieId).then(function(response){
+      console.log(response);
+      /* return if no data */
+      if(!response.data) {
+        $window.history.back();
+        return;
+      }
       if(Array.isArray(response.data.data.torrents.torrent)){
         self.torrents = response.data.data.torrents.torrent;
         self.download = self.torrents[0].url;
         console.log(response);
       }else{
-        self.torrents = response.data.data.torrents.torrent;
+        if(response.data.data.torrents.torrent.url){
+          self.torrents = [response.data.data.torrents.torrent];
+        }else{
+          self.torrents = response.data.data.torrents.torrent;
+        }
         console.log(response);
       }
+      console.log("Movie",response.data.data.torrents.torrent.url);
+
       self.info = response.data.data;
       self.loading = false;
     });
@@ -253,6 +278,10 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.loading = false;
       self.requestRunning = false;
       folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+    }, function(err){
+      console.log("error", err);
+      self.dataResults = "";
+      self.loading = false;
     });
   }
 
@@ -281,6 +310,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
           self.requestRunning = false;
           self.loading = false;
         };
+      }, function(err){
+        console.log("error", err);
+        self.loading = false;
       });
     }else if(self.currentSearch = "discover"){
       tmdb.tvDiscover(`sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
@@ -293,6 +325,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
           self.requestRunning = false;
           self.loading = false;
         }
+      }, function(err){
+        console.log("error", err);
+        self.loading = false;
       });
     }else if(self.currentSearch == "search"){
       tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
@@ -321,6 +356,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.dataResults = response.data.results;
       self.requestRunning = false;
       self.loading = false;
+    }, function(err){
+      console.log("error", err);
+      self.loading = false;
     });
   }
 
@@ -332,6 +370,9 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       window.scrollToTop(1000);
       tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
         self.dataResults = response.data.results;
+        self.loading = false;
+      }, function(err){
+        console.log("error", err);
         self.loading = false;
       });
     }else if(self.query.length <=3){
