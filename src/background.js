@@ -39,14 +39,15 @@ export var createWindow = function(url) {
   var startTime = Date.now();
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 800,
+    width: 1024,
+    height: 576,
     frame:true,
-     backgroundColor: '#222',
-     show: false,
-     maximizable:true,
-     resizable: true,
-     darkTheme:true
+    backgroundColor: '#222',
+    show: false,
+    maximizable:true,
+    resizable: true,
+    darkTheme:true,
+    alwaysOnTop:false
     });
   // and load the index.html of the app.
   mainWindow.loadURL(url);

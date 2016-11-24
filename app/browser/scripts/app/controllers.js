@@ -84,17 +84,19 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
      self.loading = true;
      yify.querySearch(self.query).then(function(response){
         self.dataResults = response.data.data.movies;
-        self.loading = false;
      }, function(err){
        console.log("error", err);
-       self.errDescription = "Failed to connect";
-       self.loading = false;
+       if(err.status == -1){
+         self.errDescription = "Failed to connect";
+       }
      });
+     self.loading = false;
    }
 
    self.reloadPage = function(){
      $route.reload();
    }
+
    /* main feed */
   self.feedDetails = function(){
     self.loading = true;
@@ -105,12 +107,11 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
       }catch(err){
         console.log(err);
       }
-      self.loading = false;
     }, function(err){
       console.log("error", err);
       self.dataResults = "";
-      self.loading = false;
     });
+    self.loading = false;
   }
 
   self.playTorrent = function(){
@@ -136,14 +137,9 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
         self.download = self.torrents[0].url;
         console.log(response);
       }else{
-        if(response.data.data.torrents.torrent.url){
-          self.torrents = [response.data.data.torrents.torrent];
-        }else{
-          self.torrents = response.data.data.torrents.torrent;
-        }
-        console.log(response);
+        /* If there is 1 or more torrents problem fix */
+        self.torrents = ( response.data.data.torrents.torrent.url ? [response.data.data.torrents.torrent] :response.data.data.torrents.torrent);
       }
-      console.log("Movie",response.data.data.torrents.torrent.url);
 
       self.info = response.data.data;
       self.loading = false;

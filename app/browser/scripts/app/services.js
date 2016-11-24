@@ -491,10 +491,13 @@ myApp.service('webTorrent', function(folder ,video , $q) {
         const timeRemaining = document.getElementById("torrent-time");
         const videoPlayer = document.querySelector("#video-placeholder");
 
-        torrentProgress.value = Math.floor( torrent.progress*100);
-        timeRemaining.textContent = video.milisecondsToReadable(torrent.timeRemaining);
+        /* torrent info */
+        torrentDownloadSpeed.textContent = self.kbsToReadable( Math.floor( torrent.downloadSpeed) , true);
+        torrentProgress.value = Math.floor( torrent.progress/100 );
+        timeRemaining.textContent = video.milisecondsToReadable( torrent.timeRemaining/100 );
+        /* end */
 
-        if(Math.floor( torrent.progress*100) >= 1){
+        if(Math.floor( torrent.progress*100) >= 2){
           if(once) return;
           once = true;
 
@@ -512,6 +515,22 @@ myApp.service('webTorrent', function(folder ,video , $q) {
     });
    }
 
+   self.kbsToReadable = function(bytes, si){
+    var thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = si
+        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u]+' p/s';
+   }
+
    self.filterFiles = function( torrent ){
       document.querySelector("#video-placeholder").innerHTML = "";
       torrent.files.forEach(function(element, index){
@@ -524,34 +543,6 @@ myApp.service('webTorrent', function(folder ,video , $q) {
       });
 
       return torrent;
-   }
-
-   /* on download data */
-   self.onDownload = function(torrent){
-      const torrentProgress = document.getElementById("torrent-progress");
-      const timeRemaining = document.getElementById("torrent-time");
-      const videoPlayer = document.querySelector("#video-placeholder");
-
-      torrentProgress.value = Math.floor( torrent.progress*100);
-      timeRemaining.textContent = video.milisecondsToReadable(torrent.timeRemaining);
-
-      if(Math.floor( torrent.progress*100) >= 1){
-        if(once) return;
-
-        once = true;
-
-        final[0].appendTo("#video-placeholder",{ maxBlobLength: 2* 1000 * 1000 * 1000 }, function(err, elem) {
-          console.log(err);
-          document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
-        });
-
-        videoPlayer.className = "";
-        videoPlayer.removeAttribute("style");
-        document.querySelector(".info-content").style.visibility = "hidden";
-        let torrentName = torrent.name;
-       return deferred.resolve(torrentName);
-      }
-
    }
 });
 

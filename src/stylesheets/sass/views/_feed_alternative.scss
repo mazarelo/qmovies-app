@@ -20,16 +20,22 @@
       text-transform: uppercase;
       text-align: center;
       opacity:0.3;
+      transition:opacity 0.3s ease-out;
+      
+      &:hover{
+        opacity:0.5;
+      }
+
       .refresh{
         font-size:70%;
         color:$red;
+        cursor:pointer;
       }
     }
     figure{
       width:100px;
       margin:0 auto 4% auto;
       opacity:0.1;
-
     }
   }
 }
