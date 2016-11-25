@@ -138,7 +138,9 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
+  /* delete Download folder
     rmDir(process.env.DOWNLOAD_PATH);
+  */
     if (platform !== 'darwin') {
       app.quit();
     }

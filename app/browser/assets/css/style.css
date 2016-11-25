@@ -1152,7 +1152,7 @@ a {
       width: 100%; }
     .info-content .info-data .under-layer {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 35px);
       background-color: rgba(0, 0, 0, 0.5); }
       .info-content .info-data .under-layer .data-poster, .info-content .info-data .under-layer .episode-wrapper {
         width: 49%;
@@ -1164,7 +1164,8 @@ a {
         padding: 3% 0; }
         .info-content .info-data .under-layer .episode-wrapper .season-holder {
           width: 10%;
-          display: inline-block; }
+          display: inline-block;
+          border-right: 2px solid rgba(255, 255, 255, 0.3); }
           .info-content .info-data .under-layer .episode-wrapper .season-holder .season-btn {
             width: 100%;
             display: block; }

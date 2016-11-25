@@ -274,8 +274,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
     self.loading = true;
     tmdb.tvSerie().then(function(response){
       self.info = response.data;
-      console.log("tv data ");
-      console.log(self.info);
+      console.log("tv data:", self.info);
       self.season = 1;
       self.imdb = self.info.external_ids.imdb_id;
       self.episode = 1;
