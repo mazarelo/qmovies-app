@@ -51,11 +51,10 @@
             </button>
           </div>
           <div class="episode-holder">
-            <a href="#/tv/{{tv.tvId}}/season/{{tv.season}}/episode/{{tv.episode}}">
-              <button 
-                ng-repeat="episode in tv.seasonData.episodes track by episode.episode_number"
-                class="episode-btn"
-                ng-if="tv.dateCheck(episode.air_date)">
+            <a href="#/tv/{{tv.imdb}}/season/{{tv.season}}/episode/{{tv.episode}}"
+              ng-repeat="episode in tv.seasonData.episodes track by episode.episode_number"
+              ng-if="tv.dateCheck(episode.air_date)">
+              <button class="episode-btn">
                 <span class="epi-index-roman">{{episode.episode_number | romanize}}</span>
                 {{episode.name}}
               </button>

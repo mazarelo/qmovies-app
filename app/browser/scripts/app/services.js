@@ -143,8 +143,9 @@ myApp.service('eztvapi', function($http , $routeParams ){
     return $http.get(`${apiUrl}/shows/${page}`);
   };
 
-  self.getSerieInfo = function(imdbId){
-    return $http.get(`${apiUrl}/show/${imdbId}`);
+  self.getSerieInfo = function(){
+    console.log(`${apiUrl}/show/${$routeParams.tvId}`);
+    return $http.get(`${apiUrl}/show/${$routeParams.tvId}`);
   }
 
   self.getSerieSeason = function(){
@@ -349,6 +350,65 @@ const FindTorrent = require('machinepack-findtorrent');
    
 });
 
+'use strict';
+/*
+myApp.service('nightmare', function($http , $routeParams ){
+  const self = this;
+  var url = {
+    "movie": "https://movies.com",
+    "tv": "https://another.com"
+  }
+var Nightmare = require('nightmare'),
+    nightmare = Nightmare();
+
+    self.getTvSeriesLinks = function(){
+      var deferred = $q.defer();
+*/
+var jquery = require('jquery'),
+    Nightmare = require('nightmare'),
+    nightmare = Nightmare();
+
+var url = "https://craig.co.uk";
+
+var city = process.argv[2];
+nightmare.goto('http://watchepisodes.cc/american_horror_story_s1s11/')
+.wait()
+.evaluate(function(){
+  /* links */
+  var results = [];
+  var elements = document.querySelectorAll(".table-info-links .btn-bordered");
+
+  elements.forEach(function(item) {
+    var single = {};
+    single['title'] = item.textContent;
+    single['link'] = item.href;
+    results.push(single);
+  });
+
+  return results;
+})
+.end()
+.then(function(result){
+  console.log(result);
+  for(var single in result){
+    console.log(result[single].title);
+    console.log(result[single].link);
+    console.log("\n");
+  }
+
+  //deferred.resolve(result);
+});
+      /*
+      return deferred.promise;
+    }
+
+    self.getMoviesLinks = function(){
+
+    }
+
+});
+*/
+
 
 myApp.service('qmovies', function($http , $routeParams ){
   this.getTvEpisodeLinks = function(title){
@@ -372,6 +432,17 @@ myApp.service('tmdb', function($http , folder , $routeParams){
     return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
   }
 
+  this.searchByTmbdId = function(id){
+    console.log(`${url}/tv/${id}?${apiKey}`);
+    return $http.get(`${url}/tv/${id}?${apiKey}`);
+
+  }
+
+  this.searchByImdbId = function(imdbId){
+    console.log(`${url}/find/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+    return $http.get(`${url}/find/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+  }
+
   this.tvFeed = function(type , page){
     console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
     return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
@@ -382,13 +453,19 @@ myApp.service('tmdb', function($http , folder , $routeParams){
   }
 
   this.tvSerie = function(){
+    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+  }
+
+/*
+  this.tvSerie = function(){
     console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
     return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
   }
-
-  this.tvSeason = function(season = $routeParams.season){
-    console.log(`${url}/tv/${$routeParams.tvId}/season/${$routeParams.season}?${apiKey}`);
-    return $http.get(`${url}/tv/${$routeParams.tvId}/season/${season}?${apiKey}`);
+*/
+  this.tvSeason = function(id ,season = $routeParams.season){
+    console.log(`${url}/tv/${id}/season/${$routeParams.season}?${apiKey}`);
+    return $http.get(`${url}/tv/${id}/season/${season}?${apiKey}`);
   }
 
   this.tvEpisode = function(){

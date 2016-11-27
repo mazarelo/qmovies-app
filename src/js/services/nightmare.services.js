@@ -19,17 +19,20 @@ var jquery = require('jquery'),
 var url = "https://craig.co.uk";
 
 var city = process.argv[2];
-nightmare.goto('http://'+city+'.craiglist.org/search/cpg?is_paid=yes&postedToday=1')
-.wait(2000)
+nightmare.goto('http://watchepisodes.cc/american_horror_story_s1s11/')
+.wait()
 .evaluate(function(){
   /* links */
   var results = [];
-  $('.result-image').each(function(){
-    let item= {};
-    item['title'] = $(this).text();
-    item['link'] = $(this).attr("href");
-    results.push(item);
+  var elements = document.querySelectorAll(".table-info-links .btn-bordered");
+
+  elements.forEach(function(item) {
+    var single = {};
+    single['title'] = item.textContent;
+    single['link'] = item.href;
+    results.push(single);
   });
+
   return results;
 })
 .end()

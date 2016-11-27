@@ -6,8 +6,11 @@
 
 <section scroll id="content-trigger" class="main-content contentFull" ng-init="tvFeed.getFeed()">
   <div ng-class="tvFeed.loading ? 'loading-spinner' : ''" class="spinner"></div>
-  <div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{tvFeed.dataResults[0].backdrop_path}}) no-repeat center center;background-size: cover; opacity:0.3;-webkit-filter: blur(10px)">
-  </div>
+<!--  <div class="background-feed" style="background: url(http://image.tmdb.org/t/p/w1920{{tvFeed.dataResults[0].backdrop_path}}) no-repeat center center;background-size: cover; opacity:0.3;-webkit-filter: blur(10px)">
+</div> -->
+<div class="background-feed" style="background: url({{tvFeed.dataResults[0].images.poster}}) no-repeat center center;background-size: cover; opacity:0.3;-webkit-filter: blur(10px)">
+</div>
+
   <div class="feed-search">
     <!-- search bar -->
     <fieldset class="query-search">
@@ -38,18 +41,20 @@
       </div>
       <!-- feed template -->
       <div ng-if="tvFeed.dataResults.length > 0" class="feed-template index-template-feed" ng-repeat="serie in tvFeed.dataResults track by $index">
-        <a href="#/tv/{{serie.id}}/season/1">
+        <a href="#/tv/{{serie._id}}/season/1">
           <div class="backdrop"></div>
-          <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000/{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
-          </div>
-          <h4 class="name">{{serie.name}}</h4>
+        <!--  <div class="ft-cover" style="background: url(http://image.tmdb.org/t/p/w1000/{{serie.backdrop_path}}) no-repeat center center;background-size: cover;">
+        </div>-->
+        <div class="ft-cover" style="background: url({{serie.images.poster}}) no-repeat center center;background-size: cover;">
+        </div>
+          <h4 class="name">{{serie.title}}</h4>
           <header class="ft-title">
             <figure class="ft-rating">
-              <h4>{{serie.name}} {{serie.year}}</h4>
-              <figcaption>{{serie.vote_average | number:1 }}/10</figcaption>
+              <h4>{{serie.title}} {{serie.year}}</h4>
+              <!--<figcaption>{{serie.vote_average | number:1 }}/10</figcaption>-->
             </figure>
             <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->
-            <p>{{serie.overview | limitTo : 150 }}...</p>
+          <!--  <p>{{serie.overview | limitTo : 150 }}...</p> -->
           </header>
         </a>
       </div>

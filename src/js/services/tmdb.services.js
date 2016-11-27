@@ -10,6 +10,17 @@ myApp.service('tmdb', function($http , folder , $routeParams){
     return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
   }
 
+  this.searchByTmbdId = function(id){
+    console.log(`${url}/tv/${id}?${apiKey}`);
+    return $http.get(`${url}/tv/${id}?${apiKey}`);
+
+  }
+
+  this.searchByImdbId = function(imdbId){
+    console.log(`${url}/find/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+    return $http.get(`${url}/find/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+  }
+
   this.tvFeed = function(type , page){
     console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
     return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
@@ -20,13 +31,19 @@ myApp.service('tmdb', function($http , folder , $routeParams){
   }
 
   this.tvSerie = function(){
+    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+  }
+
+/*
+  this.tvSerie = function(){
     console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
     return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
   }
-
-  this.tvSeason = function(season = $routeParams.season){
-    console.log(`${url}/tv/${$routeParams.tvId}/season/${$routeParams.season}?${apiKey}`);
-    return $http.get(`${url}/tv/${$routeParams.tvId}/season/${season}?${apiKey}`);
+*/
+  this.tvSeason = function(id ,season = $routeParams.season){
+    console.log(`${url}/tv/${id}/season/${$routeParams.season}?${apiKey}`);
+    return $http.get(`${url}/tv/${id}/season/${season}?${apiKey}`);
   }
 
   this.tvEpisode = function(){

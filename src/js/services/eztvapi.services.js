@@ -17,8 +17,9 @@ myApp.service('eztvapi', function($http , $routeParams ){
     return $http.get(`${apiUrl}/shows/${page}`);
   };
 
-  self.getSerieInfo = function(imdbId){
-    return $http.get(`${apiUrl}/show/${imdbId}`);
+  self.getSerieInfo = function(){
+    console.log(`${apiUrl}/show/${$routeParams.tvId}`);
+    return $http.get(`${apiUrl}/show/${$routeParams.tvId}`);
   }
 
   self.getSerieSeason = function(){
