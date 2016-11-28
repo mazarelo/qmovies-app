@@ -1,3 +1,17 @@
+.main-wrapper-intro{
+    width:100%;
+    display: inline-block;
+    height:100%;
+
+    .mw-content{
+      width:calc(99% - 200px);
+      height:100%;
+      display:inline-block;
+      vertical-align: top;
+      margin:0;
+    }
+}
+
 .homepage{
   .back-btn ,.search-box-menu-top{
     display:none!important;
@@ -12,7 +26,7 @@
   height: -moz-calc(100% - 45px);
   height: calc(100% - 45px);
   */
- 
+
   height:100%;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;

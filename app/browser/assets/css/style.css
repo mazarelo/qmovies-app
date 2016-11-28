@@ -154,6 +154,32 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+.main-menu {
+  width: 200px;
+  height: 80%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1); }
+  .main-menu ul {
+    font-size: 120%;
+    padding: 0 15px; }
+    .main-menu ul li {
+      width: 100%;
+      padding: 5px 10px;
+      text-align: left; }
+    .main-menu ul .sub-menu-item {
+      opacity: 0.8; }
+    .main-menu ul .main-menu-item {
+      font-size: 100%;
+      opacity: 0.5; }
+    .main-menu ul .separate {
+      height: 1px;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+
 /* @import "global/animations"; */
 /* ==========================================================================
    Base styles: opinionated defaults
@@ -696,6 +722,17 @@ a {
    Author's custom styles
    ========================================================================== */
 /*Index page */
+.main-wrapper-intro {
+  width: 100%;
+  display: inline-block;
+  height: 100%; }
+  .main-wrapper-intro .mw-content {
+    width: calc(99% - 200px);
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0; }
+
 .homepage .back-btn, .homepage .search-box-menu-top {
   display: none !important; }
 

@@ -125,7 +125,7 @@ myApp.controller("MoviesPlayController" , function( $scope, webTorrent , yify , 
     webTorrent.stopAllTorrents();
     history.back();
   });
-  
+
   self.playTorrent = function(){
     self.loading = true;
     $scope.MovieTitle = "waiting";
@@ -452,7 +452,6 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
 
 myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , eztvapi , webTorrent , dates , $rootScope) {
   const self = this;
-
 
   /* removes torrents on exiting the window */
   $scope.$on('$locationChangeStart', function( event ) {
