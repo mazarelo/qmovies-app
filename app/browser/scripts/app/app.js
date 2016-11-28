@@ -14,5 +14,8 @@ myApp.run(function($window, $rootScope , folder) {
         $rootScope.online = true;
       });
     }, false);
-    folder.new("downloads/json");
+
+    Notification.requestPermission().then(function(result) {
+      console.log(result);
+    });
 });

@@ -1,4 +1,4 @@
-myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route) {
+myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route , notifications) {
   const self = this;
   self.download;
   self.loading = true;
@@ -56,6 +56,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 
    self.querySearch = function(){
      self.loading = true;
+   
      yify.querySearch(self.query).then(function(response){
         self.dataResults = response.data.data.movies;
      }, function(err){
@@ -74,6 +75,10 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
    /* main feed */
   self.feedDetails = function(){
     self.loading = true;
+    
+    console.log("Notifications");
+    notifications.new("theBody","theIcon","theTitle");
+
     yify.listMovies( self.sortBy.value , self.genre.value, self.query).then(function(response){
       console.log(response);
       try{
@@ -87,37 +92,5 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     });
     self.loading = false;
   }
-
-  self.playTorrent = function(){
-    self.loading = true;
-    $scope.MovieTitle = "waiting";
-    webTorrent.play(self.download).then(function(response){
-      $scope.MovieTitle = response;
-      self.loading = false;
-    });
-  };
-
-  self.movieDetails = function(){
-    self.loading = true;
-    yify.movieDetails($routeParams.movieId).then(function(response){
-      console.log(response);
-      /* return if no data */
-      if(!response.data) {
-        $window.history.back();
-        return;
-      }
-      if(Array.isArray(response.data.data.torrents.torrent)){
-        self.torrents = response.data.data.torrents.torrent;
-        self.download = self.torrents[0].url;
-        console.log(response);
-      }else{
-        /* If there is 1 or more torrents problem fix */
-        self.torrents = ( response.data.data.torrents.torrent.url ? [response.data.data.torrents.torrent] :response.data.data.torrents.torrent);
-      }
-
-      self.info = response.data.data;
-      self.loading = false;
-    });
-  };
 
 });

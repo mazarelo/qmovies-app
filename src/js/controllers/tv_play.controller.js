@@ -22,7 +22,7 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
 
     self.loadTorrents = function(){
       self.loading = true;
-
+      
       eztvapi.getSerieInfo().then(function(response){
         console.log("Eztv:",response.data);
         self.eztvData = response.data;
@@ -59,6 +59,7 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
 
   self.playTorrent = function(){
     self.loading = true;
+
     //let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
     /*
     let link = self.download;
@@ -73,6 +74,9 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
     webTorrent.play(self.download).then(function(response){
       $scope.MovieTitle = response;
       self.loading = false;
+    })
+    .then(function(){
+
     });
 
   };

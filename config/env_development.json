@@ -1,4 +1,7 @@
 {
   "name": "development",
-  "description": "Add here any environment specific stuff you like."
+  "description": "Qmovies on dev-mode",
+  "cache":false,
+  "deleteDownloadsOnExit": true,
+  "customDownloadFolder":false
 }

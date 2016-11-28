@@ -1,7 +1,7 @@
 myApp.service('folder', function($q){
   const self = this;
   const fs = require('fs');
-  const APP_FILES = process.env.APP_FILES;
+  const APP_FILES = process.env.APP_FILES+"\\jsonCache";
   
   self.new = function(name){
     console.log( APP_FILES+"/"+name );

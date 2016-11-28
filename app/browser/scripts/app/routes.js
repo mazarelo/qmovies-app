@@ -52,7 +52,7 @@ myApp.config(function($routeProvider, $locationProvider) {
   })
   .when('/movies/:movieId', {
     templateUrl: 'views/movies-individual.html',
-    controller: 'MoviesController as movie',
+    controller: 'MoviesPlayController as movie',
     resolve: {
 
     }

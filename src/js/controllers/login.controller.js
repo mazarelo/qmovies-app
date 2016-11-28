@@ -1,5 +1,5 @@
 /* login */
-myApp.controller("LoginController" , function( $scope, database ) {
+myApp.controller("LoginController" , function( $scope ) {
   const self = this;
   self.pageName = "Login";
 });

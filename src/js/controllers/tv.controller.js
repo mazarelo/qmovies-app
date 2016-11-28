@@ -105,21 +105,21 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.dataResults = response.data.results;
       self.loading = false;
       self.requestRunning = false;
-      folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+      folder.createJsonFile( "downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
     }, function(err){
       console.log("error", err);
       self.dataResults = "";
       self.loading = false;
     });
     */
-
+   
     /* USING EZTV API */
     eztvapi.getFeed(self.page).then(function(response){
       console.log("Results:",response.data);
       self.dataResults = response.data;
       self.loading = false;
       self.requestRunning = false;
-      folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+      folder.createJsonFile("tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
     }, function(err){
       console.log("error", err);
       self.dataResults = "";
@@ -148,7 +148,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
             self.dataResults.push(arrayItem);
           });
           /* saves file to disk */
-          folder.createJsonFile( "downloads/json/tvfeed-"+self.list.value, JSON.stringify( {page:self.page,results: self.dataResults }, null, 4) );
+          folder.createJsonFile( "tvfeed-"+self.list.value, JSON.stringify( {page:self.page,results: self.dataResults }, null, 4) );
           self.requestRunning = false;
           self.loading = false;
         };

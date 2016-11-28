@@ -17,23 +17,39 @@ import env from './env';
 const platform = require('os').platform();
 /* DEFINE TEMP Folder */
 process.env.APP_FILES = app.getPath('userData');
-process.env.DOWNLOAD_PATH =  `${app.getPath('userData')}/downloads`;
-console.log( app.getPath('userData'));
+process.env.DOWNLOAD_PATH =  ( env.customDownloadFolder ? end.customDownloadFolder : `${app.getPath('userData')}\\downloads` );
+
 try {
-    // Query the entry
-    var stats = fs.lstatSync(process.env.DOWNLOAD_PATH);
-    // Is it a directory?
-    if (stats.isDirectory()) {
-      console.log("Download File exists");
-    }else{
-      fs.mkdir(process.env.DOWNLOAD_PATH, function(error) {
-        console.log(error);
-      });
-    }
+  fs.access(process.env.DOWNLOAD_PATH, fs.F_OK, function(err) {
+      if (!err) {
+        console.log("Download File exists");
+      } else {
+        fs.mkdir( process.env.DOWNLOAD_PATH , function(error, status) {
+          console.log("Folder Created", process.env.DOWNLOAD_PATH );
+        });
+      }
+  });
 }
 catch (e) {
-    console.log(e);
+  console.log(e);
 }
+
+try {
+  fs.access(process.env.APP_FILES+"\\jsonCache", fs.F_OK, function(err) {
+      if (!err) {
+        console.log("Cache Folder exists");
+      } else {
+        fs.mkdir( process.env.APP_FILES+"\\jsonCache" , function(error, status) {
+          console.log("Folder Created", process.env.APP_FILES+"\\jsonCache" );
+        });
+      }
+  });
+}
+catch (e) {
+  console.log(e);
+}
+
+console.log( process.env.DOWNLOAD_PATH );
 
 export var mainWindow;
 export var createWindow = function(url) {
@@ -99,28 +115,6 @@ var setTrayMenu = () => {
   }
 }
 
-var rmDir = () =>{
-
-  try {
-     var files = fs.readdirSync(process.env.DOWNLOAD_PATH);
-  }catch(e) {
-      return;
-  }
-
- if (files.length > 0){
-   for (var i = 0; i < files.length; i++) {
-     var filePath = `${process.env.DOWNLOAD_PATH}/${files[i]}`;
-     //console.log(`File Path = ${filePath}`);
-     if ( fs.statSync(filePath).isFile() ){
-       fs.unlinkSync(filePath);
-     }else{
-       rmDir(filePath);
-     }
-   }
- }
- fs.rmdirSync(process.env.DOWNLOAD_PATH);
-}
-
 // Save userData in separate folders for each environment.
 if (env.name !== 'production') {
     var userDataPath = app.getPath('userData');
@@ -138,12 +132,25 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
-  /* delete Download folder */
-    rmDir(process.env.DOWNLOAD_PATH);
 
-    if (platform !== 'darwin') {
-      app.quit();
-    }
+  if(env.deleteDownloadsOnExit){
+    deleteFolderRecursive( process.env.DOWNLOAD_PATH ,function(err,status){
+      console.log(status);
+      console.log(err);
+    });
+  }
+
+  if(!env.cache){
+    deleteFolderRecursive( process.env.APP_FILES+"\\jsonCache" ,function(err,status){
+      console.log(status);
+      console.log(err);
+    });
+  }
+
+  if (platform !== 'darwin') {
+    app.quit();
+  }
+
 });
 
 app.on('activate', () => {
@@ -153,3 +160,22 @@ app.on('activate', () => {
     createWindow('file://' + __dirname + '/browser/index.html');
   }
 });
+
+var deleteFolderRecursive = function(path) {
+    var files = [];
+    if( fs.existsSync(path) ) {
+        files = fs.readdirSync(path);
+        files.forEach(function(file,index){
+            var curPath = path + "/" + file;
+            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                deleteFolderRecursive(curPath);
+            } else { // delete file
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(path);
+    }
+};
+
+
+

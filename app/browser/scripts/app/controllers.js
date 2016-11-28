@@ -1,10 +1,10 @@
 /* login */
-myApp.controller("LoginController" , function( $scope, database ) {
+myApp.controller("LoginController" , function( $scope ) {
   const self = this;
   self.pageName = "Login";
 });
 
-myApp.controller("MainController" , function( $scope, folder, webTorrent, database ) {
+myApp.controller("MainController" , function( $scope ) {
   const self = this;
   self.pageName = "Dope";
   self.MovieTitle = "Loading Title";
@@ -24,7 +24,7 @@ myApp.controller("MenuController" , function( $scope, window ) {
   }
 });
 
-myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route) {
+myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route , notifications) {
   const self = this;
   self.download;
   self.loading = true;
@@ -82,6 +82,7 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
 
    self.querySearch = function(){
      self.loading = true;
+   
      yify.querySearch(self.query).then(function(response){
         self.dataResults = response.data.data.movies;
      }, function(err){
@@ -100,6 +101,10 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
    /* main feed */
   self.feedDetails = function(){
     self.loading = true;
+    
+    console.log("Notifications");
+    notifications.new("theBody","theIcon","theTitle");
+
     yify.listMovies( self.sortBy.value , self.genre.value, self.query).then(function(response){
       console.log(response);
       try{
@@ -114,6 +119,11 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     self.loading = false;
   }
 
+});
+
+myApp.controller("MoviesPlayController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route) {
+  const self = this;
+  
   self.playTorrent = function(){
     self.loading = true;
     $scope.MovieTitle = "waiting";
@@ -147,7 +157,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   };
 
 });
-
 
 myApp.controller("TvController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , eztvapi , webTorrent , dates , $rootScope) {
   const self = this;
@@ -256,21 +265,21 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.dataResults = response.data.results;
       self.loading = false;
       self.requestRunning = false;
-      folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+      folder.createJsonFile( "downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
     }, function(err){
       console.log("error", err);
       self.dataResults = "";
       self.loading = false;
     });
     */
-
+   
     /* USING EZTV API */
     eztvapi.getFeed(self.page).then(function(response){
       console.log("Results:",response.data);
       self.dataResults = response.data;
       self.loading = false;
       self.requestRunning = false;
-      folder.createJsonFile( process.env.DOWNLOAD_PATH+"downloads/json/tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
+      folder.createJsonFile("tvfeed-"+self.list.value, JSON.stringify( { page:self.page ,results: self.dataResults } , null, 4) );
     }, function(err){
       console.log("error", err);
       self.dataResults = "";
@@ -299,7 +308,7 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
             self.dataResults.push(arrayItem);
           });
           /* saves file to disk */
-          folder.createJsonFile( "downloads/json/tvfeed-"+self.list.value, JSON.stringify( {page:self.page,results: self.dataResults }, null, 4) );
+          folder.createJsonFile( "tvfeed-"+self.list.value, JSON.stringify( {page:self.page,results: self.dataResults }, null, 4) );
           self.requestRunning = false;
           self.loading = false;
         };
@@ -463,7 +472,7 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
 
     self.loadTorrents = function(){
       self.loading = true;
-
+      
       eztvapi.getSerieInfo().then(function(response){
         console.log("Eztv:",response.data);
         self.eztvData = response.data;
@@ -500,6 +509,7 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
 
   self.playTorrent = function(){
     self.loading = true;
+
     //let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
     /*
     let link = self.download;
@@ -514,6 +524,9 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
     webTorrent.play(self.download).then(function(response){
       $scope.MovieTitle = response;
       self.loading = false;
+    })
+    .then(function(){
+
     });
 
   };
