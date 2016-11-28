@@ -99,25 +99,6 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
 
     $event.target.classList.toggle("active");
     */
-    /*
-    eztvapi.getFeed(self.page).then(function(response){
-      var results = response.data;
-      var feed= {
-         data:{
-           results:[]
-         }
-       };
-
-      //console.log(response.data);
-      results.forEach(function(item){
-        feed.data.results.push({id :item._id, year:item.year , name:item.title, vote_average :0,backdrop_path:item.images.poster});
-      });
-      self.dataResults = feed.data.results;
-      console.log(response);
-      self.loading = false;
-      self.requestRunning = false;
-    });
-    */
 
     /* USING TMDB API
     tmdb.tvFeed(self.list.value , self.page).then(function(response){
@@ -254,18 +235,6 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
     }
 
     $event.target.classList.toggle("active");
-
-    /* kick ass torrent scrapper
-    kat.query(self.info.name , self.season ,episode ).then(function(response){
-    self.torrents = response;
-    self.loading = false;
-    try{
-        self.info.backdrop_path = self.seasonData.episodes[self.episode].still_path;
-      }catch(err){
-      console.log(err);
-    }
-    });
-    */
   }
 
   self.getSeasonInfo = function($event ,season){
@@ -316,75 +285,5 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
       self.loading = false;
     });
   }
-
-  self.extractDomain = function(url) {
-      var domain;
-      //find & remove protocol (http, ftp, etc.) and get domain
-      if (url.indexOf("://") > -1) {
-          domain = url.split('/')[2];
-      }
-      else {
-          domain = url.split('/')[0];
-      }
-
-      if(url.indexOf("www.") > -1){
-        domain = domain.split('www.')[1];
-      }
-      //find & remove port number
-      domain = domain.split(':')[0];
-      domain = domain.split('.')[0];
-      return domain;
-  }
-
-  self.loadTorrents = function(){
-    self.loading = true;
-
-    eztvapi.getSerieInfo().then(function(response){
-      console.log("Eztv:",response.data);
-      self.eztvData = response.data;
-    })
-    .then(function(){
-      self.torrents = [];
-      self.eztvData.episodes.map(function (item) {
-        if(item.season == $routeParams.season && item.episode == $routeParams.episode) {
-          console.log(item);
-          //self.torrents.push(link);
-        }
-      });
-
-      if(self.torrents.length > 0){
-        console.log("found");
-      }
-      /*
-      qmovies.getTvEpisodeLinks(self.info.name).then(function(results){
-        var links = [];
-        console.log(results);
-        results.data.results.forEach(function(item){
-          let domainName = self.extractDomain(item);
-          links.push({ domain:domainName, url:item });
-        });
-
-        self.torrents = links;
-        self.loading = false;
-      });
-      */
-    });
-  }
-
-  self.playTorrent = function(){
-    self.loading = true;
-    //let hash = `magnet:?xt=urn:btih:${magnet}&dn=${self.info.name}&tr=http://track.one:1234/announce&tr=udp://track.two:80&rt=`;
-    let link = self.download;
-    document.getElementById("player").innerHTML = `<iframe src="${link}" width="100%" frameborder="0" allowfullscreen></iframe>`;
-    self.loading = false;
-    document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
-    document.querySelector(".info-content").style.visibility = "hidden";
-    //hash = hash.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i);
-  /*  webTorrent.play(hash).then(function(response){
-      $scope.Title = response;
-      self.loading = false;
-    });
-    */
-  };
 
 });

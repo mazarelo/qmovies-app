@@ -12,7 +12,7 @@ myApp.config(function($routeProvider, $locationProvider) {
     templateUrl: 'views/login.html',
     controller: 'LoginController as login',
     resolve: {
-      
+
     }
   })
   .when('/register', {
@@ -38,7 +38,7 @@ myApp.config(function($routeProvider, $locationProvider) {
   })
   .when('/tv/:tvId/season/:season/episode/:episode', {
     templateUrl: 'views/tv-individual.html',
-    controller: 'TvController as tv',
+    controller: 'TvPlayController as tv',
     resolve: {
 
     }

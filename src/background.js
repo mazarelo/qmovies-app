@@ -16,8 +16,9 @@ import env from './env';
 
 const platform = require('os').platform();
 /* DEFINE TEMP Folder */
-process.env.DOWNLOAD_PATH =  (process.platform != 'darwin') ? `${process.env.APPDATA}/${app.getName()}/downloads` : `${process.env.HOME}/Library/Application Support/${app.getName()}/downloads`
-console.log(process.env.DOWNLOAD_PATH);
+process.env.APP_FILES = app.getPath('userData');
+process.env.DOWNLOAD_PATH =  `${app.getPath('userData')}/downloads`;
+console.log( app.getPath('userData'));
 try {
     // Query the entry
     var stats = fs.lstatSync(process.env.DOWNLOAD_PATH);
@@ -99,7 +100,8 @@ var setTrayMenu = () => {
 }
 
 var rmDir = () =>{
-try {
+
+  try {
      var files = fs.readdirSync(process.env.DOWNLOAD_PATH);
   }catch(e) {
       return;
@@ -120,8 +122,6 @@ try {
 }
 
 // Save userData in separate folders for each environment.
-// Thanks to this you can use production and development versions of the app
-// on same machine like those are two separate apps.
 if (env.name !== 'production') {
     var userDataPath = app.getPath('userData');
     app.setPath('userData', userDataPath + ' (' + env.name + ')');
@@ -138,9 +138,9 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
-  /* delete Download folder
+  /* delete Download folder */
     rmDir(process.env.DOWNLOAD_PATH);
-  */
+
     if (platform !== 'darwin') {
       app.quit();
     }

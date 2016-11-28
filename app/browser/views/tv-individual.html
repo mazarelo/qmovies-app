@@ -26,7 +26,7 @@
     <div class="play-btn">
         <div class="quality ng-hide-animate">
           <select ng-model="tv.download">
-            <option ng-repeat="link in tv.torrents" ng-value="link.url">{{link.domain}}</option>
+            <option ng-repeat="(key,val) in tv.torrents" ng-value="val.url">{{key}}</option>
           </select>
           <button ng-click="tv.playTorrent()">Play</button>
         </div>
