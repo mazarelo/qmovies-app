@@ -9,27 +9,7 @@
 </head>
     <body>
       <div class="main-wrapper-intro">
-        <nav class="main-menu">
-          <ul>
-            <li class="search-bar"><input type="text"/></li>
-            <!-- Movies menu -->
-            <li class="main-menu-item"><a href="#/movies">Movies</a></li>
-            <li class="separate"></li>
-            <li class="sub-menu-item">most popular</li>
-            <li class="sub-menu-item">airing today</li>
-            <li class="sub-menu-item">most rated</li>
-            <li class="sub-menu-item">My Watch list</li>
-            <!-- Tv series menu -->
-            <li class="main-menu-item"><a href="#/tv">Tv Series</a></li>
-            <li class="separate"></li>
-            <li class="sub-menu-item">most popular</li>
-            <li class="sub-menu-item">airing today</li>
-            <li class="sub-menu-item">most rated</li>
-            <li class="sub-menu-item">My Watch list</li>
-            <!-- Anime menu -->
-            <li class="main-menu-item">Anime</li>
-          </ul>
-        </nav>
+        <nav class="main-menu" ng-include src="'views/global/menu.html'" ></nav>
         <div class="fullHeight mw-content" ng-if='!isRouteLoading' ng-view></div>
       </div>
 

@@ -43,14 +43,13 @@
       <a href="#/movies/{{movie.id}}">
         <div class="backdrop"></div>
         <div class="ft-cover" style="background: url({{movie.medium_cover_image}}) no-repeat center center;background-size: cover;"></div>
-        <h4 class="name">{{movie.title}} - {{movie.year}}</h4>
         <header class="ft-title">
           <figure class="ft-rating">
             <h4 >{{movie.title}} - {{movie.year}}</h4>
             <figcaption>{{movie.rating | number:1 }}/10</figcaption>
           </figure>
           <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->
-          <p>{{movie.synopsis | limitTo : 150 }}...</p>
+          <!--<p>{{movie.synopsis | limitTo : 150 }}...</p> -->
         </header>
       </a>
     </div>

@@ -21,7 +21,7 @@
       text-align: center;
       opacity:0.3;
       transition:opacity 0.3s ease-out;
-      
+
       &:hover{
         opacity:0.5;
       }
@@ -44,6 +44,7 @@
   width:40%;
   float:left;
   padding: 2%;
+  max-width:450px;
   height:100%;
   position: relative;
   z-index: 99999999;
@@ -138,9 +139,10 @@
 }
 
 .feed-module {
-  width: 60%;
+  width: 100%;
   height: calc(100% - 80px);
   overflow-y: scroll;
+  max-width: calc(100% - 450px);
   float: left;
   color: lighten($templateBackgroundColor, 50%);
   -webkit-app-region: no-drag;
