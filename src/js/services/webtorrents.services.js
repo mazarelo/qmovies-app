@@ -1,4 +1,4 @@
-myApp.service('webTorrent', function(folder ,video , $q) {
+myApp.service('webTorrent', function(folder , video , $q , notifications) {
   const WebTorrent = require('webtorrent');
   const client = new WebTorrent();
   const self = this;
@@ -43,6 +43,10 @@ myApp.service('webTorrent', function(folder ,video , $q) {
           once = true;
 
           final[0].appendTo("#video-placeholder",{ maxBlobLength: 2* 1000 * 1000 * 1000 }, function(err, elem) {
+            if(err){
+              notifications.new("Format Unsupported","theIcon","Failed to Play");
+            }
+            
             document.getElementById("torrent-wrapper").classList.toggle("ng-hide");
           });
 
@@ -53,6 +57,11 @@ myApp.service('webTorrent', function(folder ,video , $q) {
          return deferred.resolve(torrentName);
         }
       });
+      /* when torrent is finished */
+      torrent.on('done', function(){
+        notifications.new("Video finished downloading","theIcon","Qmovies");
+      });
+
     });
    }
 
@@ -85,4 +94,12 @@ myApp.service('webTorrent', function(folder ,video , $q) {
 
       return torrent;
    }
+
+
+   self.stopAllTorrents = function(){
+    client.destroy([function callback (err) {
+      console.log("Destroying Client",err);
+    }]);
+   }
+
 });

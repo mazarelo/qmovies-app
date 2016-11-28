@@ -18,6 +18,7 @@
       <script src="scripts/app/directives.js"></script>
       <script src="scripts/app/controllers.js"></script>
       <script src="scripts/app/filters.js"></script>
+
       <script>
         const {remote} = require('electron');
         const {Menu, MenuItem} = remote;
@@ -40,6 +41,7 @@
                   }
                 ]
               };
+              
         menu.append(new MenuItem({label:'play',click(){console.log('clicked play')}}));
         menu.append(new MenuItem({type:'separator'}))
         menu.append(new MenuItem(template));

@@ -1,6 +1,13 @@
 myApp.controller("MoviesPlayController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route) {
   const self = this;
   
+  /* removes torrents on exiting the window */
+  $scope.$on('$locationChangeStart', function( event ) {
+    event.preventDefault();
+    webTorrent.stopAllTorrents();
+    history.back();
+  });
+
   self.playTorrent = function(){
     self.loading = true;
     $scope.MovieTitle = "waiting";

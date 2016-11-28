@@ -76,9 +76,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.feedDetails = function(){
     self.loading = true;
     
-    console.log("Notifications");
-    notifications.new("theBody","theIcon","theTitle");
-
     yify.listMovies( self.sortBy.value , self.genre.value, self.query).then(function(response){
       console.log(response);
       try{
@@ -92,5 +89,4 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     });
     self.loading = false;
   }
-
 });

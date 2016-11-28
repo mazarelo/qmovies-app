@@ -1,6 +1,13 @@
 myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , eztvapi , webTorrent , dates , $rootScope) {
   const self = this;
 
+  /* removes torrents on exiting the window */
+  $scope.$on('$locationChangeStart', function( event ) {
+    event.preventDefault();
+    webTorrent.stopAllTorrents();
+    history.back();
+  });
+
   self.extractDomain = function(url) {
       var domain;
       //find & remove protocol (http, ftp, etc.) and get domain

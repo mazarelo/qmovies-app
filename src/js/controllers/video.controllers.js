@@ -1,4 +1,4 @@
-myApp.controller("VideoController" , function( $scope, webTorrent , yify , $routeParams ) {
+myApp.controller("VideoController" , function( $scope, $routeParams ) {
 
   const self = this;
 

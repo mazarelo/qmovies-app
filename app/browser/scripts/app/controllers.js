@@ -11,7 +11,6 @@ myApp.controller("MainController" , function( $scope ) {
 });
 
 myApp.controller("MenuController" , function( $scope, window ) {
-  console.log("menu initialized");
 
   this.minimize = function(){
      window.minimize();
@@ -102,9 +101,6 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
   self.feedDetails = function(){
     self.loading = true;
     
-    console.log("Notifications");
-    notifications.new("theBody","theIcon","theTitle");
-
     yify.listMovies( self.sortBy.value , self.genre.value, self.query).then(function(response){
       console.log(response);
       try{
@@ -118,11 +114,17 @@ myApp.controller("MoviesController" , function( $scope, webTorrent , yify , $rou
     });
     self.loading = false;
   }
-
 });
 
 myApp.controller("MoviesPlayController" , function( $scope, webTorrent , yify , $routeParams , window , $window  , $route) {
   const self = this;
+  
+  /* removes torrents on exiting the window */
+  $scope.$on('$locationChangeStart', function( event ) {
+    event.preventDefault();
+    webTorrent.stopAllTorrents();
+    history.back();
+  });
   
   self.playTorrent = function(){
     self.loading = true;
@@ -451,6 +453,14 @@ myApp.controller("TvController" , function( $scope, tmdb , window , folder , $ro
 myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder , $routeParams , qmovies , eztvapi , webTorrent , dates , $rootScope) {
   const self = this;
 
+
+  /* removes torrents on exiting the window */
+  $scope.$on('$locationChangeStart', function( event ) {
+    event.preventDefault();
+    webTorrent.stopAllTorrents();
+    history.back();
+  });
+
   self.extractDomain = function(url) {
       var domain;
       //find & remove protocol (http, ftp, etc.) and get domain
@@ -532,7 +542,7 @@ myApp.controller("TvPlayController" , function( $scope, tmdb , window , folder ,
   };
 });
 
-myApp.controller("VideoController" , function( $scope, webTorrent , yify , $routeParams ) {
+myApp.controller("VideoController" , function( $scope, $routeParams ) {
 
   const self = this;
 
