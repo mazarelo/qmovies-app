@@ -146,7 +146,8 @@
   color: lighten($templateBackgroundColor, 50%);
   -webkit-app-region: no-drag;
   margin-top: 2%;
-  .feed-template {
+}
+.feed-template {
     position: relative;
     /* width: 15%; */
     width:170px;
@@ -371,5 +372,4 @@
               height: 250px;
           }
       }
-  }
 }

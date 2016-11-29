@@ -1,41 +1,17 @@
-/* NORMALIZER */
-//@import "../normalize.scss";
-/*! HTML5 Boilerplate v5.2.0 | MIT License | https://html5boilerplate.com/ */
-
-/*
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
-/*Global */
+/* global colors and vars / mixins */
 @import "global/variables";
-
 @import "global/colors";
 @import "global/mixins";
+/* Main css */
 @import "vendor/normalizer";
-@import "components/menu";
-/* @import "global/animations"; */
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
 @import "global/base-styles";
-@import "views/menu";
-
-/*@import "vendor/lightbox";
-@import "vendor/mCustomScrollbar";
-@import "common-html/typeahead";
-*/
-@import "views/player";
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-/*Index page */
 @import "views/main";
+@import "global/helpers";
+/* components */
+@import "components/menu";
+@import "views/main";
+/* pages */
+@import "views/menu";
+@import "views/player";
 @import "views/feed_simple";
 @import "views/_main-tv";
-
-/* ==========================================================================
-   Helper classes
-   ========================================================================== */
-@import "global/helpers";
