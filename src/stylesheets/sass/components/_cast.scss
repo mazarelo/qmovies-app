@@ -1,0 +1,19 @@
+.cast-template{
+  width:200px;
+  height:auto;
+  margin-top:10px;
+  display: inline-block;
+  vertical-align: top;
+  
+  .ct-avatar{
+    width:50px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .ct-content{
+    display: inline-block;
+      vertical-align: top;
+      font-size:60%;
+  }
+}

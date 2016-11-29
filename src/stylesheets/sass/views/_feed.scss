@@ -1,0 +1,15 @@
+.feed_wrapper{
+  width:100%;
+  height:calc(100% - 60px);
+  padding:0 30px;
+  .mw-content{
+    height:100%;
+  }
+  .results{
+    position:relative;
+    overflow-x: auto;
+    height:80%;
+    width:100%;
+    padding-top:3%;
+  }
+}

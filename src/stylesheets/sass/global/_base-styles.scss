@@ -102,6 +102,10 @@ textarea {
     padding: 0.2em 0;
 }
 
+.title{
+  text-transform: uppercase;
+  font-weight:bold;
+}
 
 /* ==========================================================================
   BODY
@@ -116,7 +120,8 @@ body{
     min-height:100%;
     height: 100%;
     -webkit-app-region: drag;
-    font-size:70%;
+    background: white;
+    font-size:100%;
     font-family: 'Roboto', sans-serif;
     //font-family: 'Montserrat', sans-serif;
     //font-family: 'Raleway', sans-serif;
@@ -128,9 +133,6 @@ body{
     font-family: 'PT Sans Narrow', sans-serif;
     font-family: 'Raleway', sans-serif;
   */
-    background-color: darken($templateBackgroundColor, 12%);
-    color:$templateTextColor;
-
     overflow: hidden;
 }
 *:focus {
@@ -203,7 +205,6 @@ button{
 
 a{
   text-decoration:none;
-  color:$templateTextColor;
 }
 
 /* GRID SYSTEM */
@@ -324,16 +325,10 @@ a{
 
 
 /*  SECTIONS  ============================================================================= */
-.main-wrapper-intro{
+.main-wrapper{
   height:100%;
+}
 
-}
-.mw-content{
-  width: calc(100% - 200px);
-  float:right;
-  overflow-x: auto;
-  height:100%;
-}
 .section {
   clear: both;
   padding: 0px;
@@ -364,3 +359,27 @@ a{
 }
 
 .col:first-child { margin-left: 0; } /* all browsers except IE6 and lower */
+
+.mw-content{
+  position:relative;
+}
+
+.top-to-bottom-degrade{
+  position:absolute;
+  top:55px;
+  left:0;
+  z-index:99;
+  height:40px;
+  width:100%;
+  @include background-gradient($startColor: white, $amountFirst: 50%, $endColor: transparent);
+}
+
+.bottom-to-top-degrade{
+  position:absolute;
+  bottom:55px;
+  left:0;
+  z-index:99;
+  height:40px;
+  width:100%;
+  @include background-gradient($startColor: transparent, $amountFirst: 50%, $endColor: white);
+}

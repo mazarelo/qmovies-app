@@ -1,0 +1,57 @@
+<div class="window-controllers-wrapper" ng-controller="MenuController as menu">
+  <window-controlles></window-controlles>
+  <back-btn></back-btn>
+  <forward-btn></forward-btn>
+</div>
+
+<section scroll id="content-trigger" class="main-content contentFull" ng-init="movieFeed.feedDetails()">
+  <div ng-class="movieFeed.loading ? 'loading-spinner' : ''" class="spinner"></div>
+  <div class="background-feed" style="background: url({{movieFeed.dataResults[0].medium_cover_image}}) no-repeat center center;background-size: cover; opacity:0.3;-webkit-filter: blur(10px)"></div>
+  <!-- search by categories etc etc -->
+  <div class="feed-search">
+    <!-- search bar -->
+    <fieldset class="query-search">
+      <input type="text" id="input-search" class="m-typeahead" placeholder="Search for a movie or series here" ng-model="movieFeed.query" ng-change="movieFeed.currentSearch = 'search';movieFeed.querySearch()">
+      <button><img src="assets/img/global/loupe.svg"></button>
+    </fieldset>
+    <!-- global search terms -->
+    <fieldset class="pre-set-btn" ng-model="movieFeed.lists.value">
+      <button  ng-repeat="list in movieFeed.list.options" ng-click="movieFeed.currentSearch = 'getFeed';movieFeed.list.value = list.value; movieFeed.feedDetails()">{{list.name}}</button>
+    </fieldset>
+    <!-- search genre -->
+    <ul ng-model="movieFeed.genre.value" ng-change="movieFeed.tvData()" class="genre-buttons">
+      <li ng-repeat="genre in movieFeed.genre.options">
+        <button ng-click="movieFeed.currentSearch = 'discover';movieFeed.genre.value = genre.value; movieFeed.feedDetails()">
+          {{genre.name}}
+        </option>
+      </li>
+    </ul>
+  </div>
+
+  <div id="feed-ajax" class="feed-module" scrolly>
+    <!-- IF NO RESULTS IN LIST -->
+    <div class="no-results" ng-if="movieFeed.dataResults.length == 0">
+      <div class="nr-center">
+        <figure class="nr-img">
+          <img src="assets/img/internet.svg">
+        </figure>
+        <h3 class="nr-err-title">{{movieFeed.errDescription}}<br><a ng-click="movieFeed.reloadPage" class="refresh">Retry</a></h3>
+      </div>
+    </div>
+    <!-- FEED -->
+    <div ng-if="movieFeed.dataResults.length > 0" class="feed-template index-template-feed" ng-repeat="movie in movieFeed.dataResults track by $index">
+      <a href="#/movies/{{movie.id}}">
+        <div class="backdrop"></div>
+        <div class="ft-cover" style="background: url({{movie.medium_cover_image}}) no-repeat center center;background-size: cover;"></div>
+        <header class="ft-title">
+          <figure class="ft-rating">
+            <h4 >{{movie.title}} - {{movie.year}}</h4>
+            <figcaption>{{movie.rating | number:1 }}/10</figcaption>
+          </figure>
+          <!--<date>{{serie.first_air_date | limitTo : 4}}</date>-->
+          <!--<p>{{movie.synopsis | limitTo : 150 }}...</p> -->
+        </header>
+      </a>
+    </div>
+  </div>
+</section>

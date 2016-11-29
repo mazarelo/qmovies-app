@@ -8,12 +8,15 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
 </head>
     <body>
-      <div class="main-wrapper-intro">
-        <nav class="main-menu" ng-include src="'views/global/menu.html'" ></nav>
-        <div class="fullHeight mw-content" ng-if='!isRouteLoading' ng-view></div>
+      <div class="main-wrapper">
+        <nav class="main_menu" ng-controller="MenuController as menu" ng-include src="'views/global/menu.html'" ></nav>
+        <div class="feed_wrapper">
+          <!-- VIEW -->
+          <div class="fullHeight mw-content" ng-if='!isRouteLoading' ng-view></div>
+          <!-- END -->
+        </div>
       </div>
-
-      <!-- RIGHT CLICK MENU -->
+      <!-- SCRIPTS -->
       <script src="scripts/lib/angular.min.js"></script>
       <script src="scripts/lib/angular.route.min.js"></script>
       <script src="scripts/app/app.js"></script>
@@ -23,42 +26,5 @@
       <script src="scripts/app/controllers.js"></script>
       <script src="scripts/app/filters.js"></script>
 
-      <script>
-        const {remote} = require('electron');
-        const {Menu, MenuItem} = remote;
-        const menu = new Menu();
-        const template =
-              {
-                label: 'add',
-                submenu:[
-                  {
-                    label: 'favorites',
-                    click() {
-                      console.log('item 2 clicked');
-                    }
-                  },
-                  {
-                    label: 'watchlist',
-                    click() {
-                      console.log('item 2 clicked');
-                    }
-                  }
-                ]
-              };
-
-        menu.append(new MenuItem({label:'play',click(){console.log('clicked play')}}));
-        menu.append(new MenuItem({type:'separator'}))
-        menu.append(new MenuItem(template));
-        menu.append(new MenuItem({type:'separator'}))
-        menu.append(new MenuItem({label:'delete',click(){console.log('Delete from favorites')}}));
-
-        var feedTarget = document.getElementsByClassName("feed-template");
-        window.addEventListener('contextmenu', (e) => {
-          console.log(e);
-          e.preventDefault();
-          if(e.target.className !== "ft-cover") return;
-          menu.popup(remote.getCurrentWindow());
-        }, false);
-      </script>
     </body>
 </html>

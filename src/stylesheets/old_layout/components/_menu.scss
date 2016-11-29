@@ -1,0 +1,48 @@
+.main-menu{
+  width:200px;
+  height:100%;
+  display: inline-block;
+  vertical-align: top;
+  margin:0;
+  font-weight:lighter;
+  overflow-x:auto;
+  position:relative;
+  z-index:9999;
+  ul{
+    font-size:120%;
+    padding:5% 15px 0 15px;
+    height:100%;
+
+    li{
+      width:100%;
+      padding: 5% 10%;
+      text-align: left;
+    }
+
+    .sub-menu-item{
+      opacity:0.6;
+      padding: 3% 10%;
+      cursor:pointer;
+
+      &:hover{
+        opacity:0.8;
+      }
+    }
+
+    .main-menu-item{
+      font-size:100%;
+      opacity:0.4;
+      text-transform: uppercase;
+      font-weight:normal;
+      margin-top:5%;
+    }
+
+    .separate{
+      height:1px;
+      margin:0;
+      padding:0;
+      width:100%;
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+  }
+}

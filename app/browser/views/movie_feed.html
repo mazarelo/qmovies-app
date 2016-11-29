@@ -1,0 +1,17 @@
+<h1 class="title">{{movies.title}}</h1>
+<ul class="alt_nav">
+  <li ng-repeat="item in movies.typesOfSearch.options" value="item.value" ng-click="movies.getFeed(item.value)">{{item.name}}</li>
+</ul>
+
+<div ng-init="movies.getFeed()" class="results" scrolly>
+  <div ng-repeat="item in movies.results" class="feed-template">
+    <a href="#/movie/{{item.id}}">
+      <figure class="ft-img">
+        <img src="{{movies.tmdbImgUrl}}w300{{item.poster_path}}">
+      </figure>
+      <div class="ft-content">
+        <a href="">{{item.title}} <span class="ft-c-date">{{item.date}}</span></a>
+      </div>
+    </a>
+  </div>
+</div>

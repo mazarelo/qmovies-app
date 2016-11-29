@@ -1,0 +1,48 @@
+<div ng-init="tv.loadData()" class="background" style="background: url({{tv.tmdbImgUrl}}w1920{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;"></div>
+<h1 class="title">{{tv.title}}</h1>
+<ul class="alt_nav">
+  <li ng-repeat="item in tv.typesOfSearch.options" value="item.value" ng-click="tv.getFeed(item.value)">{{item.name}}</li>
+</ul>
+<div class="results">
+  <figure class="individual-img">
+    <img src="{{tv.tmdbImgUrl}}w500{{tv.info.poster_path}}">
+  </figure>
+  <div class="individual-content-wrapper">
+    <ul class="tabs">
+      <li ng-repeat="item in tv.tabs.options" ng-click="tv.tabs.active = item.name">{{item.name}}</li>
+    </ul>
+
+    <div ng-if="tv.tabs.active == 'info'">
+      <h1>info it is</h1>
+    </div>
+
+    <div ng-if="tv.tabs.active == 'trailer'" ng-init="tv.getTrailer()">
+      <h1>trailer</h1>
+    </div>
+
+    <div ng-if="tv.tabs.active == 'cast'" ng-init="tv.getCast()" class="cast-tab">
+      <div class="cast-template" ng-repeat="element in tv.info.cast">
+        <figure class="ct-avatar">
+          <img src="{{tv.tmdbImgUrl}}w150{{element.profile_path}}">
+        </figure>
+        <div class="ct-content">
+          <h5 class="">{{element.character}}</h5>
+          <h4>{{element.name}}</h4>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="tv.tabs.active == 'crew'" ng-init="tv.getCrew()">
+      <div class="cast-template" ng-repeat="element in tv.info.crew">
+        <figure class="ct-avatar">
+          <img src="{{tv.tmdbImgUrl}}w150{{element.profile_path}}">
+        </figure>
+        <div class="ct-content">
+          <h5 class="">{{element.character}}</h5>
+          <h4>{{element.name}}</h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

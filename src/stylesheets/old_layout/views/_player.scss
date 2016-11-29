@@ -1,0 +1,150 @@
+.video-header{
+  -webkit-app-region: drag;
+  float:left;
+
+  h4{
+    -webkit-app-region: drag;
+  }
+}
+
+.quality{
+  position:relative;
+  z-index:99;
+  display: inline-block;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #333;
+  padding: 20px;
+
+
+}
+
+.loading{
+  height:50px;
+}
+
+.spinner{
+  .middle-wrapper{
+    display:table-cell;
+    width: 100%;
+    vertical-align: middle;
+  }
+}
+/* torrent loader */
+.torrent-info{
+    background-color: rgba(255,255,255,0.7);
+    z-index: 99999999;
+    width: 200px;
+    color: #333;
+    margin: 0 auto;
+    font-size: 150%;
+    padding: 20px;
+    text-align: center;
+    -webkit-app-region: drag;
+    @include box-shadow(1px, 1px, 10px, rgba(0,0,0,.5));
+    
+    &.top{
+      top:15px!important;
+      right:0!important;
+      bottom:auto!important;
+    }
+    h4{
+      text-transform:uppercase;
+    }
+    #torrent-time{
+      font-size: 60%;
+      display: block;
+    }
+
+    #torrent-progress{
+       border: 0;
+       width:100%;
+       height: 5px;
+       opacity:0.5;
+    }
+  }
+#player{
+  position:absolute;
+  width:100%;
+  height:100%;
+
+  
+  .video-loader{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+
+  #video-controls{
+    position:absolute;
+    height:40px;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:99;
+    background-color:rgba(0,0,0,0.6);
+    figure{
+      float:left;
+      margin-right:10px;
+      img{
+          width:20px;
+      }
+    }
+  }
+  #video-placeholder{
+    width:100%;
+    height:100%;
+    position:absolute;
+    background-color:#000;
+    top:0;
+    left:0;
+    z-index:2;
+    -webkit-app-region: no-drag;
+    video{
+      position:absolute;
+      top:0;
+      left:0;
+      z-index:0;
+      height:100%;
+      -webkit-app-region: no-drag;
+      width:100%;
+    }
+  }
+}
+
+.play-btn{
+    width:100px;
+    position:absolute;
+    top:45%;
+    width:100%;
+    text-align: center;
+    z-index: 90;
+
+    select{
+      display: block;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: rgb(255, 255, 255);
+      font-size: 150%;
+      font-weight: bold;
+      padding: 5px 10px;
+      box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+      margin-bottom: 10%;
+    }
+
+    button{
+      background: rgba(255, 255, 255, 0.89);
+      font-size: 150%;
+      display:inline-block;
+      margin-top: 1%;
+      padding: 5px 15px;
+      text-transform: uppercase;
+      color: #333;
+      font-weight: bold;
+      display: block;
+      margin: 0 auto;
+    }
+  }

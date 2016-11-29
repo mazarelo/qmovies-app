@@ -57,14 +57,16 @@ export var createWindow = function(url) {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1024,
-    height: 576,
+    height: 640,
     frame:true,
     backgroundColor: '#222',
     show: false,
     maximizable:true,
     resizable: true,
     darkTheme:true,
-    alwaysOnTop:false
+    alwaysOnTop:false,
+    'minWidth': 1024,
+    'minHeight': 640
     });
   // and load the index.html of the app.
   mainWindow.loadURL(url);
@@ -176,6 +178,3 @@ var deleteFolderRecursive = function(path) {
         fs.rmdirSync(path);
     }
 };
-
-
-

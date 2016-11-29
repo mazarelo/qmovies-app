@@ -1,0 +1,17 @@
+.alt_nav{
+  width:100%;
+  font-size:80%;
+  li{
+    display:inline-block;
+    margin-right:20px;
+    text-transform: uppercase;
+    font-weight:normal;
+    opacity:0.6;
+    cursor:pointer;
+
+    &:hover{
+      color:$red;
+      opacity:1;
+    }
+  }
+}

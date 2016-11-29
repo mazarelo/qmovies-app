@@ -1,7 +1,7 @@
 'use strict';
 var myApp = angular.module('movies', ['ngRoute']);
 
-myApp.run(function($window, $rootScope , folder) {
+myApp.run(function($window, $rootScope) {
     $rootScope.online = navigator.onLine;
     $window.addEventListener("offline", function() {
       $rootScope.$apply(function() {
