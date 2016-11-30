@@ -4,7 +4,6 @@ myApp.directive('offlineErr', function(){
     replace: true,
     scope: {
       title: '@title',
-      obj:'=',
       exec: '&'
     },
     template: `
