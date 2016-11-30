@@ -13,7 +13,7 @@ myApp.directive('offlineErr', function(){
             <figure class="nr-img">
               <img src="assets/img/internet.svg">
             </figure>
-            <h3 class="nr-err-title">{{title}}<br><a ng-click="exec()" class="refresh">Retry</a></h3>
+            <h3 class="nr-err-title">{{title}}<br><a ng-click="exec({msg:'dope'})" class="refresh">Retry</a></h3>
           </div>
       </div>`
   };
