@@ -8,12 +8,14 @@
     <img src="{{tv.tmdbImgUrl}}w500{{tv.info.poster_path}}">
   </figure>
   <div class="individual-content-wrapper">
+    <!-- Tabs -->
     <ul class="tabs">
-      <li ng-repeat="item in tv.tabs.options" ng-click="tv.tabs.active = item.name">{{item.name}}</li>
+      <li ng-repeat="item in tv.tabs.options" ng-class="item.value == tv.tabs.active ? 'selected' : ''" ng-click="tv.tabs.active = item.name">{{item.name}}</li>
     </ul>
 
-    <div ng-if="tv.tabs.active == 'info'">
-      <h1>info it is</h1>
+    <div ng-if="tv.tabs.active == 'info'" class="info-tab">
+        <seasons-layout obj="tv"></seasons-layout>
+        <episodes-layout obj="tv"></episodes-layout>
     </div>
 
     <div ng-if="tv.tabs.active == 'trailer'" ng-init="tv.getTrailer()">
@@ -21,30 +23,16 @@
     </div>
 
     <div ng-if="tv.tabs.active == 'cast'" ng-init="tv.getCast()" class="cast-tab">
-      <div class="cast-template" ng-repeat="element in tv.info.cast">
-        <figure class="ct-avatar">
-          <img src="{{tv.tmdbImgUrl}}w150{{element.profile_path}}">
-        </figure>
-        <div class="ct-content">
-          <h5 class="">{{element.character}}</h5>
-          <h4>{{element.name}}</h4>
-        </div>
-      </div>
+      <cast-layout type="cast" obj="tv"></cast-layout>
     </div>
 
     <div ng-if="tv.tabs.active == 'crew'" ng-init="tv.getCrew()">
-      <!-- if there is no data print generic no-data -->
-    <offline-err title="Double check your internet!"></offline-err>
-      <!-- end -->
-      <div ng-if="online" class="cast-template" ng-repeat="element in tv.info.crew">
-        <figure class="ct-avatar">
-          <img src="{{tv.tmdbImgUrl}}w150{{element.profile_path}}">
-        </figure>
-        <div class="ct-content">
-          <h5 class="">{{element.character}}</h5>
-          <h4>{{element.name}}</h4>
-        </div>
-      </div>
+      <cast-layout type="crew" obj="tv"></cast-layout>
+    </div>
+
+    <div class="overview">
+      <h1>OVERVIEW</h1>
+      <p>{{tv.info.overview}}</p>
     </div>
 
   </div>

@@ -1,21 +1,35 @@
 .main_menu{
   width:100%;
+  background:#f1f1f1;
   .mm_ul{
     width:100%;
     text-align: right;
-    padding:2% 5%;
+    padding:20px 5% 0 5%;
     font-weight:bold;
     li{
       display: inline-block;
       margin-left:20px;
+      border-bottom:3px solid rgba($red, 0);
+      font-size:130%;
+      font-weight:normal;
+
+      &.selected{
+        border-bottom:3px solid $red;
+        a{
+          color:$red;
+        }
+        
+      }
+
+      &:hover{
+        border-bottom:3px solid $red;
+         a{
+          color:$red;
+        }
+      }
 
       a{
-        color:black;
-        border-bottom:0 solid $red;
-        
-        &:hover{
-          border-bottom:4px solid $red;
-        }
+        color:#333;
       }
     }
   }

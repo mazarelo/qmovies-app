@@ -21,12 +21,16 @@ myApp.controller("TvFeedController" , function( $scope , MenuController ) {
 myApp.controller("MenuController" , function( $scope , $routeParams ) {
   const self = this;
 
-  self.menuItems = [
-    {name: "MOVIES", href:"#/movies"},
-    {name: "TV SERIES", href:"#/tv-series"},
-    {name: "ANIMES", href:"#/animes"},
-    {name: "LOCAL", href:"#/local"}
-  ]
+  self.menuItems = {
+    active:"",
+    options:[
+      {name: "Movies", href:"#/movies"},
+      {name: "Tv Series", href:"#/tv-series"},
+      {name: "Animes", href:"#/animes"},
+      {name: "Local", href:"#/local"}
+    ]
+  }
+  
 
 });
 
@@ -143,6 +147,7 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb ) {
     /* activate loaders */
     self.loading = true;
     console.log("Iniciated Load more");
+
     /* check what function to call */
     switch (self.currentSearch) {
       case "getFeed":
@@ -219,6 +224,19 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb ) {
       {name: "crew", value: "crew"}
     ]
   };
+
+  self.getNumber = function(num) {
+    return new Array(num);   
+  }
+  
+  self.getSeasonInfo = function( season = 1 ){
+    self.currentSeason = season;
+
+    tmdb.tvSeason($routeParams.tvId , season).then(function(response){
+      console.log(response);
+      self.episodes = response.data.episodes;
+    });
+  }
 
   self.loadData = function(){
     tmdb.searchByTmbdId($routeParams.tvId).then(function(response){
