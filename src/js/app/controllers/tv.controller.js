@@ -1,7 +1,7 @@
 /* login */
 myApp.controller("TvController" , function( $scope , $routeParams , tmdb ) {
   const self = this;
-  self.title = "Tv Feed";
+  self.title = "Tv Series";
   self.page = 1;
   self.requestRunning = false;
   self.currentSearch = "getFeed";
@@ -12,7 +12,8 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb ) {
       {name: "Most Popular",value: "popular"},
       {name: "On the Air", value: "on_the_air"},
       {name: "Top Rated", value: "top_rated"},
-      {name: "Airing Today", value: "airing_today"}
+      {name: "Airing Today", value: "airing_today"},
+      {name: "Favorites", value: "Favorites"}
     ]
   }
 
@@ -61,12 +62,10 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb ) {
 
   /* gets current feed */
   self.getFeed = function(type = self.typesOfSearch.active){
-
     if(type !== self.typesOfSearch.active){
       self.typesOfSearch.active = type;
       self.page = 1;
     }
-
     tmdb.tvFeed(type , self.page ).then(function(response){
       console.log(response);
       self.tmdbImgUrl = tmdb.imgRoute;

@@ -4,7 +4,10 @@
 </ul>
 
 <div ng-init="movies.getFeed()" class="results" scrolly>
-  <div ng-repeat="item in movies.results" class="feed-template">
+  <!-- if there is no data print generic no-data -->
+  <offline-err title="Double check your internet!"></offline-err>
+  <!-- end -->
+  <div ng-if="online" ng-repeat="item in movies.results" class="feed-template">
     <a href="#/movie/{{item.id}}">
       <figure class="ft-img">
         <img src="{{movies.tmdbImgUrl}}w300{{item.poster_path}}">

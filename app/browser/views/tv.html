@@ -33,7 +33,10 @@
     </div>
 
     <div ng-if="tv.tabs.active == 'crew'" ng-init="tv.getCrew()">
-      <div class="cast-template" ng-repeat="element in tv.info.crew">
+      <!-- if there is no data print generic no-data -->
+    <offline-err title="Double check your internet!"></offline-err>
+      <!-- end -->
+      <div ng-if="online" class="cast-template" ng-repeat="element in tv.info.crew">
         <figure class="ct-avatar">
           <img src="{{tv.tmdbImgUrl}}w150{{element.profile_path}}">
         </figure>
