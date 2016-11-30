@@ -593,18 +593,6 @@ a {
   background-repeat: no-repeat;
   background-size: 50px 50px; }
 
-#main-loading {
-  transition: all 2s ease-out; }
-  #main-loading .active {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: white;
-    transition: all 2s ease-out;
-    z-index: 999; }
-
 /* Views */
 .background {
   width: 100%;
