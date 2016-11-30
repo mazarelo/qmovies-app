@@ -64,7 +64,7 @@ myApp.service('tmdb', function($http , $routeParams){
   }
 
   this.tvSeason = function(id ,season = $routeParams.season){
-    console.log(`${url}/tv/${id}/season/${$routeParams.season}?${apiKey}`);
+    console.log(`${url}/tv/${id}/season/${season}?${apiKey}`);
     return $http.get(`${url}/tv/${id}/season/${season}?${apiKey}`);
   }
 

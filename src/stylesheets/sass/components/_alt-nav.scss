@@ -5,9 +5,14 @@
     display:inline-block;
     margin-right:20px;
     text-transform: uppercase;
-    font-weight:normal;
+    font-weight:bold;
     opacity:0.6;
     cursor:pointer;
+
+    &.selected{
+      color:$red;
+      opacity:1;
+    }
 
     &:hover{
       color:$red;

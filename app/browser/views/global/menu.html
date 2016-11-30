@@ -1,3 +1,5 @@
 <ul class="mm_ul">
-  <li ng-repeat="item in menu.menuItems"><a href="{{item.href}}">{{item.name}}</a></li>
+  <li ng-repeat="item in menu.menuItems.options"  ng-class="item.name == menu.menuItems.active ? 'selected' : ''">
+    <a href="{{item.href}}" ng-click="menu.menuItems.active = item.name">{{item.name}}</a>
+  </li>
 </ul>

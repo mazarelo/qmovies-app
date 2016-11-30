@@ -78,6 +78,7 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb ) {
     /* activate loaders */
     self.loading = true;
     console.log("Iniciated Load more");
+
     /* check what function to call */
     switch (self.currentSearch) {
       case "getFeed":

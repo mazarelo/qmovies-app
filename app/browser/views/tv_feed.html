@@ -1,11 +1,9 @@
-<h1 class="title">{{tv.title}}</h1>
-<ul class="alt_nav">
-  <li ng-repeat="item in tv.typesOfSearch.options" value="item.value" ng-click="tv.getFeed(item.value)">{{item.name}}</li>
-</ul>
-<div class="top-to-bottom-degrade"></div>
+<!-- title and alternative menu -->
+<alt-menu obj="tv"></alt-menu>
+
 <div ng-init="tv.getFeed()" class="results" scrolly>
   <!-- if there is no data print generic no-data -->
-  <offline-err ng-if="!online" title="Double check your internet!" exec="tv.getFeed(tv.typesOfSearch.active)"></offline-err>
+  <offline-err ng-if="!online" title="Double check your internet!" obj="tv"></offline-err>
   <!-- end -->
   <feed-layout ng-if="online" type="tv" obj="tv"></feed-layout>
 </div>

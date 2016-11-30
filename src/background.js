@@ -59,7 +59,7 @@ export var createWindow = function(url) {
     width: 1024,
     height: 640,
     frame:true,
-    backgroundColor: '#222',
+    backgroundColor: '#f1f1f1',
     show: false,
     maximizable:true,
     resizable: true,

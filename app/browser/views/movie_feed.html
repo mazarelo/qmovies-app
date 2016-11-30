@@ -1,11 +1,9 @@
-<h1 class="title">{{movies.title}}</h1>
-<ul class="alt_nav">
-  <li ng-repeat="item in movies.typesOfSearch.options" value="item.value" ng-click="movies.getFeed(item.value)">{{item.name}}</li>
-</ul>
-<div class="top-to-bottom-degrade"></div>
+<!-- title and alternative menu -->
+<alt-menu obj="movies"></alt-menu>
+
 <div ng-init="movies.getFeed()" class="results" scrolly>
   <!-- if there is no data print generic no-data -->
-  <offline-err ng-if="!online" title="Double check your internet!"></offline-err>
+  <offline-err ng-if="!online" title="Double check your internet!" obj="movies"></offline-err>
   <!-- end -->
-  <feed-layout ng-if="online" type="'movie'" obj="movies"></feed-layout>
+  <feed-layout ng-if="online" type="movie" obj="movies"></feed-layout>
 </div>

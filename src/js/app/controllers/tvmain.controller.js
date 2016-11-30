@@ -23,6 +23,19 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb ) {
     ]
   };
 
+  self.getNumber = function(num) {
+    return new Array(num);   
+  }
+  
+  self.getSeasonInfo = function( season = 1 ){
+    self.currentSeason = season;
+
+    tmdb.tvSeason($routeParams.tvId , season).then(function(response){
+      console.log(response);
+      self.episodes = response.data.episodes;
+    });
+  }
+
   self.loadData = function(){
     tmdb.searchByTmbdId($routeParams.tvId).then(function(response){
       console.log(response);
