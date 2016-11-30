@@ -518,18 +518,18 @@ a {
 
 .main_menu {
   width: 100%;
-  background: #f1f1f1; }
+  background: white; }
   .main_menu .mm_ul {
     width: 100%;
     text-align: right;
-    padding: 20px 5% 0 5%;
+    padding: 10px 5%;
     font-weight: bold; }
     .main_menu .mm_ul li {
       display: inline-block;
       margin-left: 20px;
+      text-transform: uppercase;
       border-bottom: 3px solid rgba(244, 67, 54, 0);
-      font-size: 130%;
-      font-weight: normal; }
+      font-weight: bold; }
       .main_menu .mm_ul li.selected {
         border-bottom: 3px solid #f44336; }
         .main_menu .mm_ul li.selected a {
@@ -693,12 +693,11 @@ a {
 .feed_wrapper {
   width: 100%;
   height: calc(100% - 60px);
+  overflow-y: auto;
   padding: 0 30px; }
   .feed_wrapper .mw-content {
     height: 95%; }
   .feed_wrapper .results {
     position: relative;
-    overflow-x: auto;
-    height: 90%;
     width: 100%;
     padding-top: 3%; }
