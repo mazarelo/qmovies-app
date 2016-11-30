@@ -1,7 +1,7 @@
 <!-- title and alternative menu -->
 <alt-menu obj="tv"></alt-menu>
 
-<div ng-init="tv.getFeed()" class="results" scrolly>
+<div ng-init="tv.getFeed()" class="results" >
   <!-- if there is no data print generic no-data -->
   <offline-err ng-if="!online" title="Double check your internet!" obj="tv"></offline-err>
   <!-- end -->
