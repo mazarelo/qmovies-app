@@ -5,16 +5,7 @@
 <div class="top-to-bottom-degrade"></div>
 <div ng-init="tv.getFeed()" class="results" scrolly>
   <!-- if there is no data print generic no-data -->
-  <offline-err title="Double check your internet!"></offline-err>
+  <offline-err ng-if="!online" title="Double check your internet!" exec="tv.getFeed(tv.typesOfSearch.active)"></offline-err>
   <!-- end -->
-  <div ng-if="online" ng-repeat="item in tv.results" class="feed-template">
-    <a href="#/tv/{{item.id}}">
-      <figure class="ft-img">
-        <img src="{{tv.tmdbImgUrl}}/w300/{{item.poster_path}}">
-      </figure>
-      <div class="ft-content">
-        <a href="">{{item.name}}<span class="fc-c-rating">{{item.vote_average | round }}/10</span></a>
-      </div>
-    </a>
-  </div>
+  <feed-layout ng-if="online" type="tv" obj="tv"></feed-layout>
 </div>

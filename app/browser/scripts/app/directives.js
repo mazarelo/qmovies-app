@@ -1,19 +1,44 @@
 myApp.directive('offlineErr', function(){
   return {
     restrict: 'E',
+    replace: true,
     scope: {
-      title: '@'
+      title: '@title',
+      obj:'=',
+      exec: '&'
     },
     template: `
-      <div class="no-results" ng-if="!online">
+      <div class="no-results">
           <div class="nr-center">
             <figure class="nr-img">
               <img src="assets/img/internet.svg">
             </figure>
-            <h3 class="nr-err-title">{{title}}<br><a ng-click="tv.getCrew()" class="refresh">Retry</a></h3>
+            <h3 class="nr-err-title">{{title}}<br><a ng-click="exec()" class="refresh">Retry</a></h3>
           </div>
       </div>`
   };
+});
+
+myApp.directive('feedLayout', function(){
+  return {
+    restrict: 'E',
+    scope: {
+      type: '@type',
+      obj: '='
+    },
+    template: `
+        <div  ng-repeat="item in obj.results" class="feed-template">
+          <a href="#/{{type}}/{{item.id}}">
+            <figure class="ft-img">
+              <img src="{{obj.tmdbImgUrl}}w300{{item.poster_path}}">
+            </figure>
+            <div class="ft-content">
+              <a href="">{{type == 'tv' ? item.name : item.title}} <span class="ft-c-date">{{item.date}}</span></a>
+            </div>
+          </a>
+        </div>`
+  };
+
 });
 
 myApp.directive('scrolly', function () {
