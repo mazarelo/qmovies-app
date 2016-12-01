@@ -10,7 +10,7 @@
     <body>
       <div class="main-wrapper" scrolly>
         <nav class="main_menu" ng-controller="MenuController as menu" ng-include src="'views/global/menu.html'" ></nav>
-        <div id="view" class="feed_wrapper ">
+        <div id="view" class="feed_wrapper">
           <route-loading-indicator></route-loading-indicator>
           <!-- VIEW -->
           <div  class="fullHeight mw-content" ng-if='!isRouteLoading' ng-view></div>
@@ -20,12 +20,13 @@
       <!-- SCRIPTS -->
       <script src="scripts/lib/angular.min.js"></script>
       <script src="scripts/lib/angular.route.min.js"></script>
+      <script src="scripts/lib/angular.ngstorage.min.js"></script>
+      <script src="scripts/lib/angular.imageStorage.js"></script>
       <script src="scripts/app/app.js"></script>
       <script src="scripts/app/routes.js"></script>
       <script src="scripts/app/services.js"></script>
       <script src="scripts/app/directives.js"></script>
       <script src="scripts/app/controllers.js"></script>
       <script src="scripts/app/filters.js"></script>
-
     </body>
 </html>

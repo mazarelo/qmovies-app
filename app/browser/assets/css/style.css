@@ -502,7 +502,7 @@ a {
   width: 155px;
   display: inline-block;
   vertical-align: top;
-  margin: 10px; }
+  margin: 10px 20px 10px 0; }
   .feed-template .ft-img {
     width: 100%;
     overflow: hidden;
@@ -522,7 +522,7 @@ a {
   .main_menu .mm_ul {
     width: 100%;
     text-align: right;
-    padding: 10px 5%;
+    padding: 2% 5%;
     font-weight: bold; }
     .main_menu .mm_ul li {
       display: inline-block;
@@ -641,7 +641,8 @@ a {
       font-weight: bold;
       text-transform: uppercase; }
     .individual-content-wrapper .overview p {
-      line-height: 1.8; }
+      line-height: 1.8;
+      font-size: 80%; }
   .individual-content-wrapper .info-tab {
     font-size: 80%; }
     .individual-content-wrapper .info-tab .seasons-wrapper {
@@ -657,7 +658,8 @@ a {
         padding: 10px 15px;
         background: white;
         cursor: pointer;
-        font-weight: bold; }
+        font-weight: bold;
+        text-align: center; }
         .individual-content-wrapper .info-tab .seasons-wrapper .sw-item.selected {
           background: #f44336;
           color: white; }
@@ -678,7 +680,7 @@ a {
       max-height: 30vh;
       overflow-y: auto; }
       .individual-content-wrapper .info-tab .episodes-wrapper .ew-item {
-        padding: 10px 15px;
+        padding: 10px 0 10px 15px;
         background: white;
         cursor: pointer;
         border-bottom: 4px solid rgba(244, 67, 54, 0);
@@ -689,15 +691,27 @@ a {
           border-bottom: 4px solid #f44336; }
         .individual-content-wrapper .info-tab .episodes-wrapper .ew-item.selected {
           border-bottom: 4px solid #f44336; }
+        .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .download-btn {
+          float: right;
+          padding: 0 10px;
+          border-left: 1px solid rgba(0, 0, 0, 0.1); }
+          .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .download-btn:hover img {
+            opacity: 1; }
+          .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .download-btn img {
+            width: 15px;
+            opacity: 0.3; }
 
 .feed_wrapper {
   width: 100%;
   height: calc(100% - 60px);
   overflow-y: auto;
-  padding: 0 30px; }
+  padding: 0 3%; }
   .feed_wrapper .mw-content {
-    height: 95%; }
+    height: calc(100% - 15px);
+    overflow: hidden; }
   .feed_wrapper .results {
     position: relative;
     width: 100%;
-    padding-top: 3%; }
+    padding-top: 3%;
+    overflow-y: scroll;
+    height: 100%; }

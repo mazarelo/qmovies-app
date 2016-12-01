@@ -15,7 +15,6 @@ myApp.directive('scrolly', function () {
             element.bind('scroll', function () {
               if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight-100 && scope.tv.requestRunning == false) {
                   scope.tv.requestRunning = true;
-                  scope.tv.page = scope.tv.page +1;
                   scope.tv.loadMore();
               }
             })

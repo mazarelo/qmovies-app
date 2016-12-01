@@ -1,4 +1,4 @@
-myApp.service('tmdb', function($http , $routeParams){
+myApp.service('tmdb', function($http , $routeParams ){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";

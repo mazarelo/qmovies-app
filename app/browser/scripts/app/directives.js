@@ -46,6 +46,7 @@ myApp.directive('episodesLayout', function(){
       <ul class="episodes-wrapper">
         <li ng-repeat="episode in obj.episodes track by $index" class="ew-item"  ng-class="obj.currentEpisode == ($index + 1) ? 'selected' : ''">
           {{$index+1}} - {{episode.name}}
+          <span class="download-btn"><img src="assets/img/download.svg"/></span>
         </li>
       </ul>`
   };
@@ -80,10 +81,10 @@ myApp.directive('feedLayout', function(){
       obj: '='
     },
     template: `
-        <div  ng-repeat="item in obj.results" class="feed-template">
+        <div  ng-repeat="item in obj.results | unique:'id'" class="feed-template">
           <a href="#/{{type}}/{{item.id}}">
             <figure class="ft-img">
-              <img ng-src="{{obj.tmdbImgUrl}}w300{{item.poster_path}}">
+              <stored-img ng-url="{{obj.tmdbImgUrl}}w300{{item.poster_path}}"/>
             </figure>
             <div class="ft-content">
               <a href="">{{type == 'tv' ? item.name : item.title}} <span class="ft-c-date">{{item.date}}</span></a>
@@ -146,7 +147,6 @@ myApp.directive('scrolly', function () {
             element.bind('scroll', function () {
               if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight-100 && scope.tv.requestRunning == false) {
                   scope.tv.requestRunning = true;
-                  scope.tv.page = scope.tv.page +1;
                   scope.tv.loadMore();
               }
             })

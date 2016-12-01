@@ -21,7 +21,7 @@
   vertical-align: top;
   padding-left:20px;
   height:calc(100% - 40px);
-  
+
   .tabs{
     width:100%;
     padding: 0;
@@ -61,6 +61,7 @@
       }
       p{
         line-height:1.8;
+        font-size:80%;
       }
 
     }
@@ -83,7 +84,7 @@
         background:white;
         cursor:pointer;
         font-weight:bold;
-
+        text-align: center;
         &.selected{
           background:$red;
           color:white;
@@ -114,7 +115,7 @@
       overflow-y:auto;
 
       .ew-item{
-        padding:10px 15px;
+        padding:10px 0 10px 15px;
         background:white;
         cursor:pointer;
         border-bottom:4px solid rgba($red, 0);
@@ -130,6 +131,22 @@
 
         &.selected{
           border-bottom:4px solid $red;
+        }
+        .download-btn{
+          float:right;
+          padding:0 10px;
+          border-left:1px solid rgba(0,0,0,0.1);
+
+          &:hover{
+              img{
+                opacity:1;
+              }
+          }
+
+          img{
+            width:15px;
+            opacity:0.3;
+          }
         }
       }
     }

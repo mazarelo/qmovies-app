@@ -2,13 +2,16 @@
   width:100%;
   height:calc(100% - 60px);
   overflow-y: auto;
-  padding:0 30px;
+  padding:0 3%;
   .mw-content{
-    height: 95%;
+    height:calc(100% - 15px);
+    overflow: hidden;
   }
   .results{
     position:relative;
     width:100%;
     padding-top:3%;
+    overflow-y:scroll;
+    height:100%;
   }
 }
