@@ -1,3 +1,35 @@
+myApp.service('cache', function($q , $routeParams, $localStorage){
+
+  this.save = function(name , data , timeToLive){
+    var returnData;
+
+    if(name){
+      returnData = $localStorage[name];
+    }else{
+      $localStorage[name] = data;
+      $localStorage[name].push({time_to_live: timeToLive});
+      returnData = $localStorage[name];
+    }
+    return returnData;
+  }
+
+  this.get = function(){
+    if($localStorage[name]){
+      return $localStorage[name];
+    }
+    return false;
+  }
+
+  this.delete = function(name){
+    delete $localStorage[name];
+  }
+
+  this.alter = function(name , data){
+    $localStorage[name] = data;
+  }
+
+});
+
 myApp.service('notifications', function(){
   const self = this;
   self.new = function(theBody,theIcon,theTitle) {
@@ -15,7 +47,7 @@ myApp.service('notifications', function(){
 
 });
 
-myApp.service('tmdb', function($http , $routeParams , $q , $localStorage ){
+myApp.service('tmdb', function($http , $routeParams , $q , cache ){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
@@ -34,8 +66,8 @@ myApp.service('tmdb', function($http , $routeParams , $q , $localStorage ){
   this.fetchTmdb = function(platform = "tv", type , query , page){
     var deferred = $q.defer();
     let storeName = type+"-"+page;
-    if($localStorage[storeName]){
-      deferred.resolve($localStorage[requestUrl]);
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
     }else{
        return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`)
     }
@@ -60,7 +92,12 @@ myApp.service('tmdb', function($http , $routeParams , $q , $localStorage ){
 
   this.tvFeed = function(type , page){
     console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
-    return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
+    let storeName = type+"-"+page;
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
+    }
   }
 
   this.movieFeed = function(type , page){

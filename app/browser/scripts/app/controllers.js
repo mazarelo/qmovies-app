@@ -141,11 +141,11 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
     tmdb.tvFeed(type , self.page ).then(function(response){
       console.log(response);
       self.results = response.data.results;
-
-      if(!cache.get(type+"-"+page){
-        cache.save(type+"-"+page , response , )
+/*
+      if(!cache.get(type+"-"+page) ){
+        cache.save(type+"-"+page , response , {} );
       }
-
+*/
       self.loadMore();
       self.loadMore();
     })

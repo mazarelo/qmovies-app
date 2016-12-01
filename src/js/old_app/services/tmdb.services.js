@@ -1,4 +1,4 @@
-myApp.service('tmdb', function($http , folder , $routeParams){
+myApp.service('tmdb', function($http , folder , $routeParams , cache){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
@@ -27,9 +27,9 @@ myApp.service('tmdb', function($http , folder , $routeParams){
     let url = `${url}/tv/${type}?${apiKey}&page=${page}`;
     let storageId = type+page;
     console.log("ID:" storageId);
-    if($localStorage.[type+page]){
-      console.log("Local Storage:",$localStorage.[type+page]);
-      return $localStorage.[type+page];
+    if(cache.get(type+page)){
+      console.log("Local Storage:",cache.get(type+page));
+      return cache.get(type+page);
     }else{
       $localStorage.[type+page] = $http.get(url);
       return $http.get(url);
