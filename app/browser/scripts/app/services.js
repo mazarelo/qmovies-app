@@ -15,7 +15,7 @@ myApp.service('notifications', function(){
 
 });
 
-myApp.service('tmdb', function($http , $routeParams ){
+myApp.service('tmdb', function($http , $routeParams , $q , $localStorage ){
 
   const  apiKey = "api_key=7842e553f27c281212263c594f9504cf";
   const  url = "https://api.themoviedb.org/3";
@@ -24,9 +24,23 @@ myApp.service('tmdb', function($http , $routeParams ){
 
   this.imgRoute = imgUrl;
 
+  /* defered kit
+  var deferred = $q.defer();
+  deferred.resolve(data);
+  return deferred.promise;
+  */
+
+  /* NEEDS WORK ON IT! FIND A WAY OF STORING FILES IF NOT STORED ON THE SERVICES LEVEL */
   this.fetchTmdb = function(platform = "tv", type , query , page){
-    console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
-    return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
+    var deferred = $q.defer();
+    let storeName = type+"-"+page;
+    if($localStorage[storeName]){
+      deferred.resolve($localStorage[requestUrl]);
+    }else{
+       return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`)
+    }
+    return deferred.promise;
+    //console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
   }
 
   this.searchByTmbdId = function(id = $routeParams.tvId){

@@ -68,7 +68,7 @@ myApp.controller("TitleController" , function( $scope ) {
 });
 
 /* login */
-myApp.controller("TvController" , function( $scope , $routeParams , tmdb, $localStorage ) {
+myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache) {
   const self = this;
   self.title = "Tv Series";
   self.page = 1;
@@ -131,24 +131,24 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb, $local
 
   /* gets current feed */
   self.getFeed = function(type = self.typesOfSearch.active){
+
     if(type !== self.typesOfSearch.active){
       self.typesOfSearch.active = type;
       self.page = 1;
     }
     self.tmdbImgUrl = tmdb.imgRoute;
-    if($localStorage[type+"-"+self.page]){
-      self.results = $localStorage[type+"-"+self.page];
-    }else{
-      tmdb.tvFeed(type , self.page ).then(function(response){
-        console.log(response);
-        self.results = response.data.results;
-        $localStorage[type+"-"+self.page] = self.results;
 
-        self.loadMore();
-        self.loadMore();
-      })
-    }
+    tmdb.tvFeed(type , self.page ).then(function(response){
+      console.log(response);
+      self.results = response.data.results;
 
+      if(!cache.get(type+"-"+page){
+        cache.save(type+"-"+page , response , )
+      }
+
+      self.loadMore();
+      self.loadMore();
+    })
   }
 
   /* load more method */
@@ -159,22 +159,13 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb, $local
     /* check what function to call */
     switch (self.currentSearch) {
       case "getFeed":
-      if($localStorage[self.typesOfSearch.active+"-"+self.page]){
-        $localStorage[self.typesOfSearch.active+"-"+self.page].forEach( function (arrayItem){
-          self.results.push(arrayItem);
-        });
-        self.requestRunning = false;
-        self.loading = false;
-      }else{
         tmdb.tvFeed(self.typesOfSearch.active , self.page).then(function(response){
           if(response.data.results.length === 0){
             return self.requestRunning = true;
           }else{
-            $localStorage[self.typesOfSearch.active+"-"+self.page] = response.data.results;
-            $localStorage[self.typesOfSearch.active+"-"+self.page].forEach( function (arrayItem){
+            response.data.results.forEach( function (arrayItem){
               self.results.push(arrayItem);
             });
-            console.log("Local Storage Size:",JSON.stringify(localStorage).length);
             self.requestRunning = false;
             self.loading = false;
           };
@@ -182,7 +173,6 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb, $local
           console.log("error", err);
           self.loading = false;
         });
-      }
       break;
       case "discover":
         tmdb.tvDiscover(`sort_by=${self.sortBy.value}` , `with_genres=${self.genre.value}` , `page=${self.page}` ).then(function(response){
