@@ -30,6 +30,43 @@ myApp.service('cache', function($q , $routeParams, $localStorage){
 
 });
 
+myApp.service('nightmare', function($q){
+  const self = this;
+  var url = {
+    "movie": "https://movies.com",
+    "tv": "https://another.com"
+  }
+
+  var jquery = require('jquery'),
+      Nightmare = require('nightmare'),
+      nightmare = Nightmare();
+
+  self.scrapeLinkFromProvider = function(url , scrapeSelector){
+     var deferred = $q.defer();
+
+    console.log("Inside Nightmare");
+    /* test url = 'http://streamin.to/2io0duwvz10t' */
+    nightmare.goto(url)
+    .wait(7000)
+    .click('#btn_download')
+    .wait(5000)
+    .evaluate(function(){
+      var scriptedData = document.querySelector('div.cont_mdl > script:nth-child(5)').textContent.replace(/\s/g, '');
+      var getFile =  scriptedData.substring( scriptedData.lastIndexOf("file:")+6, scriptedData.indexOf("image:")-2 );
+      return getFile;
+    })
+    .end()
+    .then(function(response){
+      console.log("from Nightmare:", response)
+      deferred.resolve( response );
+    })
+
+    return deferred.promise
+  }
+
+});
+
+
 myApp.service('notifications', function(){
   const self = this;
   self.new = function(theBody,theIcon,theTitle) {
@@ -46,6 +83,43 @@ myApp.service('notifications', function(){
   }
 
 });
+
+myApp.service('providers', function(streamin , $filter , $q){
+  const self = this;
+
+  self.filterProviders = function(provider){
+    var deferred = $q.defer();
+    let providerFiltered = $filter('getDomain')(provider);
+    console.log("Providers:",providerFiltered);
+
+    switch(providerFiltered){
+      case "streamin":
+        console.log("inside streamin");
+         deferred.resolve( streamin.getFileUrl(provider) );
+      break;
+      case "vidto":
+        deferred.resolve( streamin.getFileUrl(provider) );
+      break;
+      case "vidtodo":
+        deferred.resolve( streamin.getFileUrl(provider) );
+      break;
+    }
+    return deferred.promise;
+  }
+
+});
+
+
+myApp.service('streamin', function(nightmare ){
+  const self = this;
+
+  self.getFileUrl = function(url){
+    console.log("Streamin", url);
+    return nightmare.scrapeLinkFromProvider(url);
+  }
+
+});
+
 
 myApp.service('tmdb', function($http , $routeParams , $q , cache ){
 

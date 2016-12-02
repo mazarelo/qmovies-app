@@ -209,7 +209,7 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
 });
 
 /* login */
-myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb ) {
+myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , providers, streamin ) {
   const self = this;
 
   self.requestRunning = false;
@@ -252,6 +252,12 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb ) {
       self.info = response.data;
       self.title = self.info.name;
       self.typesOfSearch.options = self.info.genres;
+    });
+    console.log("Providers started");
+    console.log(streamin.getFileUrl("http://streamin.to/ekiljfxzks0h"));
+
+    providers.filterProviders("http://streamin.to/ekiljfxzks0h").then(function(response){
+      console.log(response);
     });
   }
 
