@@ -1,7 +1,8 @@
-myApp.service('cache', function( $localStorage){
+myApp.service('cache', function($q , $routeParams, $localStorage){
 
   this.save = function(name , data , timeToLive){
     var returnData;
+
     if(name){
       returnData = $localStorage[name];
     }else{
@@ -12,9 +13,8 @@ myApp.service('cache', function( $localStorage){
     return returnData;
   }
 
-  this.get = function(name){
+  this.get = function(){
     if($localStorage[name]){
-      console.log("Cached obj:",$localStorage[name])
       return $localStorage[name];
     }
     return false;
@@ -30,68 +30,42 @@ myApp.service('cache', function( $localStorage){
 
 });
 
-myApp.service('folder', function($q){
+myApp.service('nightmare', function($q){
   const self = this;
-  const fs = require('fs');
-  const APP_FILES = process.env.APP_FILES+"\\jsonCache";
+  var url = {
+    "movie": "https://movies.com",
+    "tv": "https://another.com"
+  }
 
-  self.new = function(name){
-    console.log( APP_FILES+"/"+name );
+  var jquery = require('jquery'),
+      Nightmare = require('nightmare'),
+      nightmare = Nightmare();
 
-    fs.mkdir(APP_FILES+"/"+name, function (err) {
-      if (err) {
-          return console.log('failed to write directory', err);
-      }
-    });
-  };
+  self.scrapeLinkFromProvider = function(url , scrapeSelector){
+     var deferred = $q.defer();
 
-  self.listAll = function(){
-    console.log( fs.readdirSync(APP_FILES) );
-    var folder = APP_FILES;
-  };
+    console.log("Inside Nightmare");
+    /* test url = 'http://streamin.to/2io0duwvz10t' */
+    nightmare.goto(url)
+    .wait(7000)
+    .click('#btn_download')
+    .wait(5000)
+    .evaluate(function(){
+      var scriptedData = document.querySelector('div.cont_mdl > script:nth-child(5)').textContent.replace(/\s/g, '');
+      var getFile =  scriptedData.substring( scriptedData.lastIndexOf("file:")+6, scriptedData.indexOf("image:")-2 );
+      return getFile;
+    })
+    .end()
+    .then(function(response){
+      console.log("from Nightmare:", response)
+      deferred.resolve( response );
+    })
 
-  self.fileExists = function(path){
-    try{
-      fs.stat(APP_FILES+"/"+path+".json", function(err, stats){
-        console.log(stats);
-      });
-    }catch(e){
-      console.log(e);
-    }
-  };
-
-  self.removeFolder = function(dir){
-    let folder = APP_FILES+"/"+dir;
-    console.log( folder );
-    fs.unlink(folder);
-  };
-
-  self.readJson = function(file){
-    var deferred = $q.defer();
-    fs.readFile( APP_FILES+"/"+file+".json", 'utf8', function (err, data) {
-      if (err) {
-        deferred.resolve("There is no File!");
-      }
-
-      deferred.resolve(JSON.parse(data));
-    });
-    return deferred.promise;
-  };
-
-  self.createJsonFile = function(name , data){
-    fs.writeFile(APP_FILES+"/"+name+".json", data , function(err) {
-      if(err) {
-          return console.log(err);
-      }
-      console.log("The file was saved!");
-      });
-  };
-
-  self.checkLastModified = function(name){
-
+    return deferred.promise
   }
 
 });
+
 
 myApp.service('notifications', function(){
   const self = this;
@@ -109,6 +83,43 @@ myApp.service('notifications', function(){
   }
 
 });
+
+myApp.service('providers', function(streamin , $filter , $q){
+  const self = this;
+
+  self.filterProviders = function(provider){
+    var deferred = $q.defer();
+    let providerFiltered = $filter('getDomain')(provider);
+    console.log("Providers:",providerFiltered);
+
+    switch(providerFiltered){
+      case "streamin":
+        console.log("inside streamin");
+         deferred.resolve( streamin.getFileUrl(provider) );
+      break;
+      case "vidto":
+        deferred.resolve( streamin.getFileUrl(provider) );
+      break;
+      case "vidtodo":
+        deferred.resolve( streamin.getFileUrl(provider) );
+      break;
+    }
+    return deferred.promise;
+  }
+
+});
+
+
+myApp.service('streamin', function(nightmare ){
+  const self = this;
+
+  self.getFileUrl = function(url){
+    console.log("Streamin", url);
+    return nightmare.scrapeLinkFromProvider(url);
+  }
+
+});
+
 
 myApp.service('tmdb', function($http , $routeParams , $q , cache ){
 
@@ -154,14 +165,13 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   }
 
   this.tvFeed = function(type , page){
-    //console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
+    console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
     let storeName = type+"-"+page;
     if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
       return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
     }
-    return deferred.promise;
   }
 
   this.movieFeed = function(type , page){
