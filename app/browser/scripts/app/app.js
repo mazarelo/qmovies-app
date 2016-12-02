@@ -16,6 +16,6 @@ myApp.run(function($window, $rootScope) {
     }, false);
 
     Notification.requestPermission().then(function(result) {
-      console.log(result);
+      //console.log(result);
     });
 });

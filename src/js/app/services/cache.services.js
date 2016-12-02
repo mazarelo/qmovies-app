@@ -1,8 +1,7 @@
-myApp.service('cache', function($q , $routeParams, $localStorage){
+myApp.service('cache', function( $localStorage){
 
   this.save = function(name , data , timeToLive){
     var returnData;
-
     if(name){
       returnData = $localStorage[name];
     }else{
@@ -13,8 +12,9 @@ myApp.service('cache', function($q , $routeParams, $localStorage){
     return returnData;
   }
 
-  this.get = function(){
+  this.get = function(name){
     if($localStorage[name]){
+      console.log("Cached obj:",$localStorage[name])
       return $localStorage[name];
     }
     return false;

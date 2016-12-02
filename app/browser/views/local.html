@@ -1,0 +1,10 @@
+<h1>{{local.title}}</h1>
+<!-- title and alternative menu -->
+<alt-menu obj="local"></alt-menu>
+<div ng-init="local.getFeed()" class="results" scrolly>
+  <!-- if there is no data print generic no-data
+  <offline-err ng-if="!online" title="Double check your internet!" obj="tv"></offline-err>
+   -->
+  <!-- end -->
+  <feed-layout  type="local" obj="local"></feed-layout>
+</div>

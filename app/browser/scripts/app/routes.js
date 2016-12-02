@@ -15,6 +15,13 @@ myApp.config(function($routeProvider, $locationProvider) {
 
     }
   })
+  .when('/local', {
+    templateUrl: 'views/local.html',
+    controller: 'LocalController as local',
+    resolve: {
+
+    }
+  })
   .when('/tv/:tvId', {
     templateUrl: 'views/tv.html',
     controller: 'TvMainController as tv',

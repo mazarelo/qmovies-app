@@ -3,7 +3,7 @@ myApp.directive('scrolly', function () {
         restrict: 'A',
         link: function (scope, element, attrs) {
             var raw = element[0];
-            console.log(`${raw.scrollTop + raw.offsetHeight} == ${raw.scrollHeight}`);
+            //console.log(`${raw.scrollTop + raw.offsetHeight} == ${raw.scrollHeight}`);
 /*
             if(raw.scrollTop + raw.offsetHeight == raw.scrollHeight){
               console.log("loaded more");

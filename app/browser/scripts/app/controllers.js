@@ -18,6 +18,20 @@ myApp.controller("TvFeedController" , function( $scope , MenuController ) {
 });
 
 /* login */
+myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , folder ) {
+  const self = this;
+  self.title = "Local";
+  self.page = 1;
+
+  self.listAllFilesOnFolder = function(){
+    folder.listAll().then(function(response){
+      console.log(response);
+    });
+  }
+
+});
+
+/* login */
 myApp.controller("MenuController" , function( $scope , $routeParams ) {
   const self = this;
 
@@ -141,14 +155,14 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
     tmdb.tvFeed(type , self.page ).then(function(response){
       console.log(response);
       self.results = response.data.results;
-/*
+
       if(!cache.get(type+"-"+page) ){
-        cache.save(type+"-"+page , response , {} );
+        cache.save(type+"-"+page , response , {timestamp: new Date() } );
       }
-*/
+      
       self.loadMore();
       self.loadMore();
-    })
+    });
   }
 
   /* load more method */
