@@ -1,10 +1,8 @@
-myApp.service('streamin', function(nightmare ){
+myApp.service('streamin', function(){
   const self = this;
 
   self.getFileUrl = function(url){
-    console.log("Streamin", url);
-    return nightmare.scrapeLinkFromProvider(url);
+    /* test url = 'http://streamin.to/2io0duwvz10t' */
+    
   }
-
 });
-

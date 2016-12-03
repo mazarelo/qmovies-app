@@ -43,12 +43,15 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
 
   this.tvFeed = function(type , page){
     //console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
+    var deferred = $q.defer();
     let storeName = type+"-"+page;
-    if(cache.get(storeName)){
+    /*if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
+    */
       return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
-    }
+    /*}*/
+
     return deferred.promise;
   }
 

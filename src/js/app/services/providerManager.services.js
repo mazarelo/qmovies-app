@@ -8,7 +8,7 @@ myApp.service('providers', function(streamin , $filter , $q){
 
     switch(providerFiltered){
       case "streamin":
-        console.log("inside streamin");
+        console.log("inside streamin");        
          deferred.resolve( streamin.getFileUrl(provider) );
       break;
       case "vidto":
@@ -22,4 +22,3 @@ myApp.service('providers', function(streamin , $filter , $q){
   }
 
 });
-
