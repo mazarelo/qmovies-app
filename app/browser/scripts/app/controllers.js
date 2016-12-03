@@ -29,6 +29,13 @@ myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fo
     });
   }
 
+  self.getFeed = function(){
+    /* load folder inside downloads and show them. For each file, load a query
+    to tmdb and show the information. Use cache if possible to display results
+    */
+    console.log("Query to Local Files");
+  };
+
 });
 
 /* login */
@@ -156,10 +163,10 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
       console.log(response);
       self.results = response.data.results;
 
-      if(!cache.get(type+"-"+page) ){
-        cache.save(type+"-"+page , response , {timestamp: new Date() } );
+      if(!cache.get(type+"-"+self.page) ){
+        cache.save(type+"-"+self.page , response , {timestamp: new Date() } );
       }
-      
+
       self.loadMore();
       self.loadMore();
     });
