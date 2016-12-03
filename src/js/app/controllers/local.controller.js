@@ -15,6 +15,6 @@ myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fo
     to tmdb and show the information. Use cache if possible to display results
     */
     console.log("Query to Local Files");
-  });
+  };
 
 });

@@ -73,10 +73,10 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
       console.log(response);
       self.results = response.data.results;
 
-      if(!cache.get(type+"-"+page) ){
-        cache.save(type+"-"+page , response , {timestamp: new Date() } );
+      if(!cache.get(type+"-"+self.page) ){
+        cache.save(type+"-"+self.page , response , {timestamp: new Date() } );
       }
-      
+
       self.loadMore();
       self.loadMore();
     });
