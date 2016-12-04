@@ -26,9 +26,14 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
     //console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
   }
 
-  this.searchByTmbdId = function(id = $routeParams.tvId){
+  this.searchById = function(id = $routeParams.tvId){
     console.log(`${url}/tv/${id}?${apiKey}`);
     return $http.get(`${url}/tv/${id}?${apiKey}`);
+  }
+
+  this.searchById = function(id = $routeParams.tvId){
+    console.log(`${url}/tv/${id}?${apiKey}`);
+    return $http.get(`${url}/tv/${id}?${apiKey}&append_to_response=external_ids`);
   }
 
   this.getCastFromTvId = function(tvId){
@@ -61,7 +66,7 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   }
 
   this.getTvSerieExternalIds = function(){
-    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids?${apiKey}`);
   }
 
   this.tvSerie = function(){

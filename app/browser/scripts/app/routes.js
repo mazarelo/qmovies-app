@@ -29,6 +29,13 @@ myApp.config(function($routeProvider, $locationProvider) {
 
     }
   })
+  .when('/tv/play/:hash', {
+    templateUrl: 'views/player.html',
+    controller: 'PlayerController as player',
+    resolve: {
+
+    }
+  })
   .when('/tv-series', {
     templateUrl: 'views/tv_feed.html',
     controller: 'TvController as tv',

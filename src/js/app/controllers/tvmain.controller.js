@@ -1,5 +1,5 @@
 /* login */
-myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , providers, streamin ) {
+myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb, tvTorrents ) {
   const self = this;
 
   self.requestRunning = false;
@@ -37,24 +37,20 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , p
   }
 
   self.loadData = function(){
-    tmdb.searchByTmbdId($routeParams.tvId).then(function(response){
+    tmdb.searchById($routeParams.tvId).then(function(response){
       console.log(response);
+      self.tmdbId = $routeParams.tvId;
       self.info = response.data;
       self.title = self.info.name;
       self.typesOfSearch.options = self.info.genres;
+      /* imdb Id */
+      self.tmdb_id = self.info.external_ids.imdb_id;
+      return tvTorrents.getTorrentsByImdbId(self.tmdb_id);
+    }).then(function(response){
+      console.log("Tv Torrents:",response);
+      self.torrents = response.data.episodes;
+      self.loading = false;
     });
-    /* test url = 'http://streamin.to/2io0duwvz10t' */
-    var ts = require('torrent_scraper');
-    //serarch for torrents for 'debian 7', 'unix' category on kickasstorrents and '303' category on thepiratebay
-    ts.getTorrents('debian 7', { kickasstorrents: 'unix', thepiratebay: '303' }, function(err, torrents){
-        console.log(err, torrents)
-        console.log("CALLBACK", torrents);
-    });
-    /*
-    providers.filterProviders("http://streamin.to/ekiljfxzks0h").then(function(response){
-      console.log(response);
-    });
-    */
   }
 
   self.getCast = function(){

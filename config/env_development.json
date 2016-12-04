@@ -2,6 +2,6 @@
   "name": "development",
   "description": "Qmovies on dev-mode",
   "cache":false,
-  "deleteDownloadsOnExit": true,
+  "deleteDownloadsOnExit": false,
   "customDownloadFolder":false
 }

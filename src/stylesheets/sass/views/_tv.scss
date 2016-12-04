@@ -115,26 +115,65 @@
       overflow-y:auto;
 
       .ew-item{
-        padding:10px 0 10px 15px;
         background:white;
         cursor:pointer;
         border-bottom:4px solid rgba($red, 0);
         font-weight:bold;
+        position:relative;
 
         &:nth-child(even){
           background:#ededed;
         }
 
         &:hover{
-          border-bottom:4px solid $red;
+          //border-bottom:4px solid $red;
         }
 
         &.selected{
-          border-bottom:4px solid $red;
+          //border-bottom:4px solid $red;
         }
+        .progress-bar{
+          width:100%;
+          position:absolute;
+          bottom:0;
+          left:0;
+          height:5px;
+
+          progress{
+            /* Important Thing */
+          	-webkit-appearance: none;
+          	border: none;
+            width:100%;
+            height:5px;
+            float:left;
+            &::-webkit-progress-bar {
+            	background: transparent;
+            	border-radius: 0;
+            }
+
+            &::-webkit-progress-value {
+            	background: $red;
+            	border-radius: 0;
+            }
+          }
+        }
+        .ew-i-name{
+          display:inline-block;
+          width:calc(100% - 40px);
+          padding:10px 0 10px 15px;
+
+          .download-speed{
+            float:right;
+            font-size:70%;
+            opacity:0.4;
+            font-weight:normal;
+          }
+        }
+
         .download-btn{
-          float:right;
-          padding:0 10px;
+          display:inline-block;
+          padding:10px;
+          width:36px;
           border-left:1px solid rgba(0,0,0,0.1);
 
           &:hover{
@@ -148,6 +187,7 @@
             opacity:0.3;
           }
         }
+
       }
     }
   }

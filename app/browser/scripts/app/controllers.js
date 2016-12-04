@@ -11,6 +11,59 @@ myApp.controller("AltMenuController" , function( $scope , $routeParams ) {
 });
 
 /* login */
+myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows ) {
+  const self = this;
+  self.isSaved = false;
+
+  self.episode = function(season, episode , torrents){
+    console.log("season:", season );
+    console.log("episode:", episode);
+    self.torrents = torrents;
+
+    self.torrents.map(function (item) {
+      if(item.season == season && item.episode == episode) {
+        self.magnet = item.torrents;
+        console.log("Torrent:", self.torrents);
+      }
+    });
+
+    if(Object.keys(self.magnet).length > 0){
+      //let bestQuality = self.magnet[Object.keys(self.magnet).sort().pop()];
+      downloadTorrent.download(self.magnet['480p'].url, $routeParams.tvId , season , episode).then(function(){
+        //console.log("done downloading");
+        self.isSaved = true;
+      });
+    }
+  }
+
+  self.delete = function(season, episode){
+    console.log(fileSystem.listAll(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`));
+  }
+
+  self.playLocal = function(season, episode){
+    fileSystem.findAllWithMovieExtension(`${process.env.APP_FILES}/downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`, function(filename){
+      console.log('-- found: ',filename);
+      windows.open("file://"+filename);
+      return filename;
+    });
+  }
+
+});
+
+/*
+  fileSystem.findAllWithMovieExtension(`${process.env.APP_FILES}/downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`, function(filename){
+    console.log('-- found: ',filename);
+    //windows.open("file://"+filename);
+    self.filenameExists = filename;
+  });
+
+  if(self.filenameExists) {
+    windows.open("file://"+self.filenameExists);
+    return true;
+  }
+*/
+
+/* login */
 myApp.controller("TvFeedController" , function( $scope , MenuController ) {
   const self = this;
   self.title = "TV";
@@ -79,6 +132,44 @@ myApp.controller("MovieController" , function( $scope , $routeParams , tmdb ) {
     });
   }
 
+});
+
+/* login */
+myApp.controller("PlayEpisodeController" , function( $scope ) {
+  const self = this;
+
+  self.episode = function(season , episode , torrents ){
+    console.log("season:", season );
+    console.log("episode:", episode);
+    self.torrents = torrents;
+    /* test url = 'http://streamin.to/2io0duwvz10t'
+    providers.filterProviders("http://streamin.to/ekiljfxzks0h").then(function(response){
+      console.log(response);
+    });
+    */
+    self.torrents.map(function (item) {
+      if(item.season == season && item.episode == episode) {
+        self.magnet = item.torrents;
+        console.log("Torrent:", self.torrents);
+      }
+    });
+
+    if(Object.keys(self.magnet).length > 0){
+      //console.log(self.magnet[Object.keys(self.magnet).sort().pop()]);
+      console.log("found", self.magnet);
+    }
+  }
+
+});
+
+/* login */
+myApp.controller("PlayerController" , function( $scope , downloadTorrent , $routeParams ) {
+  const self = this;
+  self.title = "PLAYER";
+
+  self.play = function(){
+    downloadTorrent.findTorrentsById($routeParams.hash);
+  }
 });
 
 /* login */
@@ -230,7 +321,7 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
 });
 
 /* login */
-myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , providers, streamin ) {
+myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb, tvTorrents ) {
   const self = this;
 
   self.requestRunning = false;
@@ -268,24 +359,20 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , p
   }
 
   self.loadData = function(){
-    tmdb.searchByTmbdId($routeParams.tvId).then(function(response){
+    tmdb.searchById($routeParams.tvId).then(function(response){
       console.log(response);
+      self.tmdbId = $routeParams.tvId;
       self.info = response.data;
       self.title = self.info.name;
       self.typesOfSearch.options = self.info.genres;
+      /* imdb Id */
+      self.tmdb_id = self.info.external_ids.imdb_id;
+      return tvTorrents.getTorrentsByImdbId(self.tmdb_id);
+    }).then(function(response){
+      console.log("Tv Torrents:",response);
+      self.torrents = response.data.episodes;
+      self.loading = false;
     });
-    /* test url = 'http://streamin.to/2io0duwvz10t' */
-    var ts = require('torrent_scraper');
-    //serarch for torrents for 'debian 7', 'unix' category on kickasstorrents and '303' category on thepiratebay
-    ts.getTorrents('debian 7', { kickasstorrents: 'unix', thepiratebay: '303' }, function(err, torrents){
-        console.log(err, torrents)
-        console.log("CALLBACK", torrents);
-    });
-    /*
-    providers.filterProviders("http://streamin.to/ekiljfxzks0h").then(function(response){
-      console.log(response);
-    });
-    */
   }
 
   self.getCast = function(){

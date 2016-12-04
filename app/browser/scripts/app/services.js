@@ -1,3 +1,17 @@
+/* API END POINTS
+"https://api-fetch.website/tv/shows/1"
+"https://api-fetch.website/tv/show/:id"
+*/
+myApp.service('tvTorrents', function($http){
+  const self = this;
+
+  self.getTorrentsByImdbId = function(id){
+      console.log(id);
+      return $http.get(`https://api-fetch.website/tv/show/${id}`);
+  }
+
+});
+
 myApp.service('cache', function( $localStorage){
 
   this.save = function(name , data , timeToLive){
@@ -30,12 +44,108 @@ myApp.service('cache', function( $localStorage){
 
 });
 
-myApp.service('folder', function($q){
+
+myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter){
+  const self = this;
+  var WebTorrent = require('webtorrent')
+  var client = new WebTorrent();
+  self.requestRunning = false;
+  var videoBlobUrl = false;
+  self.download = function(magnet , id , season , episode){
+    var deferred = $q.defer();
+    var magnetURI = magnet;
+    var progressBarId = `${id}-${season}-${episode}`;
+    var serieTitle = document.querySelector(".title").textContent;
+    /* set item img to download */
+    let downloadIcon = document.getElementById(progressBarId).parentNode.parentNode.getElementsByTagName('img')[0];
+    downloadIcon.src = "assets/img/loading.svg";
+
+    /* prevent torrent duplication error */
+    if(client.get(magnetURI) == null){
+      client.add(magnetURI, { path: `${process.env.DOWNLOAD_PATH}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}` }, function (torrent) {
+        self.requestRunning = true;
+
+        if(!videoBlobUrl){
+          fileSystem.findAllWithMovieExtension(torrent.path , function(filename){
+            console.log('-- found: ',filename);
+            windows.open("file://"+filename);
+          })
+        };
+
+        notifications.new(`Season ${season} Episode ${episode} is downloading...` , "" , serieTitle , function(title){
+          console.log("new torrent notification sent ");
+        });
+
+        torrent.files.forEach(function(item){
+          console.log(item);
+          self.hash = item._torrent.infoHash;
+        });
+
+        /* on torrent download update date */
+        torrent.on('download', function (bytes) {
+          //console.log('just downloaded: ' + bytes)
+          //console.log('total downloaded: ' + torrent.downloaded);
+          //console.log('download speed: ' + torrent.downloadSpeed);
+
+          try{
+            document.getElementById("speed-"+progressBarId).textContent = $filter('formatBytes')(torrent.downloadSpeed)+"/s";
+          }catch(err){
+            console.log("SpeedErr:",err);
+          }
+
+          try{
+            document.getElementById(progressBarId).value = torrent.progress;
+          }catch(err){
+            console.log(err);
+          }
+        });
+        /* when torrent is Done */
+        torrent.on('done', function () {
+          self.requestRunning = false;
+          torrent.pause();
+          document.getElementById("speed-"+progressBarId).textContent = "";
+          notifications.new(`Season ${season} Episode ${episode} is Complete!` , "" , serieTitle , function(){
+            fileSystem.findAllWithMovieExtension(torrent.path , function(filename){
+              console.log('-- found: ',filename);
+              windows.open("file://"+filename);
+            })
+          });
+          deferred.resolve(true);
+        });
+
+        /* when torrent has no peers */
+        torrent.on('noPeers', function (announceType) {
+          self.requestRunning = false;
+          console.log("No peers detected", announceType);
+          notifications.new("We cannot find peers to download" , "" ,"No peers");
+        });
+      });
+    };
+    /* Client on error emmit alert and remove old torrent */
+    client.on('error', function (err) {
+      console.log("Error",err);
+      downloadIcon.src = "assets/img/download.svg";
+      notifications.new(err , "" ,"Error");
+      self.requestRunning = false;
+    })
+
+    return deferred.promise;
+  }
+
+  self.findTorrentsById = function(id){
+    console.log("nothing here");
+  }
+
+});
+
+myApp.service('fileSystem', function($q){
   const self = this;
   const fs = require('fs');
-  const APP_FILES = process.env.APP_FILES+"\\jsonCache";
+  const path = require('path');
 
-  self.new = function(name){
+  const APP_FILES = process.env.APP_FILES;
+
+  self.newFolder = function(name){
     console.log( APP_FILES+"/"+name );
 
     fs.mkdir(APP_FILES+"/"+name, function (err) {
@@ -45,9 +155,35 @@ myApp.service('folder', function($q){
     });
   };
 
-  self.listAll = function(){
-    console.log( fs.readdirSync(APP_FILES) );
-    var folder = APP_FILES;
+  self.findAllWithMovieExtension = function(startPath , callback){
+    var extensions = [ /\.mkv$/ , /\.mp4$/ ];
+    // /\.mkv$/ ,
+    //console.log('Starting from dir '+startPath+'/');
+    if (!fs.existsSync(startPath)){
+        console.log("no dir ",startPath);
+        return;
+    }
+    var files=fs.readdirSync(startPath);
+    for(var i=0;i<files.length;i++){
+        var filename=path.join(startPath,files[i]);
+        var stat = fs.lstatSync(filename);
+        if (stat.isDirectory()){
+
+            self.findAllWithMovieExtension(filename,callback); //recurse
+        }
+        else{
+          extensions.forEach(function(ext){
+            if(ext.test(filename)) {
+              callback(filename);
+            }
+          });
+        }
+    };
+  };
+
+
+  self.listAll = function(path){
+    return fs.readdirSync(APP_FILES+"/"+path);
   };
 
   self.fileExists = function(path){
@@ -58,6 +194,19 @@ myApp.service('folder', function($q){
     }catch(e){
       console.log(e);
     }
+  };
+
+  self.removeFile = function(path){
+    var deferred = $q.defer();
+    let file = APP_FILES+"/"+path;
+    console.log( file );
+    fs.unlink(file , function (err , data){
+      if (err) {
+        deferred.resolve("There is no File!");
+      }
+      deferred.resolve(JSON.parse(data));
+    });
+    return deferred.promise;
   };
 
   self.removeFolder = function(dir){
@@ -90,6 +239,22 @@ myApp.service('folder', function($q){
   self.checkLastModified = function(name){
 
   }
+
+  self.deleteFolderRecursive = function(path) {
+      var files = [];
+      if( fs.existsSync(path) ) {
+          files = fs.readdirSync(path);
+          files.forEach(function(file,index){
+              var curPath = path + "/" + file;
+              if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                  deleteFolderRecursive(curPath);
+              } else { // delete file
+                  fs.unlinkSync(curPath);
+              }
+          });
+          fs.rmdirSync(path);
+      }
+  };
 
 });
 
@@ -127,15 +292,16 @@ myApp.service('nightmare', function($q){
 
 myApp.service('notifications', function(){
   const self = this;
-  self.new = function(theBody,theIcon,theTitle) {
+  self.new = function(theBody,theIcon, theTitle , cb = "") {
     var options = {
         body: theBody,
         icon: theIcon
     }
-    var n = new Notification(theTitle,options);
+    var n = new Notification(theTitle , options);
     // If the user clicks in the Notifications Center, show the app
     n.onclick = function () {
-      ipcRenderer.send('focusWindow', 'main')
+      options.title = theTitle;
+      cb(options);
     }
     setTimeout(n.close.bind(n), 5000);
   }
@@ -202,9 +368,14 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
     //console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
   }
 
-  this.searchByTmbdId = function(id = $routeParams.tvId){
+  this.searchById = function(id = $routeParams.tvId){
     console.log(`${url}/tv/${id}?${apiKey}`);
     return $http.get(`${url}/tv/${id}?${apiKey}`);
+  }
+
+  this.searchById = function(id = $routeParams.tvId){
+    console.log(`${url}/tv/${id}?${apiKey}`);
+    return $http.get(`${url}/tv/${id}?${apiKey}&append_to_response=external_ids`);
   }
 
   this.getCastFromTvId = function(tvId){
@@ -237,7 +408,7 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   }
 
   this.getTvSerieExternalIds = function(){
-    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids`);
+    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids?${apiKey}`);
   }
 
   this.tvSerie = function(){
@@ -274,21 +445,20 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   }
 });
 
-myApp.service('window', function() {
+myApp.service('windows', function() {
   const remote = require('electron').remote;
   const {BrowserWindow} = require('electron').remote;
 
-  this.open = function( platform , url ){
+  this.open = function(url){
     var popup = new BrowserWindow({
       width: 1280,
       height: 724,
-      frame:false,
-      show: false
+      show: true
       //type: "textured"
     });
 
     // and load the index.html of the app.
-    popup.loadURL(`file://${__dirname}/index.html#/${platform}/${url}`);
+    popup.loadURL(`${url}`);
     // Open the DevTools.
     popup.webContents.openDevTools();
     popup.webContents.on('did-finish-load', function() {

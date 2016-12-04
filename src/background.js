@@ -13,11 +13,10 @@ import createWindow from './helpers/window';
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
-
 const platform = require('os').platform();
 /* DEFINE TEMP Folder */
 process.env.APP_FILES = app.getPath('userData');
-process.env.DOWNLOAD_PATH =  ( env.customDownloadFolder ? end.customDownloadFolder : `${app.getPath('userData')}\\downloads` );
+process.env.DOWNLOAD_PATH =  ( env.customDownloadFolder ? end.customDownloadFolder : `${app.getPath('userData')}/downloads` );
 
 try {
   fs.access(process.env.DOWNLOAD_PATH, fs.F_OK, function(err) {
@@ -26,21 +25,6 @@ try {
       } else {
         fs.mkdir( process.env.DOWNLOAD_PATH , function(error, status) {
           console.log("Folder Created", process.env.DOWNLOAD_PATH );
-        });
-      }
-  });
-}
-catch (e) {
-  console.log(e);
-}
-
-try {
-  fs.access(process.env.APP_FILES+"\\jsonCache", fs.F_OK, function(err) {
-      if (!err) {
-        console.log("Cache Folder exists");
-      } else {
-        fs.mkdir( process.env.APP_FILES+"\\jsonCache" , function(error, status) {
-          console.log("Folder Created", process.env.APP_FILES+"\\jsonCache" );
         });
       }
   });
@@ -143,10 +127,7 @@ app.on('window-all-closed', () => {
   }
 
   if(!env.cache){
-    deleteFolderRecursive( process.env.APP_FILES+"\\jsonCache" ,function(err,status){
-      console.log(status);
-      console.log(err);
-    });
+    /* delete * from localStorage api */
   }
 
   if (platform !== 'darwin') {

@@ -680,20 +680,45 @@ a {
       max-height: 30vh;
       overflow-y: auto; }
       .individual-content-wrapper .info-tab .episodes-wrapper .ew-item {
-        padding: 10px 0 10px 15px;
         background: white;
         cursor: pointer;
         border-bottom: 4px solid rgba(244, 67, 54, 0);
-        font-weight: bold; }
+        font-weight: bold;
+        position: relative; }
         .individual-content-wrapper .info-tab .episodes-wrapper .ew-item:nth-child(even) {
           background: #ededed; }
-        .individual-content-wrapper .info-tab .episodes-wrapper .ew-item:hover {
-          border-bottom: 4px solid #f44336; }
-        .individual-content-wrapper .info-tab .episodes-wrapper .ew-item.selected {
-          border-bottom: 4px solid #f44336; }
+        .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .progress-bar {
+          width: 100%;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 5px; }
+          .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .progress-bar progress {
+            /* Important Thing */
+            -webkit-appearance: none;
+            border: none;
+            width: 100%;
+            height: 5px;
+            float: left; }
+            .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .progress-bar progress::-webkit-progress-bar {
+              background: transparent;
+              border-radius: 0; }
+            .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .progress-bar progress::-webkit-progress-value {
+              background: #f44336;
+              border-radius: 0; }
+        .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .ew-i-name {
+          display: inline-block;
+          width: calc(100% - 40px);
+          padding: 10px 0 10px 15px; }
+          .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .ew-i-name .download-speed {
+            float: right;
+            font-size: 70%;
+            opacity: 0.4;
+            font-weight: normal; }
         .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .download-btn {
-          float: right;
-          padding: 0 10px;
+          display: inline-block;
+          padding: 10px;
+          width: 36px;
           border-left: 1px solid rgba(0, 0, 0, 0.1); }
           .individual-content-wrapper .info-tab .episodes-wrapper .ew-item .download-btn:hover img {
             opacity: 1; }

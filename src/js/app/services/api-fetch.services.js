@@ -5,5 +5,9 @@
 myApp.service('tvTorrents', function($http){
   const self = this;
 
-  self.getTorrents
+  self.getTorrentsByImdbId = function(id){
+      console.log(id);
+      return $http.get(`https://api-fetch.website/tv/show/${id}`);
+  }
+
 });

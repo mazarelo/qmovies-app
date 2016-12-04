@@ -1,18 +1,17 @@
-myApp.service('window', function() {
+myApp.service('windows', function() {
   const remote = require('electron').remote;
   const {BrowserWindow} = require('electron').remote;
 
-  this.open = function( platform , url ){
+  this.open = function(url){
     var popup = new BrowserWindow({
       width: 1280,
       height: 724,
-      frame:false,
-      show: false
+      show: true
       //type: "textured"
     });
 
     // and load the index.html of the app.
-    popup.loadURL(`file://${__dirname}/index.html#/${platform}/${url}`);
+    popup.loadURL(`${url}`);
     // Open the DevTools.
     popup.webContents.openDevTools();
     popup.webContents.on('did-finish-load', function() {
