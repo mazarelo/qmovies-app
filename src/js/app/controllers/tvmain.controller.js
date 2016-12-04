@@ -24,9 +24,9 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , p
   };
 
   self.getNumber = function(num) {
-    return new Array(num);   
+    return new Array(num);
   }
-  
+
   self.getSeasonInfo = function( season = 1 ){
     self.currentSeason = season;
 
@@ -43,12 +43,18 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb , p
       self.title = self.info.name;
       self.typesOfSearch.options = self.info.genres;
     });
-    console.log("Providers started");
-    console.log(streamin.getFileUrl("http://streamin.to/ekiljfxzks0h"));
-
+    /* test url = 'http://streamin.to/2io0duwvz10t' */
+    var ts = require('torrent_scraper');
+    //serarch for torrents for 'debian 7', 'unix' category on kickasstorrents and '303' category on thepiratebay
+    ts.getTorrents('debian 7', { kickasstorrents: 'unix', thepiratebay: '303' }, function(err, torrents){
+        console.log(err, torrents)
+        console.log("CALLBACK", torrents);
+    });
+    /*
     providers.filterProviders("http://streamin.to/ekiljfxzks0h").then(function(response){
       console.log(response);
     });
+    */
   }
 
   self.getCast = function(){
