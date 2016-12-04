@@ -4,11 +4,10 @@ myApp.service('providers', function(streamin , $filter , $q){
   self.filterProviders = function(provider){
     var deferred = $q.defer();
     let providerFiltered = $filter('getDomain')(provider);
-    console.log("Providers:",providerFiltered);
 
     switch(providerFiltered){
       case "streamin":
-        console.log("inside streamin");        
+        console.log("inside streamin");
          deferred.resolve( streamin.getFileUrl(provider) );
       break;
       case "vidto":

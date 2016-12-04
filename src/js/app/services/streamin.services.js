@@ -1,8 +1,7 @@
-myApp.service('streamin', function(){
+myApp.service('streamin', function(nightmare, $q){
   const self = this;
 
   self.getFileUrl = function(url){
-    /* test url = 'http://streamin.to/2io0duwvz10t' */
-    
+  
   }
 });
