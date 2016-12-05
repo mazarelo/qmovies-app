@@ -14,7 +14,7 @@ myApp.controller("PlayEpisodeController" , function( $scope ) {
     self.torrents.map(function (item) {
       if(item.season == season && item.episode == episode) {
         self.magnet = item.torrents;
-        console.log("Torrent:", self.torrents);
+        console.log("Torrent:", self.magnet);
       }
     });
 

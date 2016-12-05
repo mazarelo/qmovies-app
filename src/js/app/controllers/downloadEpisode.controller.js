@@ -1,5 +1,5 @@
 /* login */
-myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows ) {
+myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications ) {
   const self = this;
   self.isSaved = false;
 
@@ -15,12 +15,16 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
       }
     });
 
-    if(Object.keys(self.magnet).length > 0){
+    if(self.magnet !== undefined && Object.keys(self.magnet).length > 0 ){
       //let bestQuality = self.magnet[Object.keys(self.magnet).sort().pop()];
       downloadTorrent.download(self.magnet['480p'].url, $routeParams.tvId , season , episode).then(function(){
         //console.log("done downloading");
         self.isSaved = true;
       });
+    }else{
+      notifications.new("Im sorry, no streams available...", "", "Qmovies", function(){
+        
+      })
     }
   }
 
