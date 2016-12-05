@@ -1,10 +1,5 @@
-<h1>{{local.title}}</h1>
-<!-- title and alternative menu -->
 <alt-menu obj="local"></alt-menu>
-<div ng-init="local.getFeed()" class="results" scrolly>
-  <!-- if there is no data print generic no-data
-  <offline-err ng-if="!online" title="Double check your internet!" obj="tv"></offline-err>
-   -->
-  <!-- end -->
-  <feed-layout  type="local" obj="local"></feed-layout>
+<div ng-init="local.getFeed('downloads/tv')" class="results">
+  <offline-err ng-if="noFiles" title="There are no files saves..." obj="local"></offline-err>
 </div>
+<!-- if there is no data print generic no-data -->

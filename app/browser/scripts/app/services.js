@@ -183,7 +183,12 @@ myApp.service('fileSystem', function($q){
 
 
   self.listAll = function(path){
-    return fs.readdirSync(APP_FILES+"/"+path);
+    try{
+      var files = fs.readdirSync(APP_FILES+"/"+path);
+    }catch(err){
+      console.log(err);
+    }
+    return files;
   };
 
   self.fileExists = function(path){

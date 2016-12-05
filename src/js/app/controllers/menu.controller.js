@@ -11,6 +11,5 @@ myApp.controller("MenuController" , function( $scope , $routeParams ) {
       {name: "Local", href:"#/local"}
     ]
   }
-  
 
 });
