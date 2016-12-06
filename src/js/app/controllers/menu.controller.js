@@ -7,7 +7,6 @@ myApp.controller("MenuController" , function( $scope , $routeParams ) {
     options:[
       {name: "Movies", href:"#/movies"},
       {name: "Tv Series", href:"#/tv-series"},
-      {name: "Animes", href:"#/animes"},
       {name: "Local", href:"#/local"}
     ]
   }

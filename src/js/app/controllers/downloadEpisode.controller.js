@@ -22,9 +22,7 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
         self.isSaved = true;
       });
     }else{
-      notifications.new("Im sorry, no streams available...", "", "Qmovies", function(){
-
-      })
+      notifications.new("Im sorry, no streams available...", "", "Qmovies", "")
     }
   }
 

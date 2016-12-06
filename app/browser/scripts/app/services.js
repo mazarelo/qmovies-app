@@ -352,6 +352,7 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
   this.imgRoute = {
+      w150: imgUrl+"w300",
       w300: imgUrl+"w300",
       w500: imgUrl+"w500",
       w1920: imgUrl+"w1920"

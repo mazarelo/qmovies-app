@@ -1,14 +1,21 @@
 /* login */
 myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fileSystem, notifications ) {
   const self = this;
-  self.title = "Saved Files";
+  self.title = "OFFLINE FILES";
   self.tvHasFiles = true;
   self.moviesHasFiles = true;
   self.tmdbImgUrl = tmdb.imgRoute;
 
   self.typesOfSearch = {
-    active: "",
-    options:""
+    active: "tv-series",
+    options:[
+      {name: "Tv series", value:"tv-series"},
+      {name: "Movies", value: "movies"}
+    ]
+  }
+
+  self.getFeed = function(value){
+    self.typesOfSearch.active = value;
   }
 
   self.getFeedTv = function(path){

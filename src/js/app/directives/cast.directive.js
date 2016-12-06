@@ -8,7 +8,7 @@ myApp.directive('castLayout', function(){
      template: `
       <div class="cast-template" ng-repeat="element in (type=='cast'? obj.info.cast : obj.info.crew)">
         <figure class="ct-avatar">
-          <img src="{{obj.tmdbImgUrl}}w150{{element.profile_path}}">
+          <img src="{{obj.tmdbImgUrl.w150}}{{element.profile_path}}">
         </figure>
         <div class="ct-content">
           <h5>{{element.character}}</h5>

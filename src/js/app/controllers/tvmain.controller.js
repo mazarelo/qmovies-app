@@ -36,6 +36,15 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb, tv
     });
   }
 
+  self.streamExists = function(season, episode){
+    self.torrents.map(function (item) {
+      if(item.season == season && item.episode == episode) {
+        return true
+      }
+      return false;
+    });
+  }
+
   self.loadData = function(){
     tmdb.searchById($routeParams.tvId).then(function(response){
       console.log(response);

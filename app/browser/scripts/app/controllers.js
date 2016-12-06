@@ -34,9 +34,7 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
         self.isSaved = true;
       });
     }else{
-      notifications.new("Im sorry, no streams available...", "", "Qmovies", function(){
-
-      })
+      notifications.new("Im sorry, no streams available...", "", "Qmovies", "")
     }
   }
 
@@ -87,14 +85,21 @@ myApp.controller("TvFeedController" , function( $scope , MenuController ) {
 /* login */
 myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fileSystem, notifications ) {
   const self = this;
-  self.title = "Saved Files";
+  self.title = "OFFLINE FILES";
   self.tvHasFiles = true;
   self.moviesHasFiles = true;
   self.tmdbImgUrl = tmdb.imgRoute;
 
   self.typesOfSearch = {
-    active: "",
-    options:""
+    active: "tv-series",
+    options:[
+      {name: "Tv series", value:"tv-series"},
+      {name: "Movies", value: "movies"}
+    ]
+  }
+
+  self.getFeed = function(value){
+    self.typesOfSearch.active = value;
   }
 
   self.getFeedTv = function(path){
@@ -146,7 +151,6 @@ myApp.controller("MenuController" , function( $scope , $routeParams ) {
     options:[
       {name: "Movies", href:"#/movies"},
       {name: "Tv Series", href:"#/tv-series"},
-      {name: "Animes", href:"#/animes"},
       {name: "Local", href:"#/local"}
     ]
   }
@@ -190,11 +194,13 @@ myApp.controller("PlayEpisodeController" , function( $scope ) {
     console.log("season:", season );
     console.log("episode:", episode);
     self.torrents = torrents;
+    
     /* test url = 'http://streamin.to/2io0duwvz10t'
     providers.filterProviders("http://streamin.to/ekiljfxzks0h").then(function(response){
       console.log(response);
     });
     */
+
     self.torrents.map(function (item) {
       if(item.season == season && item.episode == episode) {
         self.magnet = item.torrents;
@@ -406,6 +412,15 @@ myApp.controller("TvMainController" , function( $scope , $routeParams , tmdb, tv
     tmdb.tvSeason($routeParams.tvId , season).then(function(response){
       console.log(response);
       self.episodes = response.data.episodes;
+    });
+  }
+
+  self.streamExists = function(season, episode){
+    self.torrents.map(function (item) {
+      if(item.season == season && item.episode == episode) {
+        return true
+      }
+      return false;
     });
   }
 

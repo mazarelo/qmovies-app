@@ -428,6 +428,10 @@ a {
   padding: 0px;
   margin: 0px; }
 
+.disable {
+  pointer-events: none;
+  opacity: 0.3; }
+
 /*  GROUPING  ============================================================================= */
 .group:before,
 .group:after {
@@ -503,14 +507,14 @@ a {
       opacity: 1; }
 
 .feed-template {
-  width: 155px;
+  width: 148px;
   display: inline-block;
   vertical-align: top;
   margin: 10px 20px 10px 0; }
   .feed-template .ft-img {
     width: 100%;
     overflow: hidden;
-    height: 230px;
+    height: 220px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); }
   .feed-template .ft-content {
     margin-top: 10px;
