@@ -16,7 +16,7 @@ myApp.config(function($routeProvider, $locationProvider) {
     }
   })
   .when('/local', {
-    templateUrl: 'views/local.html',
+    templateUrl: 'views/local_feed.html',
     controller: 'LocalController as local',
     resolve: {
 

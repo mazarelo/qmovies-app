@@ -51,7 +51,7 @@ myApp.directive('episodesLayout', function(){
             {{$index+1}} - {{episode.name}}
             <span id="speed-{{obj.tmdbId}}-{{obj.currentSeason }}-{{$index+1}}" class="download-speed"></span>
           </div>
-          <div ng-controller="DownloadEpisodeController as download"  class="download-btn">
+          <div ng-controller="DownloadEpisodeController as download" ng-init="download.checkLocaly(obj.currentSeason , $index+1)"  class="download-btn">
             <img ng-if="!download.isSaved" src="assets/img/download.svg" ng-click="download.episode( obj.currentSeason , $index+1 , obj.torrents)" />
             <img ng-if="download.isSaved" src="assets/img/delete.svg" ng-click="download.delete( obj.currentSeason , $index+1)"/>
           </div>
@@ -69,13 +69,14 @@ myApp.directive('offlineErr', function(){
     replace: true,
     scope: {
       title: '@title',
-      obj:'='
+      obj:'=',
+      icon: '@icon'
     },
     template: `
       <div class="no-results">
           <div class="nr-center">
             <figure class="nr-img">
-              <img src="assets/img/internet.svg">
+              <img src="assets/img/{{icon}}">
             </figure>
             <h3 class="nr-err-title">{{title}}<br><a ng-click="obj.getFeed( obj.typesOfSearch.active )" class="refresh">Retry</a></h3>
           </div>
@@ -94,7 +95,7 @@ myApp.directive('feedLayout', function(){
         <div  ng-repeat="item in obj.results | unique:'id'" class="feed-template">
           <a href="#/{{type}}/{{item.id}}">
             <figure class="ft-img">
-              <stored-img ng-url="{{obj.tmdbImgUrl}}w300{{item.poster_path}}"/>
+              <stored-img ng-url="{{obj.tmdbImgUrl.w300}}{{item.poster_path}}"/>
             </figure>
             <div class="ft-content">
               <a href="">{{type == 'tv' ? item.name : item.title}} <span class="ft-c-date">{{item.date}}</span></a>

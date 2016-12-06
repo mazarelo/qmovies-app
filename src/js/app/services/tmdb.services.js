@@ -5,7 +5,11 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
-  this.imgRoute = imgUrl;
+  this.imgRoute = {
+      w300: imgUrl+"w300",
+      w500: imgUrl+"w500",
+      w1920: imgUrl+"w1920"
+  };
 
   /* defered kit
   var deferred = $q.defer();

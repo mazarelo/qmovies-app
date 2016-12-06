@@ -9,7 +9,7 @@ myApp.directive('feedLayout', function(){
         <div  ng-repeat="item in obj.results | unique:'id'" class="feed-template">
           <a href="#/{{type}}/{{item.id}}">
             <figure class="ft-img">
-              <stored-img ng-url="{{obj.tmdbImgUrl}}w300{{item.poster_path}}"/>
+              <stored-img ng-url="{{obj.tmdbImgUrl.w300}}{{item.poster_path}}"/>
             </figure>
             <div class="ft-content">
               <a href="">{{type == 'tv' ? item.name : item.title}} <span class="ft-c-date">{{item.date}}</span></a>

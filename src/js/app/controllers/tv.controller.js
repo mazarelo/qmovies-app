@@ -1,5 +1,5 @@
 /* login */
-myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache) {
+myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache , $rootScope ,notifications) {
   const self = this;
   self.title = "Tv Series";
   self.page = 1;
@@ -62,13 +62,19 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
 
   /* gets current feed */
   self.getFeed = function(type = self.typesOfSearch.active){
-
+    /* if offline tell user to connect */
+    if(!$rootScope.online){
+      notifications.new("Please re-connect to the internet!", "","No internet!"); return;
+    }
+    /* allways get 1st page of the new feed*/
     if(type !== self.typesOfSearch.active){
       self.typesOfSearch.active = type;
       self.page = 1;
     }
-    self.tmdbImgUrl = tmdb.imgRoute;
 
+
+    self.tmdbImgUrl = tmdb.imgRoute;
+    console.log(self.tmdbImgUrl);
     tmdb.tvFeed(type , self.page ).then(function(response){
       console.log(response);
       self.results = response.data.results;
@@ -134,7 +140,4 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
     }
     self.loading = false;
   }
-
-
-
 });

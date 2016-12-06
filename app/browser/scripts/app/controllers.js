@@ -35,7 +35,7 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
       });
     }else{
       notifications.new("Im sorry, no streams available...", "", "Qmovies", function(){
-        
+
       })
     }
   }
@@ -50,6 +50,16 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
       windows.open("file://"+filename);
       return filename;
     });
+  }
+
+  self.checkLocaly = function(season,episode){
+    let exists = fileSystem.fileExists(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+    console.log("Exists",exists);
+    if(exists){
+      self.isSaved =  true;
+    }else{
+      self.isSaved =false;
+    }
   }
 
 });
@@ -78,32 +88,52 @@ myApp.controller("TvFeedController" , function( $scope , MenuController ) {
 myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fileSystem, notifications ) {
   const self = this;
   self.title = "Saved Files";
-  self.noFiles = false;
+  self.tvHasFiles = true;
+  self.moviesHasFiles = true;
+  self.tmdbImgUrl = tmdb.imgRoute;
+
   self.typesOfSearch = {
     active: "",
     options:""
   }
 
-  self.getFeed = function(path){
+  self.getFeedTv = function(path){
     self.filesInFolderTv = fileSystem.listAll(path);
+    console.log("Tv Files:",self.filesInFolderTv);
     /* if its undefined return */
     if(self.filesInFolderTv == undefined){
-      notifications.new("You havent download any Tv Serie...", "", "Qmovies", function(){
-        console.log("test");
-      });
-      self.noFiles = true;
+      notifications.new("You havent download any Tv Serie...", "", "Qmovies", "");
       return false
     }
+    self.tvHasFiles = false;
+
     /* fetch files and get metadata */
     self.results = [];
     self.filesInFolderTv.forEach(function(item){
       tmdb.searchById(item).then(function(response){
         self.results.push(response.data);
       });
-    })
+    });
+    console.log("Results:",self.results);
   }
 
-
+  self.getFeedMovies = function(path){
+    self.filesInFolderTv = fileSystem.listAll(path);
+    /* if its undefined return */
+    if(self.filesInFolderTv == undefined){
+      notifications.new("You havent download any Movies...", "", "Qmovies", "");
+      return false
+    }
+    self.moviesHasFiles = true;
+    /* fetch files and get metadata */
+    self.results = [];
+    self.filesInFolderTv.forEach(function(item){
+      tmdb.searchById(item).then(function(response){
+        self.results.push(response.data);
+      });
+      console.log(self.results);
+    })
+  }
 
 });
 
@@ -124,7 +154,7 @@ myApp.controller("MenuController" , function( $scope , $routeParams ) {
 });
 
 /* login */
-myApp.controller("MovieController" , function( $scope , $routeParams , tmdb ) {
+myApp.controller("MovieController" , function( $scope , $routeParams , tmdb, $rootScope, notifications ) {
   const self = this;
   self.title = "Movies";
   self.page = 1;
@@ -140,6 +170,9 @@ myApp.controller("MovieController" , function( $scope , $routeParams , tmdb ) {
   }
 
   self.getFeed = function(type = self.typesOfSearch.active){
+    /* if offline tell user to connect */
+    if(!$rootScope.online) notifications.new("Please re-connect to the internet!", "","No internet!"); return;
+
     tmdb.movieFeed(type, self.page).then(function(response){
       console.log(response);
       self.results = response.data.results;
@@ -195,7 +228,7 @@ myApp.controller("TitleController" , function( $scope ) {
 });
 
 /* login */
-myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache) {
+myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache , $rootScope ,notifications) {
   const self = this;
   self.title = "Tv Series";
   self.page = 1;
@@ -258,13 +291,19 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
 
   /* gets current feed */
   self.getFeed = function(type = self.typesOfSearch.active){
-
+    /* if offline tell user to connect */
+    if(!$rootScope.online){
+      notifications.new("Please re-connect to the internet!", "","No internet!"); return;
+    }
+    /* allways get 1st page of the new feed*/
     if(type !== self.typesOfSearch.active){
       self.typesOfSearch.active = type;
       self.page = 1;
     }
-    self.tmdbImgUrl = tmdb.imgRoute;
 
+
+    self.tmdbImgUrl = tmdb.imgRoute;
+    console.log(self.tmdbImgUrl);
     tmdb.tvFeed(type , self.page ).then(function(response){
       console.log(response);
       self.results = response.data.results;
@@ -330,9 +369,6 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
     }
     self.loading = false;
   }
-
-
-
 });
 
 /* login */

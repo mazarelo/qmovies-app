@@ -5,13 +5,14 @@ myApp.directive('offlineErr', function(){
     replace: true,
     scope: {
       title: '@title',
-      obj:'='
+      obj:'=',
+      icon: '@icon'
     },
     template: `
       <div class="no-results">
           <div class="nr-center">
             <figure class="nr-img">
-              <img src="assets/img/internet.svg">
+              <img src="assets/img/{{icon}}">
             </figure>
             <h3 class="nr-err-title">{{title}}<br><a ng-click="obj.getFeed( obj.typesOfSearch.active )" class="refresh">Retry</a></h3>
           </div>

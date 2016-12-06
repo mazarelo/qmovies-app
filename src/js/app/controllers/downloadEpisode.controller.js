@@ -23,7 +23,7 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
       });
     }else{
       notifications.new("Im sorry, no streams available...", "", "Qmovies", function(){
-        
+
       })
     }
   }
@@ -38,6 +38,16 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
       windows.open("file://"+filename);
       return filename;
     });
+  }
+
+  self.checkLocaly = function(season,episode){
+    let exists = fileSystem.fileExists(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+    console.log("Exists",exists);
+    if(exists){
+      self.isSaved =  true;
+    }else{
+      self.isSaved =false;
+    }
   }
 
 });

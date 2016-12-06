@@ -1,11 +1,11 @@
-<div ng-init="tv.loadData()" class="background" style="background: url({{tv.tmdbImgUrl}}w1920{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;"></div>
+<div ng-init="tv.loadData()" class="background" style="background: url({{tv.tmdbImgUrl.w1920}}{{tv.info.backdrop_path}}) no-repeat center center;background-size: cover;"></div>
 <h1 class="title">{{tv.title}}</h1>
 <ul class="alt_nav">
   <li ng-repeat="item in tv.typesOfSearch.options" value="item.value" ng-click="tv.getFeed(item.value)">{{item.name}}</li>
 </ul>
 <div class="results">
   <figure class="individual-img">
-    <img src="{{tv.tmdbImgUrl}}w500{{tv.info.poster_path}}">
+    <img src="{{tv.tmdbImgUrl.w500}}{{tv.info.poster_path}}">
   </figure>
   <div class="individual-content-wrapper">
     <!-- Tabs -->

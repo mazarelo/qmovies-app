@@ -53,9 +53,7 @@ myApp.service('fileSystem', function($q){
 
   self.fileExists = function(path){
     try{
-      fs.stat(APP_FILES+"/"+path+".json", function(err, stats){
-        console.log(stats);
-      });
+      return fs.existsSync(APP_FILES+"/"+path);
     }catch(e){
       console.log(e);
     }

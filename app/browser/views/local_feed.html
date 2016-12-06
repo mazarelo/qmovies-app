@@ -1,0 +1,24 @@
+<alt-menu obj="local"></alt-menu>
+<div class="local-wrapper">
+<div ng-init="local.getFeedTv('downloads/tv')">
+  <h1>Tv Series</h1>
+  <offline-err
+    ng-hide="!local.tvHasFiles"
+    title="list is empty...please add Tv series!"
+    obj="local"
+    icon="popcorn.svg"></offline-err>
+  <!-- Feed results -->
+  <feed-layout type="tv" obj="local"></feed-layout>
+</div>
+<div ng-init="local.getFeedMovies('downloads/movies')">
+  <h1>Movies</h1>
+  <offline-err
+    ng-hide="!local.moviesHasFiles"
+    title="list is empty...please add movies!"
+    obj="local"
+    icon="popcorn.svg"></offline-err>
+  <!-- Feed results -->
+  <feed-layout type="movies" obj="local"></feed-layout>
+</div>
+<!-- if there is no data print generic no-data -->
+</div>

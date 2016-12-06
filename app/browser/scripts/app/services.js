@@ -45,7 +45,7 @@ myApp.service('cache', function( $localStorage){
 });
 
 
-myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter){
+myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter, $rootScope){
   const self = this;
   var WebTorrent = require('webtorrent')
   var client = new WebTorrent();
@@ -59,9 +59,10 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
     /* set item img to download */
     let downloadIcon = document.getElementById(progressBarId).parentNode.parentNode.getElementsByTagName('img')[0];
     downloadIcon.src = "assets/img/loading.svg";
+    downloadIcon.classList.add("rotation");
 
     /* prevent torrent duplication error */
-    if(client.get(magnetURI) == null){
+    if(client.get(magnetURI) == null && $rootScope.online == true){
       client.add(magnetURI, { path: `${process.env.DOWNLOAD_PATH}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}` }, function (torrent) {
         self.requestRunning = true;
 
@@ -193,9 +194,7 @@ myApp.service('fileSystem', function($q){
 
   self.fileExists = function(path){
     try{
-      fs.stat(APP_FILES+"/"+path+".json", function(err, stats){
-        console.log(stats);
-      });
+      return fs.existsSync(APP_FILES+"/"+path);
     }catch(e){
       console.log(e);
     }
@@ -352,7 +351,11 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
 
-  this.imgRoute = imgUrl;
+  this.imgRoute = {
+      w300: imgUrl+"w300",
+      w500: imgUrl+"w500",
+      w1920: imgUrl+"w1920"
+  };
 
   /* defered kit
   var deferred = $q.defer();

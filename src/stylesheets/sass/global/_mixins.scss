@@ -6,6 +6,9 @@
   background-size: cover;
 }
 
+@keyframes rotate360 {
+	to { transform: rotate(360deg); }
+}
 
 @mixin classBlur($amount){
   .blur{

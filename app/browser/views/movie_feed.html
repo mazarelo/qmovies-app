@@ -3,7 +3,11 @@
 
 <div ng-init="movies.getFeed()" class="results" scrolly>
   <!-- if there is no data print generic no-data -->
-  <offline-err ng-if="!online" title="Double check your internet!" obj="movies"></offline-err>
+  <offline-err
+    ng-if="!online"
+    title="Double check your internet!"
+    obj="movies"
+    icon="internet.svg"></offline-err>
   <!-- end -->
   <feed-layout ng-if="online" type="movie" obj="movies"></feed-layout>
 </div>

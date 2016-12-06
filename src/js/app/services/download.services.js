@@ -1,5 +1,5 @@
 
-myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter){
+myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter, $rootScope){
   const self = this;
   var WebTorrent = require('webtorrent')
   var client = new WebTorrent();
@@ -13,9 +13,10 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
     /* set item img to download */
     let downloadIcon = document.getElementById(progressBarId).parentNode.parentNode.getElementsByTagName('img')[0];
     downloadIcon.src = "assets/img/loading.svg";
+    downloadIcon.classList.add("rotation");
 
     /* prevent torrent duplication error */
-    if(client.get(magnetURI) == null){
+    if(client.get(magnetURI) == null && $rootScope.online == true){
       client.add(magnetURI, { path: `${process.env.DOWNLOAD_PATH}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}` }, function (torrent) {
         self.requestRunning = true;
 
