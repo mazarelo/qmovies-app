@@ -64,7 +64,7 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
   self.getFeed = function(type = self.typesOfSearch.active){
     /* if offline tell user to connect */
     if(!$rootScope.online){
-      notifications.new("Please re-connect to the internet!", "","No internet!"); return;
+      notifications.new("Please re-connect to the internet!", "./assets/img/internet.png","No internet!"); return;
     }
     /* allways get 1st page of the new feed*/
     if(type !== self.typesOfSearch.active){

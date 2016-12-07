@@ -10,4 +10,9 @@ myApp.service('tvTorrents', function($http){
       return $http.get(`https://api-fetch.website/tv/show/${id}`);
   }
 
+  self.getTvList = function(page){
+      console.log(page);
+      return $http.get(`https://api-fetch.website/tv/shows/${page}`);
+  }
+
 });

@@ -41,7 +41,6 @@ myApp.service('fileSystem', function($q){
     };
   };
 
-
   self.listAll = function(path){
     try{
       var files = fs.readdirSync(APP_FILES+"/"+path);
