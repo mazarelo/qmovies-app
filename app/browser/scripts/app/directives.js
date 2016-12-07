@@ -122,6 +122,15 @@ myApp.directive('preLoadImage', function(){
     };
 
 });
+myApp.directive('settingsModal', function(){
+  return {
+    restrict: 'E',
+    controller :  "SettingsController",
+    controllerAs: "settings",
+    templateUrl: "views/modals/settings.html"
+  };
+});
+
 myApp.directive('routeLoadingIndicator', function($rootScope) {
    return {
     restrict:'E',

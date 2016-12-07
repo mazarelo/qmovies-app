@@ -17,7 +17,8 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
 
     if(self.magnet !== undefined && Object.keys(self.magnet).length > 0 ){
       //let bestQuality = self.magnet[Object.keys(self.magnet).sort().pop()];
-      downloadTorrent.download(self.magnet['480p'].url, $routeParams.tvId , season , episode).then(function(){
+      self.magnet = (process.env.downloadBestQuality )? self.magnet[Object.keys(self.magnet).sort().pop()] : self.magnet['480p'];
+      downloadTorrent.download( self.magnet.url , $routeParams.tvId , season , episode).then(function(){
         //console.log("done downloading");
         self.isSaved = true;
       });

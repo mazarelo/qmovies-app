@@ -9,7 +9,9 @@
 </head>
     <body>
         <div ng-if="isPlayer" id="video-placeholder"></div>
-
+        <!-- modals -->
+        <settings-modal></settings-modal>
+        <!-- end -->
         <div ng-if="!isPlayer" class="main-wrapper" scrolly>
           <nav class="main_menu" ng-controller="MenuController as menu" ng-include src="'views/global/menu.html'" ></nav>
           <div id="view" class="feed_wrapper">

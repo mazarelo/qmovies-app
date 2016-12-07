@@ -23,7 +23,9 @@ myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fi
     console.log("Tv Files:",self.filesInFolderTv);
     /* if its undefined return */
     if(self.filesInFolderTv == undefined){
-      notifications.new("You havent download any Tv Serie...", "", "Qmovies", "");
+      notifications.new("Your local Tv list is empty...", "", "Qmovies", function(){
+        console.log("clicked no series downloaded");
+      });
       return false
     }
     self.tvHasFiles = false;
@@ -42,7 +44,9 @@ myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fi
     self.filesInFolderTv = fileSystem.listAll(path);
     /* if its undefined return */
     if(self.filesInFolderTv == undefined){
-      notifications.new("You havent download any Movies...", "", "Qmovies", "");
+      notifications.new("Your local Movies list is empty...", "", "Qmovies", function(){
+        console.log("clicked no movies downloaded");
+      });
       return false
     }
     self.moviesHasFiles = true;

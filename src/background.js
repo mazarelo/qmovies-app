@@ -7,14 +7,17 @@ import { app, Menu, Tray , BrowserWindow } from 'electron';
 import fs from 'fs';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { trayMenuTemplate } from './menu/tray_menu_template';
+import {ipcMain} from 'electron';
 //import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
+const {dialog} = require('electron');
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
 const platform = require('os').platform();
 /* DEFINE TEMP Folder */
+process.env.downloadBestQuality = env.downloadBestQuality;
 process.env.APP_FILES = app.getPath('userData');
 process.env.DOWNLOAD_PATH =  ( env.customDownloadFolder ? end.customDownloadFolder : `${app.getPath('userData')}/downloads` );
 
@@ -115,6 +118,14 @@ app.on('ready', () => {
     if (env.name === 'development') {
       mainWindow.openDevTools();
     }
+
+    /* Renderer interactions with Main */
+    ipcMain.on('open-folder', (event, arg) =>{
+      let newPath = dialog.showOpenDialog({properties: ['openDirectory']});
+      newPath = (newPath == undefined) ? [process.env.DOWNLOAD_PATH] : newPath;
+      event.returnValue = newPath;
+    });
+
 });
 
 app.on('window-all-closed', () => {

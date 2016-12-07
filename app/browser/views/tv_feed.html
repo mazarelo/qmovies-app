@@ -4,9 +4,16 @@
   <!-- if there is no data print generic no-data-->
   <offline-err
     ng-if="!online"
-    title="Double check your internet!"
+    title="Connect to the internet!"
     obj="tv"
     icon="internet.svg"></offline-err>
   <!-- end -->
   <feed-layout ng-if="online"  type="tv" obj="tv"></feed-layout>
+  <!-- If feed is empty -->
+  <offline-err
+    ng-hide="tv.results <= 0"
+    ng-if="online"
+    title="looks like its empty..."
+    obj="local"
+    icon="tornado.svg"></offline-err>
 </div>

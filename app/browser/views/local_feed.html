@@ -1,18 +1,20 @@
 <alt-menu obj="local"></alt-menu>
 <div class="local-wrapper">
+
 <div ng-if="local.typesOfSearch.active == 'tv-series' " ng-init="local.getFeedTv('downloads/tv')">
   <offline-err
     ng-hide="!local.tvHasFiles"
-    title="empty...go on add Tv series!"
+    title="looks like its empty..."
     obj="local"
     icon="tornado.svg"></offline-err>
   <!-- Feed results -->
   <feed-layout type="tv" obj="local"></feed-layout>
 </div>
+
 <div ng-if="local.typesOfSearch.active == 'movies' " ng-init="local.getFeedMovies('downloads/movies')">
   <offline-err
     ng-hide="!local.moviesHasFiles"
-    title="empty...go on add some movies!"
+    title="looks like its empty..."
     obj="local"
     icon="tornado.svg"></offline-err>
   <!-- Feed results -->

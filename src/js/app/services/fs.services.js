@@ -98,10 +98,6 @@ myApp.service('fileSystem', function($q){
       });
   };
 
-  self.checkLastModified = function(name){
-
-  }
-
   self.deleteFolderRecursive = function(path) {
       var files = [];
       if( fs.existsSync(path) ) {

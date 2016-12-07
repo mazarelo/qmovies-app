@@ -3,5 +3,6 @@
   "description": "Qmovies on dev-mode",
   "cache":false,
   "deleteDownloadsOnExit": false,
-  "customDownloadFolder":false
+  "customDownloadFolder":false,
+  "downloadBestQuality": true
 }

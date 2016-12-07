@@ -2,4 +2,9 @@
   <li ng-repeat="item in menu.menuItems.options"  ng-class="item.name == menu.menuItems.active ? 'selected' : ''">
     <a href="{{item.href}}" ng-click="menu.menuItems.active = item.name">{{item.name}}</a>
   </li>
+  <li class="admin">
+    <a href="" ng-click="menu.openSettings('modal-12')">
+      <img class="rotate-on-hover" src="assets/img/settings.svg" width="20"/>
+    </a>
+  </li>
 </ul>

@@ -1,16 +1,4 @@
 /* login */
-myApp.controller("AltMenuController" , function( $scope , $routeParams ) {
-  const self = this;
-  self.typesOfSearch = {
-    active:'',
-    options:[
-      {name:"Test", value:"that"}
-    ]
-  }
-
-});
-
-/* login */
 myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications ) {
   const self = this;
   self.isSaved = false;
@@ -29,7 +17,8 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
 
     if(self.magnet !== undefined && Object.keys(self.magnet).length > 0 ){
       //let bestQuality = self.magnet[Object.keys(self.magnet).sort().pop()];
-      downloadTorrent.download(self.magnet['480p'].url, $routeParams.tvId , season , episode).then(function(){
+      self.magnet = (process.env.downloadBestQuality )? self.magnet[Object.keys(self.magnet).sort().pop()] : self.magnet['480p'];
+      downloadTorrent.download( self.magnet.url , $routeParams.tvId , season , episode).then(function(){
         //console.log("done downloading");
         self.isSaved = true;
       });
@@ -76,13 +65,6 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
 */
 
 /* login */
-myApp.controller("TvFeedController" , function( $scope , MenuController ) {
-  const self = this;
-  self.title = "TV";
-
-});
-
-/* login */
 myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fileSystem, notifications ) {
   const self = this;
   self.title = "OFFLINE FILES";
@@ -107,7 +89,9 @@ myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fi
     console.log("Tv Files:",self.filesInFolderTv);
     /* if its undefined return */
     if(self.filesInFolderTv == undefined){
-      notifications.new("You havent download any Tv Serie...", "", "Qmovies", "");
+      notifications.new("Your local Tv list is empty...", "", "Qmovies", function(){
+        console.log("clicked no series downloaded");
+      });
       return false
     }
     self.tvHasFiles = false;
@@ -126,7 +110,9 @@ myApp.controller("LocalController" , function( $scope , $routeParams , tmdb , fi
     self.filesInFolderTv = fileSystem.listAll(path);
     /* if its undefined return */
     if(self.filesInFolderTv == undefined){
-      notifications.new("You havent download any Movies...", "", "Qmovies", "");
+      notifications.new("Your local Movies list is empty...", "", "Qmovies", function(){
+        console.log("clicked no movies downloaded");
+      });
       return false
     }
     self.moviesHasFiles = true;
@@ -149,12 +135,17 @@ myApp.controller("MenuController" , function( $scope , $routeParams ) {
   self.menuItems = {
     active:"",
     options:[
-      {name: "Movies", href:"#/movies"},
-      {name: "Tv Series", href:"#/tv-series"},
-      {name: "Local", href:"#/local"}
+      { name: "Movies", href:"#/movies" },
+      { name: "Tv Series", href:"#/tv-series" },
+      { name: "Local", href:"#/local" }
     ]
   }
 
+  this.openSettings = function(){
+    $scope.showModal = true;
+    document.getElementById("modal-12").classList.add("md-show");
+    console.log("show modal:", $scope.showModal);
+  }
 });
 
 /* login */
@@ -227,10 +218,19 @@ myApp.controller("PlayerController" , function( $scope , downloadTorrent , $rout
 });
 
 /* login */
-myApp.controller("TitleController" , function( $scope ) {
+myApp.controller("SettingsController" , function( $scope , $routeParams , ipc ) {
   const self = this;
-  self.title = "tested this title";
+  self.title = "Settings";
+  self.downloadPath = process.env.DOWNLOAD_PATH;
 
+  self.closeModal = function(){
+    document.getElementById("modal-12").classList.remove("md-show");
+  }
+
+  self.changeLocalPath = function(){
+    self.downloadPath = ipc.openFoldersDialog()[0];
+    console.log(self.downloadPath);
+  }
 });
 
 /* login */
@@ -298,8 +298,12 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
   /* gets current feed */
   self.getFeed = function(type = self.typesOfSearch.active){
     /* if offline tell user to connect */
+    console.log($rootScope.online);
     if(!$rootScope.online){
-      notifications.new("Please re-connect to the internet!", "./assets/img/internet.png","No internet!"); return;
+      notifications.new("Please re-connect to the internet!", "./assets/img/internet.png","No internet!" , function(){
+        console.log("clicked");
+      });
+      return;
     }
     /* allways get 1st page of the new feed*/
     if(type !== self.typesOfSearch.active){

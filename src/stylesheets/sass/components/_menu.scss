@@ -7,6 +7,7 @@
     text-align: right;
     padding:2% 5%;
     font-weight:bold;
+
     li{
       display: inline-block;
       margin-left:20px;
@@ -31,6 +32,18 @@
       a{
         color:#333;
       }
+
+      &.admin{
+        &:hover{
+          border-bottom:3px solid transparent;
+        }
+      }
     }
+  }
+}
+
+.rotate-on-hover{
+  &:hover{
+    animation: 2s rotate360 infinite linear;
   }
 }

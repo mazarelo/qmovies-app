@@ -5,7 +5,7 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
   var client = new WebTorrent();
   self.requestRunning = false;
   var videoBlobUrl = false;
-  
+
   self.download = function(magnet , id , season , episode){
     var deferred = $q.defer();
     var magnetURI = magnet;
@@ -65,6 +65,9 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
               windows.open("file://"+filename);
             })
           });
+          
+          /* destroy the torrent */
+          torrent.destroy();
           deferred.resolve(true);
         });
 

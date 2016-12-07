@@ -1,0 +1,28 @@
+<div class="md-modal md-effect-12" id="modal-12">
+  <div class="md-content">
+    <h1>{{settings.title}}</h1>
+    <div class="list">
+
+        <p>Download at max quality
+          <label class="switch switch-green">
+            <input type="checkbox" class="switch-input" checked>
+            <span class="switch-label" data-on="On" data-off="Off"></span>
+            <span class="switch-handle"></span>
+          </label>
+        </p>
+
+        <p>Save cache
+          <label class="switch switch-green">
+            <input type="checkbox" class="switch-input" checked>
+            <span class="switch-label" data-on="On" data-off="Off"></span>
+            <span class="switch-handle"></span>
+          </label>
+        </p>
+        <p>Download Folder
+            <span id="download-path" ng-click="settings.changeLocalPath()">{{settings.downloadPath}}</span>
+        </p>
+    </div>
+  <button class="md-close" ng-click="settings.closeModal()">Close</button>
+  </div>
+</div>
+<div class="md-overlay"></div>

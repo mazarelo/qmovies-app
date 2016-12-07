@@ -10,6 +10,11 @@ myApp.service('tvTorrents', function($http){
       return $http.get(`https://api-fetch.website/tv/show/${id}`);
   }
 
+  self.getTvList = function(page){
+      console.log(page);
+      return $http.get(`https://api-fetch.website/tv/shows/${page}`);
+  }
+
 });
 
 myApp.service('cache', function( $localStorage){
@@ -51,6 +56,7 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
   var client = new WebTorrent();
   self.requestRunning = false;
   var videoBlobUrl = false;
+
   self.download = function(magnet , id , season , episode){
     var deferred = $q.defer();
     var magnetURI = magnet;
@@ -60,7 +66,6 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
     let downloadIcon = document.getElementById(progressBarId).parentNode.parentNode.getElementsByTagName('img')[0];
     downloadIcon.src = "assets/img/loading.svg";
     downloadIcon.classList.add("rotation");
-
     /* prevent torrent duplication error */
     if(client.get(magnetURI) == null && $rootScope.online == true){
       client.add(magnetURI, { path: `${process.env.DOWNLOAD_PATH}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}` }, function (torrent) {
@@ -111,6 +116,9 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
               windows.open("file://"+filename);
             })
           });
+          
+          /* destroy the torrent */
+          torrent.destroy();
           deferred.resolve(true);
         });
 
@@ -181,7 +189,6 @@ myApp.service('fileSystem', function($q){
         }
     };
   };
-
 
   self.listAll = function(path){
     try{
@@ -259,6 +266,35 @@ myApp.service('fileSystem', function($q){
           fs.rmdirSync(path);
       }
   };
+
+  self.replaceInEnvJson = function(file , oldValue, newValue){
+    fs.readFile(someFile, 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+
+      var result = data.replace(/oldValue/g, newValue);
+      fs.writeFile(file, result, 'utf8', function (err) {
+         if (err) return console.log(err);
+      });
+      
+    });
+  }
+
+});
+
+
+myApp.service('ipc', function($http){
+  const self = this;
+  const {ipcRenderer} = require('electron');
+
+  self.openDialog = function(id, data){
+    return ipcRenderer.sendSync(id, data)
+  }
+
+  self.openFoldersDialog = function(){
+    return ipcRenderer.sendSync("open-folder", "download-path");
+  }
 
 });
 
@@ -350,14 +386,21 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   const  url = "https://api.themoviedb.org/3";
   const  personUrl = "https://api.themoviedb.org/3/person/";
   const  imgUrl = "http://image.tmdb.org/t/p/";
+  const self = this;
+
+  this.api = {
+    key: "api_key=7842e553f27c281212263c594f9504cf",
+    endPoint: "https://api.themoviedb.org/3",
+    personUrl: "https://api.themoviedb.org/3/person/",
+    imgUrl: "http://image.tmdb.org/t/p/"
+  }
 
   this.imgRoute = {
-      w150: imgUrl+"w300",
-      w300: imgUrl+"w300",
-      w500: imgUrl+"w500",
-      w1920: imgUrl+"w1920"
+      w150: self.api.imgUrl+"w300",
+      w300: self.api.imgUrl+"w300",
+      w500: self.api.imgUrl+"w500",
+      w1920: self.api.imgUrl+"w1920"
   };
-
   /* defered kit
   var deferred = $q.defer();
   deferred.resolve(data);
@@ -371,68 +414,68 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
     if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
-       return $http.get(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`)
+       return $http.get(`${this.api.endPoint}/${type}?${query}&${this.api.key}&${this.api.key}&page=${page}`)
     }
     return deferred.promise;
-    //console.log(`${url}/${type}?${query}&${apiKey}&${apiKey}&page=${page}`);
+    //console.log(`${this.api.endPoint}/${type}?${query}&${this.api.key}&${this.api.key}&page=${page}`);
   }
 
   this.searchById = function(id = $routeParams.tvId){
-    console.log(`${url}/tv/${id}?${apiKey}`);
-    return $http.get(`${url}/tv/${id}?${apiKey}`);
+    console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
+    return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
   }
 
   this.searchById = function(id = $routeParams.tvId){
-    console.log(`${url}/tv/${id}?${apiKey}`);
-    return $http.get(`${url}/tv/${id}?${apiKey}&append_to_response=external_ids`);
+    console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
+    return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}&append_to_response=external_ids`);
   }
 
   this.getCastFromTvId = function(tvId){
-    console.log(`${url}/tv/${tvId}/credits?${apiKey}`);
-    return $http.get(`${url}/tv/${tvId}/credits?${apiKey}`);
+    console.log(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+    return $http.get(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
   }
 
   this.searchByImdbId = function(imdbId){
-    console.log(`${url}/find/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
-    return $http.get(`${url}/find/${$routeParams.tvId}?${apiKey}&language=en-US&external_source=imdb_id`);
+    console.log(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+    return $http.get(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
   }
 
   this.tvFeed = function(type , page){
-    //console.log(`${url}/tv/${type}?${apiKey}&page=${page}`);
+    //console.log(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
     var deferred = $q.defer();
     let storeName = type+"-"+page;
     /*if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
     */
-      return $http.get(`${url}/tv/${type}?${apiKey}&page=${page}`);
+      return $http.get(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
     /*}*/
 
     return deferred.promise;
   }
 
   this.movieFeed = function(type , page){
-    console.log(`${url}/movie/${type}?${apiKey}&page=${page}`);
-    return $http.get(`${url}/movie/${type}?${apiKey}&page=${page}`);
+    console.log(`${this.api.endPoint}/movie/${type}?${this.api.key}&page=${page}`);
+    return $http.get(`${this.api.endPoint}/movie/${type}?${this.api.key}&page=${page}`);
   }
 
   this.getTvSerieExternalIds = function(){
-    return $http.get(`${url}/tv/${$routeParams.tvId}/external_ids?${apiKey}`);
+    return $http.get(`${this.api.endPoint}/tv/${$routeParams.tvId}/external_ids?${this.api.key}`);
   }
 
   this.tvSerie = function(){
-    console.log(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
-    return $http.get(`${url}/tv/${$routeParams.tvId}?${apiKey}&append_to_response=external_ids`);
+    console.log(`${this.api.endPoint}/tv/${$routeParams.tvId}?${this.api.key}&append_to_response=external_ids`);
+    return $http.get(`${this.api.endPoint}/tv/${$routeParams.tvId}?${this.api.key}&append_to_response=external_ids`);
   }
 
   this.tvSeason = function(id ,season = $routeParams.season){
-    console.log(`${url}/tv/${id}/season/${season}?${apiKey}`);
-    return $http.get(`${url}/tv/${id}/season/${season}?${apiKey}`);
+    console.log(`${this.api.endPoint}/tv/${id}/season/${season}?${this.api.key}`);
+    return $http.get(`${this.api.endPoint}/tv/${id}/season/${season}?${this.api.key}`);
   }
 
   this.tvEpisode = function(){
-    console.log(`${url}/tv/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${apiKey}`);
-    return $http.get(`${url}/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${apiKey}`);
+    console.log(`${this.api.endPoint}/tv/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${this.api.key}`);
+    return $http.get(`${this.api.endPoint}/${$routeParams.tvId}/season/${$routeParams.season}/episode/${$routeParams.episode}?${this.api.key}`);
   }
 
   this.tvDiscover = function (...terms){
@@ -441,16 +484,16 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
         terms.forEach(function (item) {
           termArray.push(item);
         });
-        console.log(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
-    return $http.get(`${url}/discover/tv?${termArray.join("&")}&${apiKey}`);
+        console.log(`${this.api.endPoint}/discover/tv?${termArray.join("&")}&${this.api.key}`);
+    return $http.get(`${this.api.endPoint}/discover/tv?${termArray.join("&")}&${this.api.key}`);
   }
 
   this.tvSearch = function(query , page ){
-    return $http.get(`${url}/search/tv?query=${query}&page=${page}&${apiKey}`);
+    return $http.get(`${this.api.endPoint}/search/tv?query=${query}&page=${page}&${this.api.key}`);
   }
 
   this.movieSearch = function(query , page ){
-    return $http.get(`${url}/search/movies?query=${query}&page=${page}&${apiKey}`);
+    return $http.get(`${this.api.endPoint}/search/movies?query=${query}&page=${page}&${this.api.key}`);
   }
 });
 
