@@ -123,6 +123,7 @@ app.on('ready', () => {
     settings.defaults({
       user: {
         cache: true,
+        deleteDownloadsOnExit: true,
         maxQuality: true,
         downloadFolder: process.env.DOWNLOAD_PATH
       }
