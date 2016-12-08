@@ -3,14 +3,14 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, Menu, Tray , BrowserWindow } from 'electron';
+import { app, Menu, Tray , BrowserWindow, dialog, ipcMain } from 'electron';
 import fs from 'fs';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { trayMenuTemplate } from './menu/tray_menu_template';
-import {ipcMain} from 'electron';
 //import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
-const {dialog} = require('electron');
+
+const settings = require('electron-settings');
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -19,7 +19,7 @@ const platform = require('os').platform();
 /* DEFINE TEMP Folder */
 process.env.downloadBestQuality = env.downloadBestQuality;
 process.env.APP_FILES = app.getPath('userData');
-process.env.DOWNLOAD_PATH =  ( env.customDownloadFolder ? end.customDownloadFolder : `${app.getPath('userData')}/downloads` );
+process.env.DOWNLOAD_PATH = `${app.getPath('userData')}/downloads`;
 
 try {
   fs.access(process.env.DOWNLOAD_PATH, fs.F_OK, function(err) {
@@ -120,7 +120,6 @@ app.on('ready', () => {
     }
 
     /* review this blck */
-    const settings = require('electron-settings');
     settings.defaults({
       user: {
         cache: true,
@@ -132,6 +131,7 @@ app.on('ready', () => {
   //  settings.applyDefaults();
     settings.get('user').then(val => {
       console.log("Cache:",val.cache);
+      console.log("Download Folder:", val.downloadFolder);
       console.log("Quality:",val.maxQuality);
     });
 
@@ -148,7 +148,6 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
-
   if(env.deleteDownloadsOnExit){
     deleteFolderRecursive( process.env.DOWNLOAD_PATH ,function(err,status){
       console.log(status);

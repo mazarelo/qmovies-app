@@ -57,6 +57,7 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
   self.requestRunning = false;
   var videoBlobUrl = false;
   self.downloadFolder = false;
+  
   userSettings.get("user.downloadFolder").then(val =>{
       console.log(val);
       self.downloadFolder = val
@@ -152,16 +153,20 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
 
 });
 
-myApp.service('fileSystem', function($q){
+myApp.service('fileSystem', function($q , userSettings){
   const self = this;
   const fs = require('fs');
   const path = require('path');
 
-  const APP_FILES = process.env.APP_FILES;
+  var APP_FILES = process.env.APP_FILES;
+
+  userSettings.get("user.downloadFolder").then(val =>{
+      console.log("Download folder from Settings:",val);
+      APP_FILES = val;
+  })
 
   self.newFolder = function(name){
     console.log( APP_FILES+"/"+name );
-
     fs.mkdir(APP_FILES+"/"+name, function (err) {
       if (err) {
           return console.log('failed to write directory', err);
