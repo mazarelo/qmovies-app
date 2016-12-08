@@ -6,6 +6,7 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
   self.requestRunning = false;
   var videoBlobUrl = false;
   self.downloadFolder = false;
+  
   userSettings.get("user.downloadFolder").then(val =>{
       console.log(val);
       self.downloadFolder = val
