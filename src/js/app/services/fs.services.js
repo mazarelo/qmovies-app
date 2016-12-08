@@ -114,4 +114,8 @@ myApp.service('fileSystem', function($q){
       }
   };
 
+  self.moveFiles = function(oldPath, newPath, cb){
+    return fs.rename(oldPath, newPath, cb())
+  }
+
 });

@@ -4,8 +4,16 @@
     <div class="list">
 
         <p>Download at max quality
-          <label class="switch switch-green">
+          <label class="switch switch-green" ng-click="settings.updateMaxQuality()">
             <input id="maxQuality" type="checkbox" class="switch-input" checked>
+            <span class="switch-label" data-on="On" data-off="Off"></span>
+            <span class="switch-handle"></span>
+          </label>
+        </p>
+
+        <p>Clear Download on exit
+          <label class="switch switch-green" ng-click="settings.updateClearDownloads()">
+            <input id="clearDownloads" type="checkbox" class="switch-input" checked>
             <span class="switch-label" data-on="On" data-off="Off"></span>
             <span class="switch-handle"></span>
           </label>
@@ -19,7 +27,7 @@
           </label>
         </p>
         <p>Download Folder
-            <span id="download-path" ng-click="settings.changeLocalPath()">{{settings.downloadPath}}</span>
+            <span id="download-path" title="{{settings.downloadPath}}" ng-click="settings.changeLocalPath()">{{settings.downloadPath}}</span>
         </p>
     </div>
   <button class="md-close" ng-click="settings.closeModal()">Close</button>

@@ -1,10 +1,15 @@
 
-myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter, $rootScope){
+myApp.service('downloadTorrent', function(fileSystem , notifications, $routeParams, windows , $q , $filter, $rootScope , userSettings){
   const self = this;
   var WebTorrent = require('webtorrent')
   var client = new WebTorrent();
   self.requestRunning = false;
   var videoBlobUrl = false;
+  self.downloadFolder = false;
+  userSettings.get("user.downloadFolder").then(val =>{
+      console.log(val);
+      self.downloadFolder = val
+  })
 
   self.download = function(magnet , id , season , episode){
     var deferred = $q.defer();
@@ -16,8 +21,8 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
     downloadIcon.src = "assets/img/loading.svg";
     downloadIcon.classList.add("rotation");
     /* prevent torrent duplication error */
-    if(client.get(magnetURI) == null && $rootScope.online == true){
-      client.add(magnetURI, { path: `${process.env.DOWNLOAD_PATH}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}` }, function (torrent) {
+    if(client.get(magnetURI) == null && $rootScope.online == true && self.downloadFolder){
+      client.add(magnetURI, { path: `${self.downloadFolder}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}` }, function (torrent) {
         self.requestRunning = true;
 
         if(!videoBlobUrl){
@@ -65,7 +70,7 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
               windows.open("file://"+filename);
             })
           });
-          
+
           /* destroy the torrent */
           torrent.destroy();
           deferred.resolve(true);

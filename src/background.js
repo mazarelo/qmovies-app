@@ -124,15 +124,15 @@ app.on('ready', () => {
     settings.defaults({
       user: {
         cache: true,
-        maxQuality: true
+        maxQuality: true,
+        downloadFolder: process.env.DOWNLOAD_PATH
       }
     });
-    settings.get('user.cache').then(val => {
-      console.log(val);
-    });
 
-    settings.get('user.maxQuality').then(val => {
-      console.log(val);
+  //  settings.applyDefaults();
+    settings.get('user').then(val => {
+      console.log("Cache:",val.cache);
+      console.log("Quality:",val.maxQuality);
     });
 
     //console.log(settings.getSettingsFilePath());

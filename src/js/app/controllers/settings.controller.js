@@ -2,7 +2,9 @@
 myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , userSettings , notifications ) {
   const self = this;
   self.title = "Settings";
-  self.downloadPath = process.env.DOWNLOAD_PATH;
+  userSettings.get('user.downloadFolder').then(val =>{
+    self.downloadPath = (val)? val : process.env.DOWNLOAD_PATH;
+  })
 
   self.closeModal = function(){
     document.getElementById("modal-12").classList.remove("md-show");
@@ -16,31 +18,45 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
     }
   })
 
+  userSettings.maxQualityStatus().then(response =>{
+    if(response){
+      document.getElementById("maxQuality").checked = true;
+    }else{
+      document.getElementById("maxQuality").checked = false;
+    }
+  })
+
   self.changeLocalPath = function(){
+    /*fileSystem.moveFiles(function(){
+    });*/
     self.downloadPath = ipc.openFoldersDialog()[0];
-    console.log(self.downloadPath);
+    userSettings.set('user.downloadFolder', self.downloadPath );
   }
 
   self.updateCache = function(){
     var cacheCondition = document.getElementById("cached").checked;
     userSettings.get('user.cache').then(val => {
       if(cacheCondition){
-        userSettings.set('user', { cache: true } );
-        notifications.new("Cache is On!", "", "Settings" , "")
+        userSettings.set('user.cache', true );
       }else{
-        userSettings.set('user', { cache: false } );
-        notifications.new("Cache is off!", "", "Settings" , "")
+        userSettings.set('user.cache', false );
       }
     })
   }
 
   self.updateMaxQuality = function(){
     var cacheCondition = document.getElementById("maxQuality").checked;
-    userSettings.get('user.cache').then(val => {
+    userSettings.get('user.maxQuality').then(val => {
       if(cacheCondition){
-        userSettings.set('user', { cache: true } );
+        userSettings.set('user.maxQuality', true );
+        userSettings.get('user').then(val =>{
+          console.log("Video Quality max:", val.maxQuality);
+        })
       }else{
-        userSettings.set('user', { cache: false } );
+        userSettings.set('user.maxQuality', false );
+        userSettings.get('user.maxQuality').then(val =>{
+          console.log("Video Quality max:", val);
+        })
       }
     })
   }

@@ -13,6 +13,10 @@ myApp.service('userSettings', function(nightmare, $q){
     return settings.get('user.cache')
   }
 
+  self.maxQualityStatus = function(){
+    return settings.get('user.maxQuality')
+  }
+
   self.get = function(name){
     return settings.get(name);
   }
