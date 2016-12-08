@@ -101,6 +101,12 @@ perspective effects (not including the modals and the overlay).
 	&:last-child{
 		border-bottom:1px solid transparent;
 	}
+
+	.title{
+		font-weight:normal;
+		text-transform:none;
+		pointer-events: none;
+	}
 }
 
 .md-content > div ul {

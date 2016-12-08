@@ -698,6 +698,10 @@ perspective effects (not including the modals and the overlay).
   color: #7b7b7b; }
   .md-content > div p:last-child {
     border-bottom: 1px solid transparent; }
+  .md-content > div p .title {
+    font-weight: normal;
+    text-transform: none;
+    pointer-events: none; }
 
 .md-content > div ul {
   margin: 0;

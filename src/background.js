@@ -9,34 +9,10 @@ import { devMenuTemplate } from './menu/dev_menu_template';
 import { trayMenuTemplate } from './menu/tray_menu_template';
 //import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
-
-const settings = require('electron-settings');
-
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
 const platform = require('os').platform();
-/* DEFINE TEMP Folder */
-process.env.downloadBestQuality = env.downloadBestQuality;
-process.env.APP_FILES = app.getPath('userData');
-process.env.DOWNLOAD_PATH = `${app.getPath('userData')}/downloads`;
-
-try {
-  fs.access(process.env.DOWNLOAD_PATH, fs.F_OK, function(err) {
-      if (!err) {
-        console.log("Download File exists");
-      } else {
-        fs.mkdir( process.env.DOWNLOAD_PATH , function(error, status) {
-          console.log("Folder Created", process.env.DOWNLOAD_PATH );
-        });
-      }
-  });
-}
-catch (e) {
-  console.log(e);
-}
-
-console.log( process.env.DOWNLOAD_PATH );
 
 export var mainWindow;
 export var createWindow = function(url) {
@@ -109,6 +85,30 @@ if (env.name !== 'production') {
     var userDataPath = app.getPath('userData');
     app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
+/* DEFINE TEMP Folder */
+process.env.downloadBestQuality = env.downloadBestQuality;
+process.env.APP_FILES = app.getPath('userData');
+process.env.DOWNLOAD_PATH = `${app.getPath('userData')}/downloads`;
+console.log('APP FILES:', process.env.APP_FILES );
+console.log('APP FILES:', process.env.DOWNLOAD_PATH );
+try {
+  fs.access(process.env.DOWNLOAD_PATH, fs.F_OK, function(err) {
+      if (!err) {
+        console.log("Download File exists");
+      } else {
+        fs.mkdir( process.env.DOWNLOAD_PATH , function(error, status) {
+          console.log("Folder Created", process.env.DOWNLOAD_PATH );
+        });
+      }
+  });
+}
+catch (e) {
+  console.log(e);
+}
+console.log("Download Path:", process.env.DOWNLOAD_PATH );
+/* END */
+/* this is here because it get the app path before I manage to change it */
+const settings = require('electron-settings');
 
 app.on('ready', () => {
     setApplicationMenu();
