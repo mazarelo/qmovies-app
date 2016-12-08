@@ -3,7 +3,8 @@ myApp.service('notifications', function(){
   self.new = function(theBody,theIcon, theTitle , cb = "") {
     var options = {
         body: theBody,
-        icon: theIcon
+        icon: theIcon,
+        silent: true
     }
     var n = new Notification(theTitle , options);
     // If the user clicks in the Notifications Center, show the app

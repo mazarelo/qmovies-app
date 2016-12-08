@@ -2,6 +2,7 @@
 myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , userSettings , notifications ) {
   const self = this;
   self.title = "Settings";
+  self.requestRunning  = false;
   userSettings.get('user.downloadFolder').then(val =>{
     self.downloadPath = (val)? val : process.env.DOWNLOAD_PATH;
   })
@@ -36,27 +37,21 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
   self.updateCache = function(){
     var cacheCondition = document.getElementById("cached").checked;
     userSettings.get('user.cache').then(val => {
-      if(cacheCondition){
-        userSettings.set('user.cache', true );
-      }else{
+      if(val){
         userSettings.set('user.cache', false );
+      }else{
+        userSettings.set('user.cache', true );
       }
-    })
+    });
   }
 
   self.updateMaxQuality = function(){
-    var cacheCondition = document.getElementById("maxQuality").checked;
+    var downloadCondition = document.getElementById("maxQuality").checked;
     userSettings.get('user.maxQuality').then(val => {
-      if(cacheCondition){
-        userSettings.set('user.maxQuality', true );
-        userSettings.get('user').then(val =>{
-          console.log("Video Quality max:", val.maxQuality);
-        })
+      if(val){
+        userSettings.set('user.maxQuality', false )
       }else{
-        userSettings.set('user.maxQuality', false );
-        userSettings.get('user.maxQuality').then(val =>{
-          console.log("Video Quality max:", val);
-        })
+        userSettings.set('user.maxQuality', true )
       }
     })
   }
