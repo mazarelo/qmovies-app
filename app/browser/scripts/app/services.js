@@ -247,10 +247,6 @@ myApp.service('fileSystem', function($q){
       });
   };
 
-  self.checkLastModified = function(name){
-
-  }
-
   self.deleteFolderRecursive = function(path) {
       var files = [];
       if( fs.existsSync(path) ) {
@@ -266,20 +262,6 @@ myApp.service('fileSystem', function($q){
           fs.rmdirSync(path);
       }
   };
-
-  self.replaceInEnvJson = function(file , oldValue, newValue){
-    fs.readFile(someFile, 'utf8', function (err,data) {
-      if (err) {
-        return console.log(err);
-      }
-
-      var result = data.replace(/oldValue/g, newValue);
-      fs.writeFile(file, result, 'utf8', function (err) {
-         if (err) return console.log(err);
-      });
-      
-    });
-  }
 
 });
 
@@ -370,6 +352,43 @@ myApp.service('providers', function(streamin , $filter , $q){
     return deferred.promise;
   }
 
+});
+
+myApp.service('userSettings', function(nightmare, $q){
+  const self = this;
+  const settings = require('electron-settings');
+  /* settings.getSettingsFilePath(); */
+
+  self.getUserName = function(){
+    return settings.get('name.first').then(val => {
+      console.log(val);
+    });
+  }
+
+  self.cacheStatus = function(){
+    return settings.get('user.cache')
+  }
+
+  self.get = function(name){
+    return settings.get(name);
+  }
+
+  self.set = function(name,data){
+    return settings.set(name,data);
+  }
+
+  self.create = function(name ,obj){
+    settings.set('name', {
+      first: 'Cosmo',
+      last: 'Kramer'
+    }).then(() => {
+      settings.get('name.first').then(val => {
+        console.log(val);
+        // => "Cosmo"
+      });
+    });
+
+  }
 });
 
 myApp.service('streamin', function(nightmare, $q){

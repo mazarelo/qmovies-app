@@ -121,12 +121,23 @@ app.on('ready', () => {
 
     /* review this blck */
     const settings = require('electron-settings');
+    settings.defaults({
+      user: {
+        cache: true,
+        maxQuality: true
+      }
+    });
     settings.get('user.cache').then(val => {
       console.log(val);
     });
-    console.log(settings.getSettingsFilePath());
+
+    settings.get('user.maxQuality').then(val => {
+      console.log(val);
+    });
+
+    //console.log(settings.getSettingsFilePath());
     /* end */
-    
+
     /* Renderer interactions with Main */
     ipcMain.on('open-folder', (event, arg) =>{
       let newPath = dialog.showOpenDialog({properties: ['openDirectory']});

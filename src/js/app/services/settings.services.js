@@ -4,9 +4,21 @@ myApp.service('userSettings', function(nightmare, $q){
   /* settings.getSettingsFilePath(); */
 
   self.getUserName = function(){
-    settings.get('name.first').then(val => {
+    return settings.get('name.first').then(val => {
       console.log(val);
     });
+  }
+
+  self.cacheStatus = function(){
+    return settings.get('user.cache')
+  }
+
+  self.get = function(name){
+    return settings.get(name);
+  }
+
+  self.set = function(name,data){
+    return settings.set(name,data);
   }
 
   self.create = function(name ,obj){
