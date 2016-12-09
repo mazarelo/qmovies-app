@@ -27,11 +27,26 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
     }
   })
 
+  self.updateClearDownloads = function(){
+    var cacheCondition = document.getElementById("cached").checked;
+    userSettings.get('user.cache').then(val => {
+      if(val){
+        userSettings.set('user.cache', false );
+      }else{
+        userSettings.set('user.cache', true );
+      }
+    });
+  }
+
   self.changeLocalPath = function(){
     /*fileSystem.moveFiles(function(){
     });*/
+
     self.downloadPath = ipc.openFoldersDialog()[0];
     userSettings.set('user.downloadFolder', self.downloadPath );
+    fileSystem.moveFiles( "", self.downloadPath, function(){
+
+    });
   }
 
   self.updateCache = function(){

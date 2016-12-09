@@ -88,9 +88,11 @@ if (env.name !== 'production') {
 /* DEFINE TEMP Folder */
 process.env.downloadBestQuality = env.downloadBestQuality;
 process.env.APP_FILES = app.getPath('userData');
-process.env.DOWNLOAD_PATH = `${app.getPath('userData')}/downloads`;
+process.env.DOWNLOAD_PATH = `${app.getPath('userData')}/qmovies-files`;
+
 console.log('APP FILES:', process.env.APP_FILES );
 console.log('APP FILES:', process.env.DOWNLOAD_PATH );
+
 try {
   fs.access(process.env.DOWNLOAD_PATH, fs.F_OK, function(err) {
       if (!err) {

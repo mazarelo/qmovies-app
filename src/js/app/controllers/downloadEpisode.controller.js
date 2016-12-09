@@ -1,7 +1,8 @@
 /* login */
-myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications ) {
+myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications, userSettings ) {
   const self = this;
   self.isSaved = false;
+  var serieTitle = document.querySelector(".title").textContent;
 
   self.episode = function(season, episode , torrents){
     console.log("season:", season );
@@ -23,12 +24,15 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
         self.isSaved = true;
       });
     }else{
-      notifications.new("Im sorry, no streams available...", "", "Qmovies", "")
+      notifications.new("Im sorry, no streams available...", "", `${serieTitle} S${season}E${episode}`, "")
     }
   }
 
   self.delete = function(season, episode){
-    console.log(fileSystem.listAll(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`));
+    userSettings.get("user.downloadFolder").then(function(val){
+      console.log(`${val}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+      fileSystem.deleteFolderRecursively(`${val}/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+    });
   }
 
   self.playLocal = function(season, episode){
@@ -40,7 +44,7 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
   }
 
   self.checkLocaly = function(season,episode){
-    let exists = fileSystem.fileExists(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+    let exists = fileSystem.fileExists(`/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
     console.log("Exists",exists);
     if(exists){
       self.isSaved =  true;

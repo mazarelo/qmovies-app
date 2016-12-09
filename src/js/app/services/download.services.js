@@ -6,17 +6,17 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
   self.requestRunning = false;
   var videoBlobUrl = false;
   self.downloadFolder = false;
-  
+  var serieTitle = document.querySelector(".title").textContent;
+
   userSettings.get("user.downloadFolder").then(val =>{
-      console.log(val);
-      self.downloadFolder = val
+      console.log("Download:",val);
+      self.downloadFolder = val;
   })
 
   self.download = function(magnet , id , season , episode){
     var deferred = $q.defer();
     var magnetURI = magnet;
     var progressBarId = `${id}-${season}-${episode}`;
-    var serieTitle = document.querySelector(".title").textContent;
     /* set item img to download */
     let downloadIcon = document.getElementById(progressBarId).parentNode.parentNode.getElementsByTagName('img')[0];
     downloadIcon.src = "assets/img/loading.svg";

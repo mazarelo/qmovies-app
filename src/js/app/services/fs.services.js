@@ -2,17 +2,16 @@ myApp.service('fileSystem', function($q , userSettings){
   const self = this;
   const fs = require('fs');
   const path = require('path');
-
   var APP_FILES = process.env.APP_FILES;
 
   userSettings.get("user.downloadFolder").then(val =>{
-      console.log("Download folder from Settings:",val);
+      console.log("Download folder from Settings:", val);
       APP_FILES = val;
   })
 
   self.newFolder = function(name){
-    console.log( APP_FILES+"/"+name );
-    fs.mkdir(APP_FILES+"/"+name, function (err) {
+    console.log( APP_FILES );
+    fs.mkdir( name, function (err) {
       if (err) {
           return console.log('failed to write directory', err);
       }
@@ -76,7 +75,7 @@ myApp.service('fileSystem', function($q , userSettings){
   };
 
   self.removeFolder = function(dir){
-    let folder = APP_FILES+"/"+dir;
+    let folder = dir;
     console.log( folder );
     fs.unlink(folder);
   };
@@ -102,7 +101,7 @@ myApp.service('fileSystem', function($q , userSettings){
       });
   };
 
-  self.deleteFolderRecursive = function(path) {
+  self.deleteFolderRecursively = function(path) {
       var files = [];
       if( fs.existsSync(path) ) {
           files = fs.readdirSync(path);

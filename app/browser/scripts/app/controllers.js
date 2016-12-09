@@ -1,5 +1,5 @@
 /* login */
-myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications ) {
+myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications, userSettings ) {
   const self = this;
   self.isSaved = false;
 
@@ -29,6 +29,10 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
 
   self.delete = function(season, episode){
     console.log(fileSystem.listAll(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`));
+    userSettings.get("user.downloadFolder").then(function(val){
+      console.log(val+"/"+$routeParams.tvId+"/"+"season-"+season+"episode-"+episode);
+      fileSystem.deleteFolderRecursively(val+"/"+$routeParams.tvId+"/"+"season-"+season+"episode-"+episode);
+    });
   }
 
   self.playLocal = function(season, episode){
@@ -246,11 +250,26 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
     }
   })
 
+  self.updateClearDownloads = function(){
+    var cacheCondition = document.getElementById("cached").checked;
+    userSettings.get('user.cache').then(val => {
+      if(val){
+        userSettings.set('user.cache', false );
+      }else{
+        userSettings.set('user.cache', true );
+      }
+    });
+  }
+
   self.changeLocalPath = function(){
     /*fileSystem.moveFiles(function(){
     });*/
+
     self.downloadPath = ipc.openFoldersDialog()[0];
     userSettings.set('user.downloadFolder', self.downloadPath );
+    fileSystem.moveFiles( "", self.downloadPath, function(){
+
+    });
   }
 
   self.updateCache = function(){
@@ -262,12 +281,10 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
         userSettings.set('user.cache', true );
       }
     });
-    
   }
 
   self.updateMaxQuality = function(){
     var downloadCondition = document.getElementById("maxQuality").checked;
-
     userSettings.get('user.maxQuality').then(val => {
       if(val){
         userSettings.set('user.maxQuality', false )
@@ -275,7 +292,6 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
         userSettings.set('user.maxQuality', true )
       }
     })
-
   }
 
 });
