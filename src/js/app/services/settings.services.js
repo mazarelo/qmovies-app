@@ -17,6 +17,10 @@ myApp.service('userSettings', function(nightmare, $q){
     return settings.get('user.maxQuality')
   }
 
+  self.clearDownloadsOnExitStatus = function(){
+    return settings.get('user.deleteDownloadsOnExit')
+  }
+
   self.get = function(name){
     return settings.get(name);
   }

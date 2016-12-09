@@ -27,13 +27,20 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
     }
   })
 
+  userSettings.clearDownloadsOnExitStatus().then(response =>{
+    if(response){
+      document.getElementById("clearDownloads").checked = true;
+    }else{
+      document.getElementById("clearDownloads").checked = false;
+    }
+  })
+
   self.updateClearDownloads = function(){
-    var cacheCondition = document.getElementById("cached").checked;
-    userSettings.get('user.cache').then(val => {
+    userSettings.get('user.deleteDownloadsOnExit').then(val => {
       if(val){
-        userSettings.set('user.cache', false );
+        userSettings.set('user.deleteDownloadsOnExit', false );
       }else{
-        userSettings.set('user.cache', true );
+        userSettings.set('user.deleteDownloadsOnExit', true );
       }
     });
   }
@@ -50,7 +57,6 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
   }
 
   self.updateCache = function(){
-    var cacheCondition = document.getElementById("cached").checked;
     userSettings.get('user.cache').then(val => {
       if(val){
         userSettings.set('user.cache', false );
@@ -61,7 +67,6 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
   }
 
   self.updateMaxQuality = function(){
-    var downloadCondition = document.getElementById("maxQuality").checked;
     userSettings.get('user.maxQuality').then(val => {
       if(val){
         userSettings.set('user.maxQuality', false )

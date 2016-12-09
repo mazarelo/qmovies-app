@@ -57,17 +57,17 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
   self.requestRunning = false;
   var videoBlobUrl = false;
   self.downloadFolder = false;
-  
+  var serieTitle = document.querySelector(".title").textContent;
+
   userSettings.get("user.downloadFolder").then(val =>{
-      console.log(val);
-      self.downloadFolder = val
+      console.log("Download:",val);
+      self.downloadFolder = val;
   })
 
   self.download = function(magnet , id , season , episode){
     var deferred = $q.defer();
     var magnetURI = magnet;
     var progressBarId = `${id}-${season}-${episode}`;
-    var serieTitle = document.querySelector(".title").textContent;
     /* set item img to download */
     let downloadIcon = document.getElementById(progressBarId).parentNode.parentNode.getElementsByTagName('img')[0];
     downloadIcon.src = "assets/img/loading.svg";
@@ -157,7 +157,6 @@ myApp.service('fileSystem', function($q , userSettings){
   const self = this;
   const fs = require('fs');
   const path = require('path');
-
   var APP_FILES = process.env.APP_FILES;
 
   userSettings.get("user.downloadFolder").then(val =>{
@@ -386,6 +385,10 @@ myApp.service('userSettings', function(nightmare, $q){
 
   self.maxQualityStatus = function(){
     return settings.get('user.maxQuality')
+  }
+
+  self.clearDownloadsOnExitStatus = function(){
+    return settings.get('user.deleteDownloadsOnExit')
   }
 
   self.get = function(name){

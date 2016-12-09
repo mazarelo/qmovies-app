@@ -2,6 +2,7 @@
 myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorrent , $routeParams, fileSystem , windows, notifications, userSettings ) {
   const self = this;
   self.isSaved = false;
+  var serieTitle = document.querySelector(".title").textContent;
 
   self.episode = function(season, episode , torrents){
     console.log("season:", season );
@@ -23,15 +24,14 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
         self.isSaved = true;
       });
     }else{
-      notifications.new("Im sorry, no streams available...", "", "Qmovies", "")
+      notifications.new("Im sorry, no streams available...", "", `${serieTitle} S${season}E${episode}`, "")
     }
   }
 
   self.delete = function(season, episode){
-    console.log(fileSystem.listAll(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`));
     userSettings.get("user.downloadFolder").then(function(val){
-      console.log(val+"/"+$routeParams.tvId+"/"+"season-"+season+"episode-"+episode);
-      fileSystem.deleteFolderRecursively(val+"/"+$routeParams.tvId+"/"+"season-"+season+"episode-"+episode);
+      console.log(`${val}/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+      fileSystem.deleteFolderRecursively(`${val}/${$routeParams.tvId}/season-${season}/episode-${episode}`);
     });
   }
 
@@ -44,7 +44,7 @@ myApp.controller("DownloadEpisodeController" , function( $scope , downloadTorren
   }
 
   self.checkLocaly = function(season,episode){
-    let exists = fileSystem.fileExists(`downloads/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
+    let exists = fileSystem.fileExists(`/tv/${$routeParams.tvId}/season-${season}/episode-${episode}`);
     console.log("Exists",exists);
     if(exists){
       self.isSaved =  true;
@@ -250,13 +250,20 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
     }
   })
 
+  userSettings.clearDownloadsOnExitStatus().then(response =>{
+    if(response){
+      document.getElementById("clearDownloads").checked = true;
+    }else{
+      document.getElementById("clearDownloads").checked = false;
+    }
+  })
+
   self.updateClearDownloads = function(){
-    var cacheCondition = document.getElementById("cached").checked;
-    userSettings.get('user.cache').then(val => {
+    userSettings.get('user.deleteDownloadsOnExit').then(val => {
       if(val){
-        userSettings.set('user.cache', false );
+        userSettings.set('user.deleteDownloadsOnExit', false );
       }else{
-        userSettings.set('user.cache', true );
+        userSettings.set('user.deleteDownloadsOnExit', true );
       }
     });
   }
@@ -273,7 +280,6 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
   }
 
   self.updateCache = function(){
-    var cacheCondition = document.getElementById("cached").checked;
     userSettings.get('user.cache').then(val => {
       if(val){
         userSettings.set('user.cache', false );
@@ -284,7 +290,6 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
   }
 
   self.updateMaxQuality = function(){
-    var downloadCondition = document.getElementById("maxQuality").checked;
     userSettings.get('user.maxQuality').then(val => {
       if(val){
         userSettings.set('user.maxQuality', false )
