@@ -40,7 +40,7 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
 
   this.searchById = function(id = $routeParams.tvId){
     var deferred = $q.defer();
-    let storeName = "tv-"+id+"-"+page;
+    let storeName = "tv-"+id;
     if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
