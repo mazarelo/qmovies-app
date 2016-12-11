@@ -1,5 +1,9 @@
-<!-- title and alternative menu -->
+<!-- title and alternative menu
+<div class="search-box">
+  <input ng-model="tv.query"  ng-change="tv.search()" type="text">
+</div>-->
 <alt-menu obj="tv"></alt-menu>
+
 <div ng-init="tv.getFeed()" class="results" scrolly>
   <!-- if there is no data print generic no-data-->
   <offline-err

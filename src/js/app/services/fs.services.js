@@ -1,7 +1,5 @@
 myApp.service('fileSystem', function($q , userSettings){
-  const self = this;
-  const fs = require('fs');
-  const path = require('path');
+  const self = this, fs = require('fs'), path = require('path');
   var APP_FILES = process.env.APP_FILES;
 
   userSettings.get("user.downloadFolder").then(val =>{
@@ -46,7 +44,7 @@ myApp.service('fileSystem', function($q , userSettings){
 
   self.listAll = function(path){
     try{
-      var files = fs.readdirSync(APP_FILES+"/"+path);
+      let files = fs.readdirSync(APP_FILES+"/"+path);
     }catch(err){
       console.log(err);
     }

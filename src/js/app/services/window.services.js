@@ -23,7 +23,7 @@ myApp.service('windows', function() {
   }
 
   this.scrollToTop = function(scrollDuration) {
-    let feedEl = document.getElementById("feed-ajax");
+    let feedEl = document.getElementById("feed");
     currentScrollTop = feedEl.scrollTop;
     let scrollStep = feedEl.scrollTop / (scrollDuration / 15);
 

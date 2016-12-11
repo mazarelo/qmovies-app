@@ -92,10 +92,10 @@ myApp.directive('feedLayout', function(){
       obj: '='
     },
     template: `
-        <div  ng-repeat="item in obj.results | unique:'id'" class="feed-template">
+        <div id="feed"  ng-repeat="item in obj.results | unique:'id'" class="feed-template">
           <a href="#/{{type}}/{{item.id}}">
             <figure class="ft-img">
-              <stored-img ng-url="{{obj.tmdbImgUrl.w300}}{{item.poster_path}}"/>
+              <stored-img ng-url="{{obj.tmdbImgUrl.w300}}{{item.poster_path}}" err-src="assets/img/no-image.jpg"/>
             </figure>
             <div class="ft-content">
               <a href="">{{type == 'tv' ? item.name : item.title}} <span class="ft-c-date">{{item.date}}</span></a>
@@ -122,6 +122,18 @@ myApp.directive('preLoadImage', function(){
     };
 
 });
+myApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  };
+});
+
 myApp.directive('settingsModal', function(){
   return {
     restrict: 'E',

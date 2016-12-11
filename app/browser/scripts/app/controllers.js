@@ -302,7 +302,7 @@ myApp.controller("SettingsController" , function( $scope , $routeParams , ipc , 
 });
 
 /* login */
-myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache , $rootScope ,notifications) {
+myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache , $rootScope ,notifications, windows) {
   const self = this;
   self.title = "Tv Series";
   self.page = 1;
@@ -379,7 +379,6 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
       self.page = 1;
     }
 
-
     self.tmdbImgUrl = tmdb.imgRoute;
     console.log(self.tmdbImgUrl);
     tmdb.tvFeed(type , self.page ).then(function(response){
@@ -447,6 +446,25 @@ myApp.controller("TvController" , function( $scope , $routeParams , tmdb , cache
     }
     self.loading = false;
   }
+
+  self.search = function(){
+    self.loading = true;
+    self.page = 1;
+    /* scroll feed-ajax to top */
+    if(self.query.length >3){
+      windows.scrollToTop(1000);
+      tmdb.tvSearch(`${self.query}`, self.page).then(function(response){
+        self.results = response.data.results;
+        self.loading = false;
+      }, function(err){
+        console.log("error", err);
+        self.loading = false;
+      });
+    }else if(self.query.length <=3){
+      self.loading = false;
+    }
+  }
+
 });
 
 /* login */

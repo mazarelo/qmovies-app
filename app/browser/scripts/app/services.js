@@ -17,21 +17,24 @@ myApp.service('tvTorrents', function($http){
 
 });
 
-myApp.service('cache', function( $localStorage){
+myApp.service('cache', function( $localStorage, userSettings){
+  const self = this;
 
-  this.save = function(name , data , timeToLive){
-    var returnData;
-    if(name){
-      returnData = $localStorage[name];
-    }else{
-      $localStorage[name] = data;
-      $localStorage[name].push({time_to_live: timeToLive});
-      returnData = $localStorage[name];
-    }
-    return returnData;
+  self.save = function(name , data , timeToLive){
+    userSettings.cacheStatus().then(response =>{
+      var returnData;
+      if(name){
+        returnData = $localStorage[name];
+      }else{
+        $localStorage[name] = data;
+        $localStorage[name].push({time_to_live: timeToLive});
+        returnData = $localStorage[name];
+      }
+      return returnData;
+    });
   }
 
-  this.get = function(name){
+  self.get = function(name){
     if($localStorage[name]){
       console.log("Cached obj:",$localStorage[name])
       return $localStorage[name];
@@ -39,11 +42,11 @@ myApp.service('cache', function( $localStorage){
     return false;
   }
 
-  this.delete = function(name){
+  self.delete = function(name){
     delete $localStorage[name];
   }
 
-  this.alter = function(name , data){
+  self.alter = function(name , data){
     $localStorage[name] = data;
   }
 
@@ -154,9 +157,7 @@ myApp.service('downloadTorrent', function(fileSystem , notifications, $routePara
 });
 
 myApp.service('fileSystem', function($q , userSettings){
-  const self = this;
-  const fs = require('fs');
-  const path = require('path');
+  const self = this, fs = require('fs'), path = require('path');
   var APP_FILES = process.env.APP_FILES;
 
   userSettings.get("user.downloadFolder").then(val =>{
@@ -201,7 +202,7 @@ myApp.service('fileSystem', function($q , userSettings){
 
   self.listAll = function(path){
     try{
-      var files = fs.readdirSync(APP_FILES+"/"+path);
+      let files = fs.readdirSync(APP_FILES+"/"+path);
     }catch(err){
       console.log(err);
     }
@@ -462,36 +463,50 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   }
 
   this.searchById = function(id = $routeParams.tvId){
-    console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
-    return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
-  }
-
-  this.searchById = function(id = $routeParams.tvId){
-    console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
-    return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}&append_to_response=external_ids`);
+    var deferred = $q.defer();
+    let storeName = "tv-"+id+"-"+page;
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
+      return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
+    }
+    return deferred.promise;
   }
 
   this.getCastFromTvId = function(tvId){
-    console.log(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
-    return $http.get(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+    var deferred = $q.defer();
+    let storeName = "tv-"+id+"-credits";
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      console.log(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+      return $http.get(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+    }
+    return deferred.promise;
   }
 
   this.searchByImdbId = function(imdbId){
-    console.log(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
-    return $http.get(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+    var deferred = $q.defer();
+    let storeName = "tv-imdb-id-"+id;
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      console.log(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+      return $http.get(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+    }
+    return deferred.promise;
   }
 
   this.tvFeed = function(type , page){
-    //console.log(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
     var deferred = $q.defer();
     let storeName = type+"-"+page;
-    /*if(cache.get(storeName)){
+    if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
-    */
+      console.log(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
       return $http.get(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
-    /*}*/
-
+    }
     return deferred.promise;
   }
 
@@ -563,7 +578,7 @@ myApp.service('windows', function() {
   }
 
   this.scrollToTop = function(scrollDuration) {
-    let feedEl = document.getElementById("feed-ajax");
+    let feedEl = document.getElementById("feed");
     currentScrollTop = feedEl.scrollTop;
     let scrollStep = feedEl.scrollTop / (scrollDuration / 15);
 

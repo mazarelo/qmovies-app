@@ -2,35 +2,41 @@
   <div class="md-content">
     <h1>{{settings.title}}</h1>
     <div class="list">
-
-        <p><span class="title">Download at max quality</span>
+        <!-- Settings item -->
+        <p>
+          <span class="title">Download at max quality</span>
           <label class="switch switch-green" ng-click="settings.updateMaxQuality()">
             <input id="maxQuality" type="checkbox" class="switch-input" checked>
             <span class="switch-label" data-on="On" data-off="Off"></span>
             <span class="switch-handle"></span>
           </label>
         </p>
-
-        <p><span class="title">Clear downloads on exit</span>
+        <!-- Settings item -->
+        <p>
+          <span class="title">Clear downloads on exit</span>
           <label class="switch switch-green" ng-click="settings.updateClearDownloads()">
             <input id="clearDownloads" type="checkbox" class="switch-input" checked>
             <span class="switch-label" data-on="On" data-off="Off"></span>
             <span class="switch-handle"></span>
           </label>
         </p>
-
-        <p><span class="title">Cache</span>
+        <!-- Settings item -->
+        <p>
+          <span class="title">Cache</span>
           <label class="switch switch-green" ng-click="settings.updateCache()">
             <input id="cached" type="checkbox" class="switch-input" checked>
             <span class="switch-label" data-on="On" data-off="Off"></span>
             <span class="switch-handle"></span>
           </label>
         </p>
+        <!-- Settings item -->
         <p><span class="title">Download folder</span>
             <span id="download-path" title="{{settings.downloadPath}}" ng-click="settings.changeLocalPath()">{{settings.downloadPath}}</span>
         </p>
+
     </div>
-  <button class="md-close" ng-click="settings.closeModal()">Close</button>
+    <!-- close btn -->
+    <button class="md-close" ng-click="settings.closeModal()">Close</button>
   </div>
 </div>
 <div class="md-overlay"></div>

@@ -39,36 +39,50 @@ myApp.service('tmdb', function($http , $routeParams , $q , cache ){
   }
 
   this.searchById = function(id = $routeParams.tvId){
-    console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
-    return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
-  }
-
-  this.searchById = function(id = $routeParams.tvId){
-    console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
-    return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}&append_to_response=external_ids`);
+    var deferred = $q.defer();
+    let storeName = "tv-"+id+"-"+page;
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      console.log(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
+      return $http.get(`${this.api.endPoint}/tv/${id}?${this.api.key}`);
+    }
+    return deferred.promise;
   }
 
   this.getCastFromTvId = function(tvId){
-    console.log(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
-    return $http.get(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+    var deferred = $q.defer();
+    let storeName = "tv-"+id+"-credits";
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      console.log(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+      return $http.get(`${this.api.endPoint}/tv/${tvId}/credits?${this.api.key}`);
+    }
+    return deferred.promise;
   }
 
   this.searchByImdbId = function(imdbId){
-    console.log(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
-    return $http.get(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+    var deferred = $q.defer();
+    let storeName = "tv-imdb-id-"+id;
+    if(cache.get(storeName)){
+      deferred.resolve(cache.get(storeName));
+    }else{
+      console.log(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+      return $http.get(`${this.api.endPoint}/find/${$routeParams.tvId}?${this.api.key}&language=en-US&external_source=imdb_id`);
+    }
+    return deferred.promise;
   }
 
   this.tvFeed = function(type , page){
-    //console.log(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
     var deferred = $q.defer();
     let storeName = type+"-"+page;
-    /*if(cache.get(storeName)){
+    if(cache.get(storeName)){
       deferred.resolve(cache.get(storeName));
     }else{
-    */
+      console.log(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
       return $http.get(`${this.api.endPoint}/tv/${type}?${this.api.key}&page=${page}`);
-    /*}*/
-
+    }
     return deferred.promise;
   }
 

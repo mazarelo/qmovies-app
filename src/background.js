@@ -135,6 +135,7 @@ app.on('ready', () => {
     settings.get('user').then(val => {
       console.log("Cache:",val.cache);
       console.log("Download Folder:", val.downloadFolder);
+      console.log("Delete downloads:", val.deleteDownloadsOnExit);
       console.log("Quality:",val.maxQuality);
     });
 
@@ -158,9 +159,12 @@ app.on('window-all-closed', () => {
     });
   }
 
-  if(!env.cache){
-    /* delete * from localStorage api */
-  }
+  settings.get('user.deleteDownloadsOnExit').then(val => {
+    if(val){
+      /* Recursive remove files from download folder */
+      console.log("Remove downloads on exit:", val)
+    }
+  });
 
   if (platform !== 'darwin') {
     app.quit();

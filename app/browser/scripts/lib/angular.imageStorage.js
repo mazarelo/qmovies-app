@@ -167,15 +167,27 @@ angular.module("chrome-image-storage",[])
 	        replace: true
 	    }
 	})
+	.directive('errSrc', function() {
+	  return {
+	    link: function(scope, element, attrs) {
+	      element.bind('error', function() {
+	        if (attrs.src != attrs.errSrc) {
+	          attrs.$set('src', attrs.errSrc);
+	        }
+	      });
+	    }
+	  };
+	})
 	.directive("storedImg", function(){
 	    return {
 	        restrict: "E",
 	        scope: {
 	          dataSrc: '@ngUrl',
+						errSrc: '@errSrc',
 	    			maxWidth: '@maxWidth',
 	    			defaultImage: '@defaultImage'
 	    	  },
-	        template: '<img ng-src="{{storedImage}}"/>',
+	        template: '<img ng-src="{{storedImage}}" err-src="{{errSrc}}"/>',
 	        controller: ['$scope', '$timeout', 'chrome-image-storage', '$element',function($scope, $timeout, chromeImageStorage, $element){
 	        	$scope.storedImage = null;
 	        	if (angular.isDefined($scope.defaultImage)) {
